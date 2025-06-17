@@ -11,9 +11,7 @@ public class Tokennicer{
 	public Tokennicer(TokenString ts){
 		
 		this.tS = ts;
-		
 		ArrayList<Integer> list = this.ts.prio;
-
 		int min_precedence = 1000;
 		this.place = 0;
 
@@ -23,8 +21,9 @@ public class Tokennicer{
 				this.place = i;
 			}
 		}
+
+		// IDEE: du machst einen rekursiven aufruf in dem der String immer kleiner wird
+		// und nach der dahemaligen Idee von Gideon, isst man immer ein weiteres Stück
+		// der Token
 	}
-
-	public 
-
 }
