@@ -18,6 +18,9 @@ void main(String [] args){
 
 		Tokenizer t4 = new Tokenizer("10^4+5");
 		System.out.println(Arrays.toString(t4.maker()));
+		
+		Tokenizer t5 = new Tokenizer("tan(55)");
+		System.out.println(Arrays.toString(t5.maker()));
 }
 
 public class Tokenizer{
@@ -96,12 +99,33 @@ public class Tokenizer{
 			case '^' -> Op.POW;
 			case ')' -> Sp.CLOSED;
 			case '(' -> Sp.OPEN;
-			default -> throw new IllegalArgumentException();
+			default -> this.trigFunc();
 		};
 		
 		this.s.remove(0);
 
 		return n;
+	}
+
+	public TF trigFunc(){
+		if(this.s.get(0)=='s' && this.s.get(1) == 'i' && this.s.get(2)=='n'){
+			this.s.remove(2);
+			this.s.remove(1);
+			return TF.SIN;
+		}
+		if(this.s.get(0)=='c' && this.s.get(1) == 'o' && this.s.get(2)=='s'){
+			this.s.remove(2);
+			this.s.remove(1);
+			return TF.COS;
+		}
+		if(this.s.get(0)=='t' && this.s.get(1) == 'a' && this.s.get(2)=='n'){
+			this.s.remove(2);
+			this.s.remove(1);
+			return TF.TAN;
+		}
+		else{
+			throw new IllegalArgumentException();
+		}
 	}
 
 	public Token peek(int i){
@@ -114,7 +138,7 @@ public class Tokenizer{
 	}
 }
 
-sealed interface Token permits Num,Op,Sp {
+sealed interface Token permits Num,Op,Sp,TF {
 }
 
 enum Op implements Token{
@@ -130,6 +154,12 @@ enum Op implements Token{
 enum Sp implements Token{
 	CLOSED,
 	OPEN
+}
+
+enum TF implements Token{
+	SIN,
+	COS,
+	TAN,
 }
 
 record Num(double value) implements Token{}
