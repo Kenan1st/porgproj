@@ -1,27 +1,10 @@
+package project.tok;
+
+import project.tok.Model.*;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-void main(String [] args){
-	
-		Tokenizer t = new Tokenizer("46546.78672783+378648%038928");
-		System.out.println(Arrays.toString(t.maker()));
-
-		Tokenizer t1 = new Tokenizer("46546.78672783");
-                System.out.println(Arrays.toString(t1.maker()));
-
-		Tokenizer t2 = new Tokenizer("+378648%038928"); // ADD, Num(378648.0), MOD, Num(38928.0)
-                System.out.println(Arrays.toString(t2.maker()));
-
-//		Tokenizer t3 = new Tokenizer("46546.7867.2783+378648%038928");
-//                System.out.println(Arrays.toString(t3.maker())); // Fehler soll geworfen werden
-
-		Tokenizer t4 = new Tokenizer("10^4+5");
-		System.out.println(Arrays.toString(t4.maker()));
-		
-		Tokenizer t5 = new Tokenizer("tan(55)");
-		System.out.println(Arrays.toString(t5.maker()));
-}
 
 public class Tokenizer{
 
@@ -138,10 +121,10 @@ public class Tokenizer{
 	}
 }
 
-sealed interface Token permits Num,Op,Sp,TF {
+/* public sealed interface Token permits Num,Op,Sp,TF {
 }
 
-enum Op implements Token{
+public enum Op implements Token{
 	ADD,
 	NEG,
 	SUB,
@@ -151,15 +134,15 @@ enum Op implements Token{
 	POW
 }
 
-enum Sp implements Token{
+public enum Sp implements Token{
 	CLOSED,
 	OPEN
 }
 
-enum TF implements Token{
+public enum TF implements Token{
 	SIN,
 	COS,
 	TAN,
 }
 
-record Num(double value) implements Token{}
+public record Num(double value) implements Token{}*/
