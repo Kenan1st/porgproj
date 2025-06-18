@@ -49,9 +49,18 @@ public class Tokenizer{
 				return i;		
 			}
 		}
-
 		return this.s.size(); // anstonsten ist die Zahl alles was es im string gibt.
 	}	
+
+	public int identend(){
+		boolean val = false;
+			for(int i = 0; i< this.s.size();i++){
+				if (this.s.get(i) < 'a' && this.s.get(i) > 'z' || this.s.get(i) < 'A' && this.s.get(i) > 'Z'){
+					return i;		
+				}
+			}
+		return this.s.size();
+	}
 
 	public Token next(){
 		if(this.s.isEmpty()){return null;} // die Arraylist ist irgenwann leer
@@ -82,7 +91,22 @@ public class Tokenizer{
 			case '^' -> Op.POW;
 			case ')' -> Sp.CLOSED;
 			case '(' -> Sp.OPEN;
-			default -> this.trigFunc();
+			case ',' -> Sp.KOMMA;
+			default -> {
+				if(this.s.get(0) >= 'a' && this.s.get(0) <= 'z' || 
+				   this.s.get(0) >= 'A' && this.s.get(0) <= 'Z'){
+					int j = this.identend();
+					String name ="";
+					for(int i = 0; i<j;i++){
+						name += this.s.get(i);
+					}
+					this.s.removeAll(0,j);
+					yield new Ident(name);
+				}
+				else{
+					throw new IllegalArgumentException();
+				}
+			};
 		};
 		
 		this.s.remove(0);
@@ -90,7 +114,7 @@ public class Tokenizer{
 		return n;
 	}
 
-	public TF trigFunc(){
+/*	public TF trigFunc(){
 		if(this.s.get(0)=='s' && this.s.get(1) == 'i' && this.s.get(2)=='n'){
 			this.s.remove(2);
 			this.s.remove(1);
@@ -109,16 +133,16 @@ public class Tokenizer{
 		else{
 			throw new IllegalArgumentException();
 		}
-	}
+	}*/
 
-	public Token peek(int i){
+	/*public Token peek(int i){
 		this.pointer = i;
 		return this.tk[i];
 	}
 
 	public Token peek(){
 		return this.tk[this.pointer+1];
-	}
+	}*/
 }
 
 /* public sealed interface Token permits Num,Op,Sp,TF {

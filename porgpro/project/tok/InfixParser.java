@@ -1,4 +1,4 @@
-public class InfixParser{
+/* public class InfixParser{
 	
 	Tokenizer T;
 	Token[] tok;
@@ -47,4 +47,4 @@ public class InfixParser{
 	}
 	}
 }
-}
+}*/
