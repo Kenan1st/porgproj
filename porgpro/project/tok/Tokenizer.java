@@ -54,7 +54,7 @@ public class Tokenizer{
 	public int identend(){
 		boolean val = false;
 			for(int i = 0; i< this.s.size();i++){
-				if (this.s.get(i) < 'a' && this.s.get(i) > 'z' || this.s.get(i) < 'A' && this.s.get(i) > 'Z'){
+				if ((this.s.get(i) < 'a' || this.s.get(i) > 'z') && (this.s.get(i) < 'A' || this.s.get(i) > 'Z')){
 					return i;		
 				}
 			}
@@ -124,6 +124,6 @@ public static void main(String [] args){
 
 	System.out.println(Arrays.toString(T1.maker()));
 
-	System.out.println(Arrays.toString(T.maker()));
+	//System.out.println(Arrays.toString(T.maker()));
 }
 }
