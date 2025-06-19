@@ -1,7 +1,6 @@
 package project.tok;
 
 import project.tok.Model.*;
-
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +34,7 @@ public class Tokenizer{
 
 	}
 
-	public int subend(){
+	public int numend(){
 		boolean val = false;
 		for(int i = 0; i< this.s.size();i++){
 			if (this.s.get(i) == '.'){
@@ -65,7 +64,7 @@ public class Tokenizer{
 	public Token next(){
 		if(this.s.isEmpty()){return null;} // die Arraylist ist irgenwann leer
 		if(this.s.get(0) >= '0' && this.s.get(0) <= '9'){  	
-			int i = this.subend();
+			int i = this.numend();
 			List<Character> ss = this.s.subList(0,i);	// Wenn eine Ziffer gelesen wird das wandel er sie aus dem char in einen string
 			String a = "";					// um um es anschlieén in parsedouble verwenden zu können.
 
@@ -100,73 +99,31 @@ public class Tokenizer{
 					for(int i = 0; i<j;i++){
 						name += this.s.get(i);
 					}
-					this.s.removeAll(0,j);
+					this.s.subList(0,j).clear();
 					yield new Ident(name);
 				}
 				else{
 					throw new IllegalArgumentException();
 				}
-			};
+			}
 		};
+
+		if(!this.s.isEmpty()){
+
+			this.s.remove(0);
 		
-		this.s.remove(0);
+		}
 
 		return n;
 	}
 
-/*	public TF trigFunc(){
-		if(this.s.get(0)=='s' && this.s.get(1) == 'i' && this.s.get(2)=='n'){
-			this.s.remove(2);
-			this.s.remove(1);
-			return TF.SIN;
-		}
-		if(this.s.get(0)=='c' && this.s.get(1) == 'o' && this.s.get(2)=='s'){
-			this.s.remove(2);
-			this.s.remove(1);
-			return TF.COS;
-		}
-		if(this.s.get(0)=='t' && this.s.get(1) == 'a' && this.s.get(2)=='n'){
-			this.s.remove(2);
-			this.s.remove(1);
-			return TF.TAN;
-		}
-		else{
-			throw new IllegalArgumentException();
-		}
-	}*/
+public static void main(String [] args){
+	Tokenizer T = new Tokenizer("4+21+12+4645.124*sqrt(123+1)");
+	
+	Tokenizer T1 = new Tokenizer("sin(sqrt(25)*tan(2)+123+434+34.6)");
 
-	/*public Token peek(int i){
-		this.pointer = i;
-		return this.tk[i];
-	}
+	System.out.println(Arrays.toString(T1.maker()));
 
-	public Token peek(){
-		return this.tk[this.pointer+1];
-	}*/
+	System.out.println(Arrays.toString(T.maker()));
 }
-
-/* public sealed interface Token permits Num,Op,Sp,TF {
 }
-
-public enum Op implements Token{
-	ADD,
-	NEG,
-	SUB,
-	DIV,
-	MUL,
-	MOD,
-	POW
-}
-
-public enum Sp implements Token{
-	CLOSED,
-	OPEN
-}
-
-public enum TF implements Token{
-	SIN,
-	COS,
-	TAN,
-}
-
-public record Num(double value) implements Token{}*/

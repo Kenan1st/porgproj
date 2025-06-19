@@ -1,4 +1,4 @@
 package project.tok.Model;
 
-public sealed interface Token permits Num,Op,Sp,TF {
+public sealed interface Token permits Num,Op,Sp,TF,Ident {
 }
