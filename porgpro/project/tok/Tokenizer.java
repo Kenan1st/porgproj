@@ -99,7 +99,7 @@ public class Tokenizer{
 					for(int i = 0; i<j;i++){
 						name += this.s.get(i);
 					}
-					this.s.subList(0,j).clear();
+					this.s.subList(0,j-1).clear();
 					yield new Ident(name);
 				}
 				else{
@@ -109,18 +109,17 @@ public class Tokenizer{
 		};
 
 		if(!this.s.isEmpty()){
-
 			this.s.remove(0);
-		
 		}
 
 		return n;
 	}
 
 public static void main(String [] args){
-	Tokenizer T = new Tokenizer("4+21+12+4645.124*sqrt(123+1)");
 	
-	Tokenizer T1 = new Tokenizer("sin(sqrt(25)*tan(2)+123+434+34.6)");
+		Tokenizer T = new Tokenizer("4+21+12+4645.124*sqrt(123+1)");
+	
+	Tokenizer T1 = new Tokenizer("sin(sqrt(25)*tan(2)+123+434+34.6)^4");
 
 	System.out.println(Arrays.toString(T1.maker()));
 
