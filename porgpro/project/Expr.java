@@ -1,7 +1,8 @@
-package project;
+/*package project;
 
 import project.tok.*;
 import project.tok.Model.*;
+import java.util.ArrayList;
 
 public class Expr{
 
@@ -18,28 +19,32 @@ public class Expr{
 				this.T[i] = switch(k.name()){
 						case "sin" -> new SIN(
 								new Expr(
-									Array.copyOfRange(this.T,i+1,brFinder(i+1))));
+									Arrays.copyOfRange(this.T,i+1,brFinder(i+1))));
 						case "cos" -> new COS(
 								new Expr(
-									Array.copyOfRange(this.T,i+1,brFinder(i+1))));
+									Arrays.copyOfRange(this.T,i+1,brFinder(i+1))));
 						case "tan" -> new TAN(
 								new Expr(
-									Array.copyOfRange(this.T,i+1,brFinder(i+1))));
+									Arrays.copyOfRange(this.T,i+1,brFinder(i+1))));
 						case "sqrt"-> new SQRT(
 								new Expr(
-									Array.copyOfRange(this.T,i+1,brFinder(i+1))));
-						case "LOG" -> new LOG(
+									Arrays.copyOfRange(this.T,i+1,brFinder(i+1))));
+						case "log" -> new LOG(
 								new Expr(
-									Array.copyOfRange(this.T,i+1,brFinder(i+1))));
+									Arrays.copyOfRange(this.T,i+1,brFinder(i+1))));
 						};
+				continue;
 			}
 			
 			if(k instanceof Sp){
+
 				if(k == Sp.OPEN){
 					int u = this.brFinder(i-1);
-					new Expr(Arrays.copyOfRange(this.T,i,j));
+					new Expr(Arrays.copyOfRange(this.T,i,u));
 					i = u;
+					continue;
 				}
+
 				else{
 					throw new IllegalArgumentException("Klammern falsch gesetzt");
 				}
@@ -58,13 +63,16 @@ public class Expr{
 				cnt++;
 			};
 			if(this.T[i] == Sp.OPEN){
-				cnt++;
+				cnt--;
 			}
-			if(cnt == 1){
+			if(cnt == 0){
 				place = i+1;
 				return;
 			}
 		}
+		
+		if(cnt != 0){throw new IllegalArgumentException("Falsche Klammern gesetzt");}
+
 		return place;
 	}
-}
+}*/
