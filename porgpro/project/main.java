@@ -25,5 +25,9 @@ public class main{
 		Token[] TKK = U.toArray(new Token[0]);
 		fr.resolveAll(TKK);
 		System.out.println(fr.getExpr());
+
+		CalcUPN CP = new CalcUPN(TKK);
+
+		System.out.println(CP.sol);
 	}
 }
