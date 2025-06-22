@@ -4,61 +4,43 @@ import project.tok.Model.*;
 import project.tok.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Deque;
+import java.util.Stack;
 import java.util.ArrayDeque;
 
 public class InfixParser{
+	
+	public String InfixParser(Token [] tok){
 
-	Deque<Token> deque = new ArrayDeque<>();
-	
-	public InfixParser(Token [] tok){
-	
-		for(Token tk : tok){
-			switch(tk){
-				case Num n-> deque.add(tk);
-				case Op.ADD ->{
-					Token tmp = deque.removeLast();
-					deque.add(Op.ADD);
-					deque.add(tmp);
-					}
-				case Op.SUB ->{
-					Token tmp = deque.removeLast();
-					deque.add(Op.SUB);
-					deque.add(tmp);
-					}
-				case Op.MUL ->{
-					Token tmp = deque.removeLast();
-					deque.add(Op.MUL);
-					deque.add(tmp);
-				}
-				case Op.DIV -> {
-					Token tmp = deque.removeLast();
-					deque.add(Op.DIV);
-					deque.add(tmp);
-				}
-				case Op.POW -> {
-					Token tmp = deque.removeLast();
-					deque.add(Op.POW);
-					deque.add(tmp);
-				}
-				default -> {
-				if(tk instanceof EUL) { deque.add(new EUL());}
-				if(tk instanceof PI) { deque.add(new PI());}
-				if(tk instanceof LOG){
-					Token tmp_1 = deque.removeLast();
-					Token tmp_2 = deque.removeLast();
-					deque.add(new LOG());
-					deque.add(tmp_1);
-					deque.add(tmp_2);
-				}
-				if(tk instanceof SIN){ deque.addFirst(new SIN());}
-				if(tk instanceof TAN){ deque.addFirst(new TAN());}
-				if(tk instanceof COS){deque.addFirst(new COS());}
-					else{ deque.addLast(new Fehlsch());}
-				//throw new IllegalArgumentException("falsch");
-				}
-			};
+	Stack<String> s = new Stack<>();
+
+	for(Token tk : tok){
+		if(tk instanceof Num || tk instanceof PI || tk instanceof EUL){
+			s.push(tk.toString());
+			continue;
 		}
+
+		if(tk instanceof SIN || tk instanceof COS || tk instanceof TAN || tk instanceof SQRT || tk instanceof LOG){
+			String operand = s.pop();
+
+			String Ausdruck = tk.toString() + "(" + operand + ")";
+			s.push(Ausdruck);
+			continue;
+		}
+		if(tk instanceof Op){
+			String rightop = s.pop();
+			String leftop = s.pop();
+
+			String Ausdruck = "(" + leftop + " " + tk.toString() + " " + rightop + ")";
+			s.push(Ausdruck);
+			continue;
+		}
+		else{
+			throw new IllegalArgumentException("Unerkannter Token");
+		}
+	}
 	
+	if(s.size() != 1){throw new IllegalArgumentException("Falscher RPN-AUSDRUCK");}
+	
+	return s.pop();
 	}
 }

@@ -12,7 +12,7 @@ public class main{
 
 	public static void main(String[]args){
 
-		Tokenizer TO = new Tokenizer("sin(5+5)^(SQRT(4))");
+		Tokenizer TO = new Tokenizer("sqrt(3)");
 		Token [] t = TO.maker();
 		
 		System.out.println(Arrays.toString(t));
@@ -33,10 +33,10 @@ public class main{
 
 		CalcUPN CP = new CalcUPN(TKK);
 
-		InfixParser IP = new InfixParser(TKK);
+		InfixParser IP = new InfixParser();
 	
 		System.out.println(CP.sol);
 
-		System.out.println(IP.deque);
+		System.out.println(IP.InfixParser(TKK));
 	}
 }
