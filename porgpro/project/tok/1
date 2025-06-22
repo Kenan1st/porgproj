@@ -11,18 +11,17 @@ public class Tokenizer{
 	int pointer = 0;
 
 	public Token[] maker(){
-		ArrayList<Token> tokens = new ArrayList<>();
-		
-		Token f;
-		
-		while ((f = this.next()) != null){
-			if(!(f instanceof Space)){
-				tokens.add(f);
-			}
+
+		ArrayList<Token> tokens = new ArrayList<>();  // gibt nur die gewünschte Anzahl an Tokens aus sprich alle
+		while(true){
+		var f = this.next();
+			if(f != null){tokens.add(f);}
+			if(f instanceof Space){continue;}
+			else{break;}
 		}
-	
+
 		this.tk = tokens.toArray(new Token[0]);
-		
+
 		return this.tk;
 	}
 
@@ -93,7 +92,6 @@ public class Tokenizer{
 			case ')' -> Sp.CLOSED;
 			case '(' -> Sp.OPEN;
 			case ',' -> Sp.KOMMA;
-			case ' ' -> new Space(); // <--------- Hier steht der case für die spacetaste
 			default -> {
 				if(this.s.get(0) >= 'a' && this.s.get(0) <= 'z' || 
 				   this.s.get(0) >= 'A' && this.s.get(0) <= 'Z'){
@@ -105,6 +103,7 @@ public class Tokenizer{
 					this.s.subList(0,j-1).clear();
 					yield new Ident(name);
 				}
+				if(this.s.get(0) == ' '){ yield new Space();}
 				else{
 					throw new IllegalArgumentException();
 				}
@@ -120,8 +119,10 @@ public class Tokenizer{
 
 public static void main(String [] args){
 
-	Tokenizer T1 = new Tokenizer("34 34 +");
+	Tokenizer T1 = new Tokenizer("34+2+21+1+21+4");
 
 	System.out.println(Arrays.toString(T1.maker()));
+
+	//System.out.println(Arrays.toString(T.maker()));
 }
 }

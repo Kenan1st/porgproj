@@ -12,22 +12,31 @@ public class main{
 
 	public static void main(String[]args){
 
-		Tokenizer TO = new Tokenizer("8+21+123*312");
+		Tokenizer TO = new Tokenizer("sin(5+5)^(SQRT(4))");
 		Token [] t = TO.maker();
 		
 		System.out.println(Arrays.toString(t));
+
 		FunctionResolver fr = new FunctionResolver();
 		
 		var Z = fr.resolveAll(t);
 		UPN UP = new UPN();
 		var U = UP.UPN(Z);
+
 		System.out.println(U);
+
 		Token[] TKK = U.toArray(new Token[0]);
 		fr.resolveAll(TKK);
+
 		System.out.println(fr.getExpr());
+		System.out.println("TKK : "+ Arrays.toString(TKK));
 
 		CalcUPN CP = new CalcUPN(TKK);
 
+		InfixParser IP = new InfixParser(TKK);
+	
 		System.out.println(CP.sol);
+
+		System.out.println(IP.deque);
 	}
 }

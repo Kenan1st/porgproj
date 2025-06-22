@@ -1,0 +1,76 @@
+package project;
+
+import project.tok.Model.*;
+import project.tok.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.ArrayDeque;
+
+public class InfixParser{
+
+	Deque<Token> deque = new ArrayDeque<>();
+	
+	public InfixParser(Token [] tok){
+
+		boolean Last = false;
+
+		for(int i = 0; i< tok.length;i++){
+				
+			switch(tok[i]){
+				
+				case Num n-> this.deque.add(tok[i]);
+				
+				case Op.ADD->{
+						Token t = this.deque.removeLast();
+						this.deque.addLast(Op.ADD);
+						this.deque.addLast(t);}
+				
+				case Op.SUB-> {
+						Token t = this.deque.removeLast();
+						this.deque.addLast(Op.SUB);
+						this.deque.addLast(t);}
+
+				case Op.MUL-> 	{
+						Token t = this.deque.removeLast();
+						this.deque.addLast(Op.MUL);
+						this.deque.addLast(t);}
+				
+				case Op.DIV-> {
+						Token t = this.deque.removeLast();
+						this.deque.addLast(Op.DIV);
+						this.deque.addLast(t);}
+
+				case Op.POW-> {
+						Token t = this.deque.removeLast();
+						this.deque.addLast(Op.POW);
+						this.deque.addLast(t);
+						Last = true;}
+				/*case Op.NEG-> 
+						Token t = this.Deque.removeLast();
+						this.Deque.AddLast(Op.NEG);
+						this.Deque.AddLast(t);*/
+				default -> {
+						{if(tok[i] instanceof SIN){
+									  this.deque.addFirst(new SIN());}
+						if(tok[i] instanceof COS){
+									  this.deque.addFirst(new COS());}
+						if(tok[i] instanceof TAN){
+									  this.deque.addFirst(new TAN());}
+						if(tok[i] instanceof SQRT){
+									  this.deque.addFirst(new SQRT());}
+						if(tok[i] instanceof LOG){
+									  this.deque.addFirst(new LOG());}
+						if(tok[i] instanceof PI){
+									  this.deque.addLast(new PI());}
+						if(tok[i] instanceof EUL){
+									  this.deque.addLast(new EUL());}
+						if(tok[i] instanceof Space){
+									  return;}
+						else{continue;}}//throw new IllegalArgumentException("Nicht erkannter Token");}}
+				}
+			};
+}
+	}
+
+}
