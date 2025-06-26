@@ -64,6 +64,7 @@ public class FunctionResolver {
 						if(t instanceof Log){yield "log ";}
 						if(t instanceof Pi){yield "π ";}
 						if(t instanceof Eul){yield "e ";}
+						if(t instanceof Ident) yield ((Ident)t).name();
 						else{throw new IllegalArgumentException("Nicht erkannter Token");}}
 			};
 

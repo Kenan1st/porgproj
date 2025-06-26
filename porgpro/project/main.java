@@ -12,7 +12,7 @@ public class main{
 
 	public static void main(String[]args){
 
-		Tokenizer TO = new Tokenizer("5 1 1 + - 3 * 2 1 1 + + -");
+		Tokenizer TO = new Tokenizer("x 4 + 1 + 6 * sin tan");
 		Token [] t = TO.maker();
 
 		FunctionResolver fr = new FunctionResolver();
@@ -21,7 +21,13 @@ public class main{
 
 		UPNParser P = new UPNParser(Z);
 
-		System.out.println(P.parse());
+		var g = P.parse();
+
+		System.out.println(g);
+
+		CalcTree U = new CalcTree(g);
+
+		System.out.println(U.calc());
 		/*System.out.println(Arrays.toString(t));
 
 		UPNConv UP = new UPNConv();
