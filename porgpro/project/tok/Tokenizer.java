@@ -87,7 +87,6 @@ public class Tokenizer{
 			case '-' -> Op.SUB;
 			case '/' -> Op.DIV;
 			case '*' -> Op.MUL;
-			case '~' -> Op.NEG;
 			case '%' -> Op.MOD;
 			case '^' -> Op.POW;
 			case ')' -> Sp.CLOSED;

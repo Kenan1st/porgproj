@@ -12,16 +12,20 @@ public class main{
 
 	public static void main(String[]args){
 
-		Tokenizer TO = new Tokenizer("sqrt(3)");
+		Tokenizer TO = new Tokenizer("5 1 1 + - 3 * 2 1 1 + + -");
 		Token [] t = TO.maker();
-		
-		System.out.println(Arrays.toString(t));
 
 		FunctionResolver fr = new FunctionResolver();
 		
 		var Z = fr.resolveAll(t);
-		UPN UP = new UPN();
-		var U = UP.UPN(Z);
+
+		UPNParser P = new UPNParser(Z);
+
+		System.out.println(P.parse());
+		/*System.out.println(Arrays.toString(t));
+
+		UPNConv UP = new UPNConv();
+		var U = UP.UPNConv(Z);
 
 		System.out.println(U);
 
@@ -33,10 +37,12 @@ public class main{
 
 		CalcUPN CP = new CalcUPN(TKK);
 
-		InfixParser IP = new InfixParser();
+		InfixConv IP = new InfixConv();
 	
 		System.out.println(CP.sol);
 
-		System.out.println(IP.InfixParser(TKK));
+		System.out.println(IP.InfixConv(TKK));
+		*/
 	}
+
 }

@@ -12,11 +12,11 @@ public class FunctionResolver {
 		if (token instanceof Ident identToken) {
 		String name = identToken.name().toLowerCase();
 		return switch (name) {
-			case "sin" -> new SIN();
-			case "cos" -> new COS();
-			case "tan" -> new TAN();
-			case "sqrt" -> new SQRT();
-			case "log" -> new LOG();
+			case "sin" -> new Sin();
+			case "cos" -> new Cos();
+			case "tan" -> new Tan();
+			case "sqrt" -> new Sqrt();
+			case "log" -> new Log();
 			default -> token;
 			};
 		}
@@ -57,16 +57,15 @@ public class FunctionResolver {
 					case Sp.CLOSED -> ") ";
 					case Sp.KOMMA -> ", ";
 					default -> 
-						{if(t instanceof SIN){yield "sin ";}
-						if(t instanceof COS){yield "cos ";}
-						if(t instanceof TAN){yield "tan ";}
-						if(t instanceof SQRT){yield "sqrt ";}
-						if(t instanceof LOG){yield "log ";}
-						if(t instanceof PI){yield "π ";}
-						if(t instanceof EUL){yield "e ";}
+						{if(t instanceof Sin){yield "sin ";}
+						if(t instanceof Cos){yield "cos ";}
+						if(t instanceof Tan){yield "tan ";}
+						if(t instanceof Sqrt){yield "sqrt ";}
+						if(t instanceof Log){yield "log ";}
+						if(t instanceof Pi){yield "π ";}
+						if(t instanceof Eul){yield "e ";}
 						else{throw new IllegalArgumentException("Nicht erkannter Token");}}
 			};
 
 	}
 }
-

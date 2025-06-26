@@ -64,9 +64,6 @@ public class CalcUPN{
     				double left = this.nums.pop().value();
     				yield left * right;}
 			
-			case Op.NEG->
-				{yield this.nums.pop().value() * (-1);}
-			
 			case Op.POW-> {
 				double right = this.nums.pop().value();
 				double left = this.nums.pop().value();

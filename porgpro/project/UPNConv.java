@@ -8,9 +8,9 @@ import java.util.Stack;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class UPN{
+public class UPNConv{
 	
-	public Queue<Token> UPN(Token[] tokens){
+	public Queue<Token> UPNConv(Token[] tokens){
 
 		Stack<Token> operatorStack = new Stack<>();
 		Queue<Token> outputQueue = new LinkedList<>();
@@ -86,7 +86,6 @@ public class UPN{
 			case Op.MUL -> 20;
 			case Op.DIV -> 20;
 			case Op.POW -> 30;
-			case Op.NEG -> 40;
 			case Sp.OPEN -> 50;
 			case Sp.CLOSED -> 50;
 			case Num n -> throw new IllegalArgumentException();

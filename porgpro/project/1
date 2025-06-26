@@ -2,75 +2,56 @@ package project;
 
 import project.tok.Model.*;
 import project.tok.*;
+import project.AST.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.ArrayDeque;
+import java.util.Array;
 
-public class InfixParser{
-
-	Deque<Token> deque = new ArrayDeque<>();
+public class UPNParser{
 	
-	public InfixParser(Token [] tok){
+	private ArrayList<Token> t;
 
-		boolean Last = false;
+	public UPNParser(Token [] tok){
 
-		for(int i = 0; i< tok.length;i++){
-				
-			switch(tok[i]){
-				
-				case Num n-> this.deque.add(tok[i]);
-				
-				case Op.ADD->{
-						Token t = this.deque.removeLast();
-						this.deque.addLast(Op.ADD);
-						this.deque.addLast(t);}
-				
-				case Op.SUB-> {
-						Token t = this.deque.removeLast();
-						this.deque.addLast(Op.SUB);
-						this.deque.addLast(t);}
-
-				case Op.MUL-> 	{
-						Token t = this.deque.removeLast();
-						this.deque.addLast(Op.MUL);
-						this.deque.addLast(t);}
-				
-				case Op.DIV-> {
-						Token t = this.deque.removeLast();
-						this.deque.addLast(Op.DIV);
-						this.deque.addLast(t);}
-
-				case Op.POW-> {
-						Token t = this.deque.removeLast();
-						this.deque.addLast(Op.POW);
-						this.deque.addLast(t);
-						Last = true;}
-				/*case Op.NEG-> 
-						Token t = this.Deque.removeLast();
-						this.Deque.AddLast(Op.NEG);
-						this.Deque.AddLast(t);*/
-				default -> {
-						{if(tok[i] instanceof SIN){
-									  this.deque.addFirst(new SIN());}
-						if(tok[i] instanceof COS){
-									  this.deque.addFirst(new COS());}
-						if(tok[i] instanceof TAN){
-									  this.deque.addFirst(new TAN());}
-						if(tok[i] instanceof SQRT){
-									  this.deque.addFirst(new SQRT());}
-						if(tok[i] instanceof LOG){
-									  this.deque.addFirst(new LOG());}
-						if(tok[i] instanceof PI){
-									  this.deque.addLast(new PI());}
-						if(tok[i] instanceof EUL){
-									  this.deque.addLast(new EUL());}
-						if(tok[i] instanceof Space){
-									  return;}
-						else{continue;}}//throw new IllegalArgumentException("Nicht erkannter Token");}}
-				}
-			};
-}
+		this.t = new ArrayList<>(Arrays.asList(tok));
+		
 	}
+
+	public Expr parse(){
+		
+		Expr Knoten = this.t.removeLast();
+
+			var Z = this.t.removeLast();
+
+			switch(Z){
+			
+				case Num(n) -> new CNST(n);
+				case ident(s) -> new VA(s);
+				case Op o -> {	var p = this.Op.Conv(o);
+						var r = this.parse();
+						var l = this.pars();
+						yield new BiOp(p,l,r);
+						}
+				case SIN() -> new FUNC(Funcs.SIN,new Expr[] {this.parse()});
+				case COS() -> new FUNC(Funcs.COS,new Expr[] {this.parse()});
+				case TAN() -> new FUNC(Funcs.TAN,new Expr[] {this.parse()});
+				case LOG() -> new FUNC(Funcs.LOG,this.parse());
+				case SQRT() -> new FUNC(Funcs.SQRT,new Expr[] {this.parse()});
+				case PI() -> new CNST(Math.Pi);
+				case EUL() -> new CNST(Math.E);
+
+			};
+
+	}
+
+	public BinOp OpConv(Op o){
+		return switch(o){
+			case Op.ADD -> BinOp.ADD;
+			case Op.SUB -> BinOp.SUB;
+			case Op.MUL -> BinOp.MUL;
+			case Op.DIV -> BinOp.DIV;
+			case Op.POW -> BinOp.POW;
+		};
+	}
+
 
 }

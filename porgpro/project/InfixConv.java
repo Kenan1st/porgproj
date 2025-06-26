@@ -7,9 +7,9 @@ import java.util.Arrays;
 import java.util.Stack;
 import java.util.ArrayDeque;
 
-public class InfixParser{
+public class InfixConv{
 	
-	public String InfixParser(Token [] tok){
+	public String InfixConv(Token [] tok){
 
 	Stack<String> s = new Stack<>();
 
