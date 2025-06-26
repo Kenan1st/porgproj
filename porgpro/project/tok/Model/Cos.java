@@ -1,8 +1,8 @@
 package project.tok.Model;
 
-public record LOG() implements Token{
+public record Cos() implements Token{
 	@Override
 	public String toString(){
-		return "log";
+		return "cos";
 	}
 }

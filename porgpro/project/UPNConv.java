@@ -20,16 +20,16 @@ public class UPNConv{
 			if(tk instanceof Num || tk instanceof Ident){
 				outputQueue.add(tk);
 			}
-			if(tk instanceof SIN || tk instanceof COS || tk instanceof TAN || tk instanceof SQRT || tk instanceof LOG){
+			if(tk instanceof Sin || tk instanceof Cos || tk instanceof Tan || tk instanceof Sqrt || tk instanceof Log){
 				operatorStack.add(tk);
 			}
 			if(tk instanceof Op){
 				while(!operatorStack.isEmpty() && 
-					(operatorStack.peek() instanceof SIN ||
-					 operatorStack.peek() instanceof COS ||
-					 operatorStack.peek() instanceof TAN ||
-					 operatorStack.peek() instanceof SQRT||
-					 operatorStack.peek() instanceof LOG ||
+					(operatorStack.peek() instanceof Sin ||
+					 operatorStack.peek() instanceof Cos ||
+					 operatorStack.peek() instanceof Tan ||
+					 operatorStack.peek() instanceof Sqrt||
+					 operatorStack.peek() instanceof Log ||
 					 operatorStack.peek() instanceof Op)
 						&& this.compare(operatorStack.peek(),tk)){
 				
@@ -49,11 +49,11 @@ public class UPNConv{
 				}
 				operatorStack.pop();
 				if(!operatorStack.isEmpty() && 
-					(operatorStack.peek() instanceof SIN ||
-					 operatorStack.peek() instanceof COS ||
-					 operatorStack.peek() instanceof TAN ||
-					 operatorStack.peek() instanceof SQRT||
-					 operatorStack.peek() instanceof LOG )){
+					(operatorStack.peek() instanceof Sin ||
+					 operatorStack.peek() instanceof Cos ||
+					 operatorStack.peek() instanceof Tan ||
+					 operatorStack.peek() instanceof Sqrt||
+					 operatorStack.peek() instanceof Log )){
 					outputQueue.add(operatorStack.pop());
 				}
 			}

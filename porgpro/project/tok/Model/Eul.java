@@ -1,8 +1,8 @@
 package project.tok.Model;
 
-public record TAN() implements Token{
+public record Eul() implements Token{
 	@Override
 	public String toString(){
-		return "tan";
+		return "e";
 	}
 }

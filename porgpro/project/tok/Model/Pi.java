@@ -1,8 +1,8 @@
 package project.tok.Model;
 
-public record SQRT() implements Token{
+public record Pi() implements Token{
 	@Override
 	public String toString(){
-		return "√";
+		return "π";
 	}
 }

@@ -24,11 +24,11 @@ public class CalcUPN{
 				continue;
 			}
 			else {
-				if(this.tok[i] instanceof PI){
+				if(this.tok[i] instanceof Pi){
 					this.nums.push(new Num(Math.PI));
 					continue;
 				}
-				if(this.tok[i] instanceof EUL){
+				if(this.tok[i] instanceof Eul){
 					this.nums.push(new Num(Math.E));
 					continue;
 				}
@@ -74,24 +74,24 @@ public class CalcUPN{
 	}
 
 	public double func(Token t){
-		if(t instanceof SIN){
+		if(t instanceof Sin){
 			double cont = this.nums.pop().value();
 			return Math.sin(cont);
 			}
-		if(t instanceof TAN){
+		if(t instanceof Tan){
 			double cont = this.nums.pop().value();
 			return Math.tan(cont);
 			}
-		if(t instanceof COS){
+		if(t instanceof Cos){
 			double cont = this.nums.pop().value();
 			return Math.cos(cont);
 			}
-		if(t instanceof LOG){
+		if(t instanceof Log){
 			double right = this.nums.pop().value();
 			double left = this.nums.pop().value();
 			return Math.log(left) / Math.log(right);
 			}
-		if(t instanceof SQRT){
+		if(t instanceof Sqrt){
 			double cont = this.nums.pop().value();
 			return Math.sqrt(cont);
 			}

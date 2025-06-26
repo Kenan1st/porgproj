@@ -4,14 +4,14 @@ import java.util.List;
 
 public record Func(Funcs f, List<Expr> e) implements Expr{
 
-	/*public double Func(){
+	public double function(){
 		return switch(this.f()){
-			case f.SIN -> Math.sin();
-			case f.COS -> Math.cos();
-			case f.TAN -> Math.tan();
-			case f.LOG -> Math.log();
-			case f.SQRT -> Math.sqrt();
+			case Funcs.SIN -> Math.sin(((Cnst)this.e.get(0)).cnst());
+			case Funcs.COS -> Math.cos(((Cnst)this.e.get(0)).cnst());
+			case Funcs.TAN -> Math.tan(((Cnst)this.e.get(0)).cnst());
+			case Funcs.LOG -> Math.log(((Cnst)this.e.get(0)).cnst());
+			case Funcs.SQRT -> Math.sqrt(((Cnst)this.e.get(0)).cnst());
 			default -> throw new IllegalArgumentException("keine bekannte Funktion");
 		};
-	}*/
+	}
 }

@@ -2,30 +2,34 @@ package project.ast;
 
 public record BOp(BinOp a, Expr e_1 ,Expr e_2) implements Expr{
 
-	public BOp(){
+	public double operation(){
 		return switch(this.a()){
-			case BinOp.ADD -> this.ExpConv(this.e_1()) + this.ExpConv(this.e_2());
-			case BinOp.SUB -> this.ExpConv(this.e_1()) - this.ExpConv(this.e_2());
-			case BinOp.MUL -> this.ExpConv(this.e_1()) * this.ExpConv(this.e_2());
-			case BinOp.DIV -> this.ExpConv(this.e_1()) / this.ExpConv(this.e_2());
-			case BinOp.POW -> this.ExpConv(this.e_1()) ^ this.ExpConv(this.e_2());
+			case BinOp.ADD -> this.expConv(this.e_1()) + this.expConv(this.e_2());
+			case BinOp.SUB -> this.expConv(this.e_1()) - this.expConv(this.e_2());
+			case BinOp.MUL -> this.expConv(this.e_1()) * this.expConv(this.e_2());
+			case BinOp.DIV -> this.expConv(this.e_1()) / this.expConv(this.e_2());
+			case BinOp.POW -> Math.pow(this.expConv(this.e_1()),this.expConv(this.e_2()));
+			default -> throw new IllegalArgumentException("Fehler in BOp");
 		};
 	}
 
 	public double expConv(Expr e){
 		if(!(e instanceof Cnst)){
 			if(e instanceof Func){
-				return ((Func)e).value();
+				return ((Func)e).function();
 			}
 			if(e instanceof Va){
-				
+				throw new IllegalArgumentException("hier kein Identifier");
 			}
-			if(e instanceof UOp){
+			/*if(e instanceof UOp){
 				return ((UOp)e).value();
-			}
+			}*/
 			if(e instanceof BOp){
-				return ((BOp)e).Bop();
+				return ((BOp)e).operation();
 			}
+			else{
+				throw new IllegalArgumentException("Fehler in Func");
+		}
 		}
 		else{
 			return ((Cnst)e).cnst();

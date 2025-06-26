@@ -1,8 +1,8 @@
 package project.tok.Model;
 
-public record EUL() implements Token{
+public record Sqrt() implements Token{
 	@Override
 	public String toString(){
-		return "e";
+		return "√";
 	}
 }

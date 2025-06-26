@@ -17,8 +17,6 @@ public class CalcUPNTree{
 	public Calc(){
 
 
-
 	}
-
 
 }

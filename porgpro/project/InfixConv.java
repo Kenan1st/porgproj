@@ -14,12 +14,12 @@ public class InfixConv{
 	Stack<String> s = new Stack<>();
 
 	for(Token tk : tok){
-		if(tk instanceof Num || tk instanceof PI || tk instanceof EUL){
+		if(tk instanceof Num || tk instanceof Pi || tk instanceof Eul){
 			s.push(tk.toString());
 			continue;
 		}
 
-		if(tk instanceof SIN || tk instanceof COS || tk instanceof TAN || tk instanceof SQRT || tk instanceof LOG){
+		if(tk instanceof Sin || tk instanceof Cos || tk instanceof Tan || tk instanceof Sqrt || tk instanceof Log){
 			String operand = s.pop();
 
 			String Ausdruck = tk.toString() + "(" + operand + ")";

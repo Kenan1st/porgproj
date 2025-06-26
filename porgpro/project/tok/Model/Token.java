@@ -1,4 +1,4 @@
 package project.tok.Model;
 
-public sealed interface Token permits Num,Op,Sp,TF,Ident,SQRT,SIN,TAN,COS,POW,LOG,PI,EUL,Space,Fehlsch {
+public sealed interface Token permits Num,Op,Sp,Tf,Ident,Sqrt,Sin,Tan,Cos,Pow,Log,Pi,Eul,Space {
 }

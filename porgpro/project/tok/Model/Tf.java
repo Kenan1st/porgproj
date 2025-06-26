@@ -1,6 +1,6 @@
 package project.tok.Model;
 
-public enum TF implements Token{
+public enum Tf implements Token{
 	SIN,
 	COS,
 	TAN,

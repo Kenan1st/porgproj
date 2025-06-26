@@ -31,13 +31,13 @@ public class UPNParser{
 						var l = this.parse();
 						yield new BOp(p,l,r);
 						}
-				case SIN() -> new Func(Funcs.SIN, List.of(this.parse()));
-				case COS() -> new Func(Funcs.COS, List.of(this.parse()));
-				case TAN() -> new Func(Funcs.TAN, List.of(this.parse()));
-				case LOG() -> new Func(Funcs.LOG, List.of(this.parse()));
-				case SQRT() -> new Func(Funcs.SQRT, List.of(this.parse()));
-				case PI() -> new Cnst(Math.PI);
-				case EUL() -> new Cnst(Math.E);
+				case Sin() -> new Func(Funcs.SIN, List.of(this.parse()));
+				case Cos() -> new Func(Funcs.COS, List.of(this.parse()));
+				case Tan() -> new Func(Funcs.TAN, List.of(this.parse()));
+				case Log() -> new Func(Funcs.LOG, List.of(this.parse()));
+				case Sqrt() -> new Func(Funcs.SQRT, List.of(this.parse()));
+				case Pi() -> new Cnst(Math.PI);
+				case Eul() -> new Cnst(Math.E);
 				default -> throw new IllegalArgumentException("Fehler in Token");
 
 			};
