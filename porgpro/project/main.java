@@ -12,7 +12,7 @@ public class main{
 
 	public static void main(String[]args){
 
-		Tokenizer TO = new Tokenizer("x 4 + 1 + 6 * sin tan");
+		Tokenizer TO = new Tokenizer("8 4 + 1 + 6 * sin tan");
 		Token [] t = TO.maker();
 
 		FunctionResolver fr = new FunctionResolver();
