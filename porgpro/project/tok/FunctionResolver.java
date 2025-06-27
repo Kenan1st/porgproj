@@ -17,6 +17,8 @@ public class FunctionResolver {
 			case "tan" -> new Tan();
 			case "sqrt" -> new Sqrt();
 			case "log" -> new Log();
+			case "e" -> new Eul();
+			case "π" -> new Pi();
 			default -> token;
 			};
 		}

@@ -12,12 +12,14 @@ public class main{
 
 	public static void main(String[]args){
 
-		Tokenizer TO = new Tokenizer("8 4 + 1 + 6 * sin tan");
+		Tokenizer TO = new Tokenizer("π 4 + 1 + 6 * sin tan");
 		Token [] t = TO.maker();
 
 		FunctionResolver fr = new FunctionResolver();
 		
 		var Z = fr.resolveAll(t);
+
+		System.out.println("z: "+Z);
 
 		UPNParser P = new UPNParser(Z);
 

@@ -115,7 +115,8 @@ public class Tokenizer{
 					return new Ident(name);
 				}
 				else{
-					throw new IllegalArgumentException();
-				}
+					if(this.s.get(0) == 'π'){return new Pi();}
+					throw new IllegalArgumentException("Probleme in Chrafinder");
+			}
 	}
 }

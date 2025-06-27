@@ -1,5 +1,7 @@
 package project.ast;
 
+import project.tok.Model.*;
+
 public record BOp(BinOp a, Expr e_1 ,Expr e_2) implements Expr{
 
 	public double operation(){
@@ -21,9 +23,12 @@ public record BOp(BinOp a, Expr e_1 ,Expr e_2) implements Expr{
 			if(e instanceof Va){
 				throw new IllegalArgumentException("hier kein Identifier");
 			}
-			/*if(e instanceof UOp){
-				return ((UOp)e).value();
-			}*/
+			if(e instanceof E){
+				return Math.E;
+			}
+			if(e instanceof P){
+				return Math.PI;
+			}
 			if(e instanceof BOp){
 				return ((BOp)e).operation();
 			}
