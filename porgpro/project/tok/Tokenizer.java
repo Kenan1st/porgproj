@@ -93,21 +93,7 @@ public class Tokenizer{
 			case '(' -> Sp.OPEN;
 			case ',' -> Sp.KOMMA;
 			case ' ' -> new Space(); // <--------- Hier steht der case für die spacetaste
-			default -> {
-				if(this.s.get(0) >= 'a' && this.s.get(0) <= 'z' || 
-				   this.s.get(0) >= 'A' && this.s.get(0) <= 'Z'){
-					int j = this.identend();
-					String name ="";
-					for(int i = 0; i<j;i++){
-						name += this.s.get(i);
-					}
-					this.s.subList(0,j-1).clear();
-					yield new Ident(name);
-				}
-				else{
-					throw new IllegalArgumentException();
-				}
-			}
+			default -> this.charFinder();
 		};
 
 		if(!this.s.isEmpty()){
@@ -117,10 +103,19 @@ public class Tokenizer{
 		return n;
 	}
 
-public static void main(String [] args){
-
-	Tokenizer T1 = new Tokenizer("34 34 +");
-
-	System.out.println(Arrays.toString(T1.maker()));
-}
+	public Token charFinder(){
+		if(this.s.get(0) >= 'a' && this.s.get(0) <= 'z' || 
+				   this.s.get(0) >= 'A' && this.s.get(0) <= 'Z'){
+					int j = this.identend();
+					String name ="";
+					for(int i = 0; i<j;i++){
+						name += this.s.get(i);
+					}
+					this.s.subList(0,j-1).clear();
+					return new Ident(name);
+				}
+				else{
+					throw new IllegalArgumentException();
+				}
+	}
 }
