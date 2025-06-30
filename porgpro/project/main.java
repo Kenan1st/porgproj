@@ -12,7 +12,7 @@ public class main{
 
 	public static void main(String[]args){
 
-		Tokenizer TO = new Tokenizer("2 3 ^ log");
+		Tokenizer TO = new Tokenizer("2 3 + 5 * 9 / sin");
 		
 		Token [] t = TO.maker();
 
@@ -37,7 +37,7 @@ public class main{
 		System.out.println(h);
 
 
-		//System.out.println(U.calc());
+		System.out.println(U.calc());
 		/*System.out.println(Arrays.toString(t));
 
 		UPNConv UP = new UPNConv();
