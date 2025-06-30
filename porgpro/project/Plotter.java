@@ -4,13 +4,6 @@ import project.ast.*;
 import project.tok.Model.*;
 import project.tok.*;
 
-/*
-import lvp.Clerk;
-import lvp.skills.Text;
-import lvp.skills.Interaction;
-import lvp.views.Dot;
-import lvp.views.Turtle;
-*/
 public class Plotter{
 
 	Expr expr;
@@ -24,9 +17,22 @@ public class Plotter{
 		String s = "";
 
 		if(this.expr instanceof BOp){
-			s = "["+i+"]"+((BOp)this.expr).a() + " -> " + "["+i+"]"+ ((BOp)this.expr).e_1() +";"
-					+"\n " + "["+i+"]"+((BOp)this.expr).a() + "["+i+"]"+((BOp)this.expr).e_2() + ";";
+
+			s = "["+i+"]"+((BOp)this.expr).a() + " -> " + "["+i+"]"+ ex(((BOp)this.expr).e_1()) +";"
+					+"\n" + "["+i+"]"+((BOp)this.expr).a() +" -> "+ "["+i+"]"+ex(((BOp)this.expr).e_2()) + ";";
 		}
 		return s;
+	}
+
+	public String ex(Expr e){
+		
+		return switch(e){
+			case BOp b -> b.a()+"";
+			case Cnst c -> c.cnst()+"";
+			case Va v -> v.name();
+			case Func fun -> fun.f()+"";
+			default -> throw new IllegalArgumentException("Fehler in ex");
+		};
+
 	}
 }
