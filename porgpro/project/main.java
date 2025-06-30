@@ -12,7 +12,7 @@ public class main{
 
 	public static void main(String[]args){
 
-		Tokenizer TO = new Tokenizer("4 5 + 6 * 8 3 -");
+		Tokenizer TO = new Tokenizer("4 5 + 6 *");
 		Token [] t = TO.maker();
 
 		FunctionResolver fr = new FunctionResolver();
@@ -31,7 +31,7 @@ public class main{
 
 		Plotter PL = new Plotter(g);
 
-		String h = PL.plot();
+		String h = PL.plot(1);
 
 		System.out.println(h);
 
