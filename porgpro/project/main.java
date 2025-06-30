@@ -12,7 +12,7 @@ public class main{
 
 	public static void main(String[]args){
 
-		Tokenizer TO = new Tokenizer("π 4 + 1 + 6 * sin tan");
+		Tokenizer TO = new Tokenizer("4 5 + 6 * 8 3 -");
 		Token [] t = TO.maker();
 
 		FunctionResolver fr = new FunctionResolver();
@@ -29,7 +29,14 @@ public class main{
 
 		CalcTree U = new CalcTree(g);
 
-		System.out.println(U.calc());
+		Plotter PL = new Plotter(g);
+
+		String h = PL.plot();
+
+		System.out.println(h);
+
+
+		//System.out.println(U.calc());
 		/*System.out.println(Arrays.toString(t));
 
 		UPNConv UP = new UPNConv();
