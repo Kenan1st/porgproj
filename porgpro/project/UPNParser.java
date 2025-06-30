@@ -38,6 +38,7 @@ public class UPNParser{
 				case Sqrt() -> new Func(Funcs.SQRT, List.of(this.parse()));
 				case Pi() -> new Cnst(Math.PI);
 				case Eul() -> new Cnst(Math.E);
+				case Ln() -> new Func(Funcs.LN, List.of(this.parse()));
 				default -> throw new IllegalArgumentException("Fehler in Token");
 
 			};
@@ -50,7 +51,7 @@ public class UPNParser{
 			case Op.MUL -> BinOp.MUL;
 			case Op.DIV -> BinOp.DIV;
 			case Op.POW -> BinOp.POW;
-			default -> throw new IllegalArgumentException("wie auch immer das immermöglich");
+			default -> throw new IllegalArgumentException("wie auch immer das möglich ist");
 		};
 	}
 

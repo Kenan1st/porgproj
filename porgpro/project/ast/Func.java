@@ -14,6 +14,7 @@ public record Func(Funcs f, List<Expr> e) implements Expr{
 			case Funcs.TAN -> Math.tan(cup);
 			case Funcs.LOG -> Math.log(cup);
 			case Funcs.SQRT -> Math.sqrt(cup);
+			case Funcs.LN -> Math.log(cup);
 			default -> throw new IllegalArgumentException("keine bekannte Funktion");
 		};
 	}

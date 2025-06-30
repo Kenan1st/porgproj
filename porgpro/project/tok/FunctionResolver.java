@@ -17,6 +17,7 @@ public class FunctionResolver {
 			case "tan" -> new Tan();
 			case "sqrt" -> new Sqrt();
 			case "log" -> new Log();
+			case "ln" -> new Ln();
 			case "e" -> new Eul();
 			case "π" -> new Pi();
 			default -> token;
@@ -64,6 +65,7 @@ public class FunctionResolver {
 						if(t instanceof Tan){yield "tan ";}
 						if(t instanceof Sqrt){yield "sqrt ";}
 						if(t instanceof Log){yield "log ";}
+						if(t instanceof Ln){yield "ln";}
 						if(t instanceof Pi){yield "π ";}
 						if(t instanceof Eul){yield "e ";}
 						if(t instanceof Ident) yield ((Ident)t).name();

@@ -12,7 +12,8 @@ public class main{
 
 	public static void main(String[]args){
 
-		Tokenizer TO = new Tokenizer("4 5 + 6 *");
+		Tokenizer TO = new Tokenizer("2 3 ^ log");
+		
 		Token [] t = TO.maker();
 
 		FunctionResolver fr = new FunctionResolver();
@@ -31,7 +32,7 @@ public class main{
 
 		Plotter PL = new Plotter(g);
 
-		String h = PL.plot(1);
+		String h = PL.plot(0);
 
 		System.out.println(h);
 

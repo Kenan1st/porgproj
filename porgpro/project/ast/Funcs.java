@@ -5,5 +5,6 @@ public enum Funcs{
 	COS,
 	TAN,
 	LOG,
-	SQRT
+	SQRT,
+	LN
 }
