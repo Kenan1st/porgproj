@@ -17,13 +17,13 @@ public class Plotter{
 		String s = "";
 
 		if(this.expr instanceof BOp){
-			s = "["+i+"]"+((BOp)this.expr).a() + " -> " + "["+(i+1)+"]"+ ex(((BOp)this.expr).e_1()) +";"
-					+"\n" + "["+i+"]"+((BOp)this.expr).a() +" -> "+ "["+(i+1)+"]"+ex(((BOp)this.expr).e_2()) + ";" +
+			s = i+"_"+((BOp)this.expr).a() + " -> " + (i+1)+"_"+ ex(((BOp)this.expr).e_1()) +";"
+					+"\n" + i+"_"+((BOp)this.expr).a() +" -> "+ (i+1)+"_"+ex(((BOp)this.expr).e_2()) + ";" +
 					"\n" + new Plotter(((BOp)this.expr).e_1()).plot(i+1) +
 					       new Plotter(((BOp)this.expr).e_2()).plot(i+1);
 		}
 		if(this.expr instanceof Func){
-			s += "["+i+"]"+((Func)this.expr).f() + " -> " + "["+(i+1)+"]"+ ex(((Func)this.expr).e().get(0)) +";" +
+			s += i+"_"+((Func)this.expr).f() + " -> " +(i+1)+"_"+ ex(((Func)this.expr).e().get(0)) +";" +
 				"\n" + new Plotter(((Func)this.expr).e().get(0)).plot(i+1);
 		}
 		return s;

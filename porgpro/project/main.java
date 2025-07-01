@@ -12,7 +12,7 @@ public class main{
 
 	public static void main(String[]args){
 
-		Tokenizer TO = new Tokenizer("2 3 + 5 * 9 / sin");
+		Tokenizer TO = new Tokenizer("3 2 ^ 4 2 ^ + sqrt 2 * sin 2 e ^ 1 + 45 cos / ln +");
 		
 		Token [] t = TO.maker();
 

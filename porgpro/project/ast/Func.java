@@ -30,7 +30,7 @@ public record Func(Funcs f, List<Expr> e) implements Expr{
 			case Funcs.TAN -> Math.tan(d);
 			case Funcs.LOG -> Math.log(d) / Math.log(d_1);
 			case Funcs.SQRT -> Math.sqrt(d);
-			case Funcs.LN -> Math.log(d) / Math.log(d_1);
+			case Funcs.LN -> Math.log(d) / Math.log(Math.E);
 			default -> throw new IllegalArgumentException("keine bekannte Funktion");
 		};
 	}
@@ -42,7 +42,7 @@ public record Func(Funcs f, List<Expr> e) implements Expr{
 			case Funcs.TAN -> Math.tan(d);
 			case Funcs.LOG -> Math.log(d);
 			case Funcs.SQRT -> Math.sqrt(d);
-			case Funcs.LN -> Math.log(d);
+			case Funcs.LN -> Math.log(d) / Math.log(Math.E);
 			default -> throw new IllegalArgumentException("keine bekannte Funktion");
 		};
 	}
