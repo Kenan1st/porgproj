@@ -11,7 +11,7 @@ public record Func(Funcs f, List<Expr> e) implements Expr{
 		double cup = c.calc();
 		double cup_1;
 
-		if(this.e.size() > 1){
+		if(this.e.size() >= 2){
 
 		CalcTree c_1 = new CalcTree(this.e.get(1)); 
 		cup_1 = c_1.calc();

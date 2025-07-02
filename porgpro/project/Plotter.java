@@ -6,27 +6,48 @@ import project.tok.*;
 
 public class Plotter{
 
-	Expr expr;
+	public int k;
 
-	public Plotter(Expr e_in){
-		this.expr = e_in;
+	public Plotter(){
+		this.k = 0;
 	}
 
-	public String plot(int i){
+	public String plot(Expr e_in){
+		
+		String connects = "";
 
-		String s = "";
+		if(e_in instanceof BOp){
+			
+			connects += this.plot(((BOp)e_in).e_1()) + "\n";
+			int left = this.k;
+			connects += this.plot(((BOp)e_in).e_2()) + "\n";
+			int right = this.k;
+			this.k += 1;
 
-		if(this.expr instanceof BOp){
-			s = i+"_"+((BOp)this.expr).a() + " -> " + (i+1)+"_"+ ex(((BOp)this.expr).e_1()) +";"
-					+"\n" + i+"_"+((BOp)this.expr).a() +" -> "+ (i+1)+"_"+ex(((BOp)this.expr).e_2()) + ";" +
-					"\n" + new Plotter(((BOp)this.expr).e_1()).plot(i+1) +
-					       new Plotter(((BOp)this.expr).e_2()).plot(i+1);
+			connects += "n"+this.k+ "[label=\""+((BOp)e_in).a()+"\"] \n";
+			connects += "n"+this.k+" -> " + "n"+left+"\n";
+			connects += "n"+this.k+" -> " + "n"+right+"\n";
+
 		}
-		if(this.expr instanceof Func){
-			s += i+"_"+((Func)this.expr).f() + " -> " +(i+1)+"_"+ ex(((Func)this.expr).e().get(0)) +";" +
-				"\n" + new Plotter(((Func)this.expr).e().get(0)).plot(i+1);
+		if(e_in instanceof Func){
+			this.k += 1;
+			connects += "n"+this.k+"[label=\""+((Func)e_in).f() + "\"] \n";
+			//this.k+=1;
+			connects += this.plot(((Func)e_in).e().get(0))+"";
+
+			int down = this.k;
+			connects += "n"+this.k+ " -> " +"n"+down + "\n";
 		}
-		return s;
+		if(e_in instanceof Va){
+			this.k += 1;
+			connects += "n"+(this.k)+"[label=\""+((Va)e_in).name()+"\"]";
+		}
+
+		if(e_in instanceof Cnst){
+			this.k += 1;
+			connects += "n"+this.k+"[label=\""+((Cnst)e_in).cnst()+"\"]";
+		}
+		return connects;
 	}
 
 	public String ex(Expr e){

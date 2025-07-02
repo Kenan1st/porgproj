@@ -12,7 +12,7 @@ public class main{
 
 	public static void main(String[]args){
 
-		Tokenizer TO = new Tokenizer("3 2 ^ 4 2 ^ + sqrt 2 * sin 2 e ^ 1 + 45 cos / ln +");
+		Tokenizer TO = new Tokenizer("e 2 * sin tan");
 		
 		Token [] t = TO.maker();
 
@@ -30,9 +30,9 @@ public class main{
 
 		CalcTree U = new CalcTree(g);
 
-		Plotter PL = new Plotter(g);
+		Plotter PL = new Plotter();
 
-		String h = PL.plot(0);
+		String h = PL.plot(g);
 
 		System.out.println(h);
 
