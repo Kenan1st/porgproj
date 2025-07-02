@@ -30,13 +30,16 @@ public class TreeMaker{
 
 		}
 		if(e_in instanceof Func){
-			this.k += 1;
-			connects += "n"+this.k+"[label=\""+((Func)e_in).f() + "\"] \n";
-			//this.k+=1;
+		
 			connects += this.planter(((Func)e_in).e().get(0))+"";
 
 			int down = this.k;
-			connects += "n"+this.k+ " -> " +"n"+down + "\n";
+			this.k += 1;
+
+			connects += "n"+this.k+"[label=\""+((Func)e_in).f() + "\"] \n";
+			//this.k += 1;
+
+			connects += "n"+this.k+ " -> " +"n"+ down + "\n";
 		}
 		if(e_in instanceof Va){
 			this.k += 1;

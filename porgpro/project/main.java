@@ -12,7 +12,7 @@ public class main{
 
 	public static void main(String[]args){
 
-		Tokenizer TO = new Tokenizer("e 2 * sin tan");
+		Tokenizer TO = new Tokenizer("e 2 ^ 5 * sin tan");
 		
 		Token [] t = TO.maker();
 
