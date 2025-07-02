@@ -30,9 +30,9 @@ public class main{
 
 		CalcTree U = new CalcTree(g);
 
-		Plotter PL = new Plotter();
+		TreeMaker TM = new TreeMaker();
 
-		String h = PL.plot(g);
+		String h = TM.planter(g);
 
 		System.out.println(h);
 
