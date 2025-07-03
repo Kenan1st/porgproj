@@ -121,6 +121,10 @@ void triangle(Turtle turtle, double size) {
     turtle.forward(size).right(60).backward(size).right(60).forward(size).right(60 + 180);
 }
 
+void baseAx(Turtle turtle,double scalex,,double scaley){
+	turtle.
+}
+
 void drawing(Turtle turtle, double size) {
     for (int i = 1; i <= 18; i++) {
         turtle.color(255, i * 256 / 37, i * 256 / 37, 1); // turtle color
