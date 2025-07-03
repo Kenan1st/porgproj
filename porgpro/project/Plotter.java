@@ -73,27 +73,21 @@ public class Plotter{
 	}
 
 	public void drawFunc(Token[] t){
+		this.t.penUp()
+			.right(90)
+			.forward(25)
+			.left(90)
+			.push()
 		for(double i = -100.0;i < 100.0;i+=0.1){
 			double j = this.findY(t,i);
-			if(j >= 0){
+
 			this.t.penUp()
 				.push()
 				.forward(i)
 				.left(90)
-				.forward(c-0.025)
+				.forward(c+24.025)
 				.penDown()
 				.forward(0.05)
-				.penUp()
-				.pop()
-			}
-			else{
-			this.t.penUp()
-				.push()
-				.forward(i)
-				.right(90)
-				.forward(c-0.05)
-				.penDown()
-				.forward(0.1)
 				.penUp()
 				.pop()
 			}
@@ -112,7 +106,7 @@ public class Plotter{
 				newt[k] = t[k];
 			}
 		}
-		return newCalcTree(new UPNParser(newt).parse()).calc();
+		return new CalcTree(new UPNParser(newt).parse()).calc();
 	}
 
 
