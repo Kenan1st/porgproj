@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
 import lvp.Clerk;
 import lvp.skills.Interaction;
 import lvp.skills.Text;
@@ -10,7 +13,7 @@ import lvp.views.Turtle;
 
 void main(){
 
-		Tokenizer TO = new Tokenizer("e 2 ^ 5 * sin tan");
+		Tokenizer TO = new Tokenizer("x 2 ^ x +");
 		
 		Token [] t = TO.maker();
 
@@ -33,49 +36,13 @@ void main(){
 		String h = TM.planter(g);
 
  Clerk.clear();
-    // Markdown 1
-    Clerk.markdown(Text.fillOut("""
-    # Interaktive LVP Demo
-
-    ## Markdown
-    Die Markdown-View erlaubt es, Markdown-Text direkt im Browser darzustellen. Der folgende Code zeigt ein einfaches Beispiel, wie Text im Markdown-Format 
-    an den Browser gesendet und dort automatisch als HTML gerendert wird:
-    ```java
-    ${0}
-    ```
-    Der Aufruf `Clerk.markdown(text)` elaubt den einfachen Zugriff auf die Markdown-View.
-    In diesem Beispiel werden zusätzlich zwei unterstützende Skills verwendet:
-    - `Text.fillOut(...)`: Zum Befüllen von String-Vorlagen mit dynamischen Inhalten, indem Platzhalter (z.B. ${2}) durch die Auswertung von übergebenen Ausdrücken ersetzt werden.
-    - `Text.codeBlock(...)`: Zum Einbinden von Codeabschnitten als interaktive Blöcke im Markdown-Text.
-
-    ## Turtle
-    Die Turtle-View ermöglicht das Zeichnen und Anzeigen von SVG-Grafiken im Browser. Diese können Schritt für Schritt aufgebaut werden:
-    ```java
-    ${1}
-    ```
-    """, Text.codeBlock("./demo.java", "// Markdown 1"), Text.codeBlock("./demo.java", "// Turtle 1"), "${0}"));
-    // Markdown 1
-
 
     // Dot
     Dot dot = new Dot();
     dot.draw("digraph G {"+h+"}");
     // Dot
-}
-
-
-// Turtle triangle
-void triangle(Turtle turtle, double size) {
-    turtle.forward(size).right(60).backward(size).right(60).forward(size).right(60 + 180);
-}
-
-void drawing(Turtle turtle, double size) {
-    for (int i = 1; i <= 18; i++) {
-        turtle.color(255, i * 256 / 37, i * 256 / 37, 1); // turtle color
-        turtle.width(1.0 - 1.0 / 36.0 * i);
-        triangle(turtle, size + 1 - 2 * i);
-        turtle.left(20).forward(5);
-    }
+	//
+	PO.t.write();
 }
 
 record E() implements Expr{}
@@ -227,11 +194,6 @@ record BOp(BinOp a, Expr e_1 ,Expr e_2) implements Expr{
 
 }
 
-
-
-
-
-
 class TreeMaker{
 
 	public int k;
@@ -285,6 +247,102 @@ class TreeMaker{
 
 
 
+class CalcUPN{
+	
+	Stack<Num> nums = new Stack<>();
+	Token [] tok;
+	double sol = 0.0;
+
+	public CalcUPN(Token[] tk){
+
+		this.tok = tk;
+		
+		for(int i = 0; i< tk.length; i++){
+			if(this.tok[i] instanceof Num){
+				this.nums.push((Num)this.tok[i]);
+				continue;
+			}
+			else {
+				if(this.tok[i] instanceof Pi){
+					this.nums.push(new Num(Math.PI));
+					continue;
+				}
+				if(this.tok[i] instanceof Eul){
+					this.nums.push(new Num(Math.E));
+					continue;
+				}
+				else{
+					double result = calc(this.tok[i]);
+    					this.nums.push(new Num(result));
+				}
+			}
+		}	
+		this.sol = this.nums.pop().value();
+	}
+
+	public double calc(Token t){
+		return switch(t){
+			
+			case Op.ADD-> 
+				{double right = this.nums.pop().value();
+    				double left = this.nums.pop().value();
+    				yield left + right;}
+			
+			case Op.SUB-> 
+				{double right = this.nums.pop().value();
+    				double left = this.nums.pop().value();
+    				yield left - right;}
+			
+			case Op.DIV->
+				{double right = this.nums.pop().value();
+    				double left = this.nums.pop().value();
+    				yield left / right;}
+			
+			case Op.MUL->
+				{double right = this.nums.pop().value();
+    				double left = this.nums.pop().value();
+    				yield left * right;}
+			
+			case Op.POW-> {
+				double right = this.nums.pop().value();
+				double left = this.nums.pop().value();
+				yield Math.pow(left,right) ;}
+			
+			default -> this.func(t);
+		};
+	}
+
+	public double func(Token t){
+		if(t instanceof Sin){
+			double cont = this.nums.pop().value();
+			return Math.sin(cont);
+			}
+		if(t instanceof Tan){
+			double cont = this.nums.pop().value();
+			return Math.tan(cont);
+			}
+		if(t instanceof Cos){
+			double cont = this.nums.pop().value();
+			return Math.cos(cont);
+			}
+		if(t instanceof Log){
+			double right = this.nums.pop().value();
+			double left = this.nums.pop().value();
+			return Math.log(left) / Math.log(right);
+			}
+		if(t instanceof Sqrt){
+			double cont = this.nums.pop().value();
+			return Math.sqrt(cont);
+			}
+		else{
+			throw new IllegalArgumentException("Token Unbekannt" + t);
+		}
+	}
+}
+
+
+
+
 class Plotter{
 	
 	Turtle t;
@@ -294,7 +352,7 @@ class Plotter{
 	public Plotter(){				// Der Konstruktor erstellt eine Turtle mit den Basis Achsen
 		this.t = new Turtle(0, 200, 0, 50, 100, 25, 0);
 		
-		for(int i = 0; i<2;i++){// Dicke der Linien
+		this.t.width(0.5);
 		t.push()
 			.forward(100)
 			.pop()
@@ -310,7 +368,7 @@ class Plotter{
 			.backward(100)
 			.pop()
 			.penUp();
-		}
+		this.t.width(0.1);
 		this.cooSys(1.0,1.0);
 	}
 
@@ -318,7 +376,7 @@ class Plotter{
 		double i = -100;
 		double j = -50;
 
-		while((i >= -100 && i <= 100) && (j >= -50 && j <= 50)){
+		while((i >= -200 && i <= 200) && (j >= -150 && j <= 150)){
 			this.vertln(i);
 			this.horiln(j);
 			
@@ -365,9 +423,9 @@ class Plotter{
 				.push()
 				.forward(i)
 				.left(90)
-				.forward(j+24.025)
+				.forward(j+24.925)
 				.penDown()
-				.forward(0.05)
+				.forward(0.075)
 				.penUp()
 				.pop();
 			}
@@ -386,10 +444,9 @@ class Plotter{
 			}
 		}
 
-		UPNParser UP = new UPNParser(newt);
-		Expr g = UP.parse();
-		CalcTree c = new CalcTree(g);
-		return c.calc();
+		CalcUPN cU = new CalcUPN(newt);
+		
+		return cU.sol;
 	}
 }
 
@@ -799,6 +856,7 @@ class FunctionResolver {
 
 
 static class CalcTree{
+
 
 	Expr e;
 

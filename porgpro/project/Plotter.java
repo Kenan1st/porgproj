@@ -15,7 +15,7 @@ public class Plotter{
 	public Plotter(){				// Der Konstruktor erstellt eine Turtle mit den Basis Achsen
 		this.t = new Turtle(0, 200, 0, 50, 100, 25, 0);
 		
-		for(int i = 0; i<2;i++){// Dicke der Linien
+		this.t.width(0.5);
 		t.push()
 			.forward(100)
 			.pop()
@@ -31,7 +31,7 @@ public class Plotter{
 			.backward(100)
 			.pop()
 			.penUp();
-		}
+		this.t.width(0.1);
 		this.cooSys(1.0,1.0);
 	}
 
@@ -39,7 +39,7 @@ public class Plotter{
 		double i = -100;
 		double j = -50;
 
-		while((i >= -100 && i <= 100) && (j >= -50 && j <= 50)){
+		while((i >= -200 && i <= 200) && (j >= -150 && j <= 150)){
 			this.vertln(i);
 			this.horiln(j);
 			
@@ -86,9 +86,9 @@ public class Plotter{
 				.push()
 				.forward(i)
 				.left(90)
-				.forward(j+24.025)
+				.forward(j+24.925)
 				.penDown()
-				.forward(0.05)
+				.forward(0.075)
 				.penUp()
 				.pop();
 			}
@@ -107,10 +107,9 @@ public class Plotter{
 			}
 		}
 
-		UPNParser UP = new UPNParser(newt);
-		Expr g = UP.parse();
-		CalcTree c = new CalcTree(g);
-		return c.calc();
+		CalcUPN cU = new CalcUPN(newt);
+		
+		return cU.sol;
 	}
 }
 
