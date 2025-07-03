@@ -2,7 +2,7 @@
 
 # Output file
 OUTPUT_FILE="Combined.java"
-MAIN_FILE="./Plotter.java"
+MAIN_FILE="./main.java"
 
 # Temp files
 IMPORTS_FILE=$(mktemp)
@@ -14,7 +14,7 @@ BODY_FILE=$(mktemp)
 > "$BODY_FILE"
 
 # Find all .java files and process them
-find . -name "*.java" ! -name "Plotter.java" | while read -r file; do
+find . -name "*.java" ! -name "main.java" | while read -r file; do
   # Extract imports, skip package declarations, keep the rest
   grep '^import ' "$file" | grep -v '^import project\.' >> "$IMPORTS_FILE"
   sed '/^package /d; /^import /d; s/^public //' "$file" >> "$BODY_FILE"

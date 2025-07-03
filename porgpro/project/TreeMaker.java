@@ -24,9 +24,9 @@ public class TreeMaker{
 			int right = this.k;
 			this.k += 1;
 
-			connects += "n"+this.k+ "[label=\""+((BOp)e_in).a()+"\"] \n";
-			connects += "n"+this.k+" -> " + "n"+left+"\n";
-			connects += "n"+this.k+" -> " + "n"+right+"\n";
+			connects += "n"+this.k+ "[label=\""+((BOp)e_in).a()+"\"] ;\n";
+			connects += "n"+this.k+" -> " + "n"+left+";\n";
+			connects += "n"+this.k+" -> " + "n"+right+";\n";
 
 		}
 		if(e_in instanceof Func){
@@ -36,19 +36,19 @@ public class TreeMaker{
 			int down = this.k;
 			this.k += 1;
 
-			connects += "n"+this.k+"[label=\""+((Func)e_in).f() + "\"] \n";
+			connects += "n"+this.k+"[label=\""+((Func)e_in).f() + "\"] ;\n";
 			//this.k += 1;
 
-			connects += "n"+this.k+ " -> " +"n"+ down + "\n";
+			connects += "n"+this.k+ " -> " +"n"+ down + ";\n";
 		}
 		if(e_in instanceof Va){
 			this.k += 1;
-			connects += "n"+this.k+"[label=\""+((Va)e_in).name()+"\"]";
+			connects += "n"+this.k+"[label=\""+((Va)e_in).name()+"\"];";
 		}
 
 		if(e_in instanceof Cnst){
 			this.k += 1;
-			connects += "n"+this.k+"[label=\""+((Cnst)e_in).cnst()+"\"]";
+			connects += "n"+this.k+"[label=\""+((Cnst)e_in).cnst()+"\"];";
 		}
 		return connects;
 	}
