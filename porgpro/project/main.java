@@ -8,9 +8,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
-public class main{
-
-	public static void main(String[]args){
+void main(){
 
 		Tokenizer TO = new Tokenizer("e 2 ^ 5 * sin tan");
 		
@@ -18,47 +16,20 @@ public class main{
 
 		FunctionResolver fr = new FunctionResolver();
 		
-		var Z = fr.resolveAll(t);
+		Token [] Z = fr.resolveAll(t);
 
-		System.out.println("z: "+Z);
+		Plotter PO = new Plotter();
+
+		PO.drawFunc(Z);
 
 		UPNParser P = new UPNParser(Z);
 
-		var g = P.parse();
-
-		System.out.println(g);
+		Expr g = P.parse();
 
 		CalcTree U = new CalcTree(g);
 
 		TreeMaker TM = new TreeMaker();
 
 		String h = TM.planter(g);
-
-		System.out.println(h);
-
-
-		System.out.println(U.calc());
-		/*System.out.println(Arrays.toString(t));
-
-		UPNConv UP = new UPNConv();
-		var U = UP.UPNConv(Z);
-
-		System.out.println(U);
-
-		Token[] TKK = U.toArray(new Token[0]);
-		fr.resolveAll(TKK);
-
-		System.out.println(fr.getExpr());
-		System.out.println("TKK : "+ Arrays.toString(TKK));
-
-		CalcUPN CP = new CalcUPN(TKK);
-
-		InfixConv IP = new InfixConv();
-	
-		System.out.println(CP.sol);
-
-		System.out.println(IP.InfixConv(TKK));
-		*/
-	}
 
 }

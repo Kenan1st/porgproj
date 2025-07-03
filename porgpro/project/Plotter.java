@@ -72,27 +72,27 @@ public class Plotter{
 				.pop();
 	}
 
-	public void drawFunc(Token[] t){
-		this.t.penUp()
+	public void drawFunc(Token[] t){ // zeichnet die Funktion
+		this.t.penUp()		 // setzt den Stift bei dem letzten -Y Wert
 			.right(90)
 			.forward(25)
 			.left(90)
-			.push()
+			.push();
+
 		for(double i = -100.0;i < 100.0;i+=0.1){
-			double j = this.findY(t,i);
+			double j = this.findY(t,i); // berechnet y bei x = i
 
 			this.t.penUp()
 				.push()
 				.forward(i)
 				.left(90)
-				.forward(c+24.025)
+				.forward(j+24.025)
 				.penDown()
 				.forward(0.05)
 				.penUp()
-				.pop()
+				.pop();
 			}
 		}
-	}
 
 	public double findY(Token[] t,double x){
 
@@ -106,10 +106,11 @@ public class Plotter{
 				newt[k] = t[k];
 			}
 		}
-		return new CalcTree(new UPNParser(newt).parse()).calc();
+
+		UPNParser UP = new UPNParser(newt);
+		Expr g = UP.parse();
+		CalcTree c = new CalcTree(g);
+		return c.calc();
 	}
-
-
-
 }
 
