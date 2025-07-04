@@ -194,6 +194,11 @@ record BOp(BinOp a, Expr e_1 ,Expr e_2) implements Expr{
 
 }
 
+
+
+
+
+
 class TreeMaker{
 
 	public int k;
@@ -346,6 +351,8 @@ class CalcUPN{
 class Plotter{
 	
 	Turtle t;
+	double vertp = 0.0;
+	double horip = 0.0;
 
 	public Plotter(){				// Der Konstruktor erstellt eine Turtle mit den Basis Achsen
 		this.t = new Turtle(0, 200, 0, 50, 100, 25, 0);
@@ -374,12 +381,12 @@ class Plotter{
 		double i = -100;
 		double j = -50;
 
-		while(i <= 100 && j<=150){
+		while( i <= 100 && j <= 150){
 			this.vertln(i);
 			this.horiln(j);
 			
-			i=i+scaleX;
-			j=j+scaleY;
+			i+=scaleX;
+			j+=scaleY;
 		}
 		
 	}
@@ -854,7 +861,6 @@ class FunctionResolver {
 
 
 static class CalcTree{
-
 
 	Expr e;
 
