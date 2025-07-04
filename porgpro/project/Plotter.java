@@ -39,12 +39,12 @@ public class Plotter{
 		double i = -100;
 		double j = -50;
 
-		while((i >= -200 && i <= 200) && (j >= -150 && j <= 150)){
+		while( i <= 100) && j <= 150){
 			this.vertln(i);
 			this.horiln(j);
 			
-			i=i+scaleX;
-			j=j+scaleY;
+			i+=scaleX;
+			j+=scaleY;
 		}
 		
 	}
@@ -66,9 +66,9 @@ public class Plotter{
 				.left(90)
 				.backward(spY)
 				.left(90)
-				.forward(25)
+				.forward(50)
 				.penDown()
-				.backward(50)
+				.backward(100)
 				.pop();
 	}
 

@@ -346,8 +346,6 @@ class CalcUPN{
 class Plotter{
 	
 	Turtle t;
-	double vertp = 0.0;
-	double horip = 0.0;
 
 	public Plotter(){				// Der Konstruktor erstellt eine Turtle mit den Basis Achsen
 		this.t = new Turtle(0, 200, 0, 50, 100, 25, 0);
@@ -376,7 +374,7 @@ class Plotter{
 		double i = -100;
 		double j = -50;
 
-		while((i >= -200 && i <= 200) && (j >= -150 && j <= 150)){
+		while(i <= 100 && j<=150){
 			this.vertln(i);
 			this.horiln(j);
 			
@@ -403,9 +401,9 @@ class Plotter{
 				.left(90)
 				.backward(spY)
 				.left(90)
-				.forward(25)
+				.forward(100)
 				.penDown()
-				.backward(50)
+				.backward(200)
 				.pop();
 	}
 
