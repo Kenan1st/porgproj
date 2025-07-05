@@ -2,8 +2,14 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue; // Input Example
-    Clerk.write(Interaction.input("./Combined.java", "// Input String Example", "String exampleString = \"$\";", "Geben Sie einen UPN ausdruck ein"));
+    String exampleValue = "x 5 ^ 7 + sin"; // Input Example
+	//
+   	Clerk.markdown(Text.fillOut("""
+		Momentane arithmetische Ausdruck ist:  """+
+		exampleValue + """
+		geben sie hier ihren eigenen ein:
+		"""));
+    Clerk.write(Interaction.input("./Combined.java", "// Input String Example", "String exampleValue = \"$\";", "Geben Sie einen UPN ausdruck ein"));
 
     Clerk.markdown(Text.fillOut(""" 
 		## Hier sehen sie den SyntaxBaum zum arithmetischen Ausdruck
