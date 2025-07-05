@@ -2,7 +2,7 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue = "x 5 ^ 7 + sin"; // Input Example
+    String exampleValue = "x 2 ^"; // Input Example
 	//
    	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
@@ -23,9 +23,7 @@ void main(){
 	
 	Token [] Z = fr.resolveAll(t);
 
-	Plotter PO = new Plotter();
-
-	PO.drawFunc(Z);
+	Plotter PO = new Plotter(Z);
 	
 	UPNParser P = new UPNParser(Z);
 

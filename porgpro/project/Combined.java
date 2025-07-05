@@ -15,7 +15,7 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue = "x 5 ^ "; // Input Example
+    String exampleValue = "x 2 ^"; // Input Example
 	//
    	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
@@ -36,9 +36,7 @@ void main(){
 	
 	Token [] Z = fr.resolveAll(t);
 
-	Plotter PO = new Plotter();
-
-	PO.drawFunc(Z);
+	Plotter PO = new Plotter(Z);
 	
 	UPNParser P = new UPNParser(Z);
 
@@ -73,18 +71,17 @@ class Line{
 		this.lstCoords = lstCoords;
 		this.newTurtle = turtle;
 		
-		this.x_s = lstCoords.get(0).x();
-		this.y_s = lstCoords.get(0).y();
-		this.drawLine();
+		this.x_s = ((Coord)lstCoords.get(0)).x();
+		this.y_s = ((Coord)lstCoords.get(0)).y();
+		this.drawLines();
 		}
 
-	public void drawLine(){
+	public void drawLines(){
 
 		this.newTurtle.penUp()
 				.forward(x_s)
 				.left(90)
 				.forward(y_s)
-				.penDown()
 				.push();
 			
 		for(int i = 1; i<lstCoords.size();i++){
@@ -93,7 +90,9 @@ class Line{
 				double delt_x_y = (this.x_s - nextCoord.x())/
 						 (this.y_s - nextCoord.y());
 				double degree = Math.atan(delt_x_y);
+
 				this.newTurtle.left(degree)
+						.penDown()
 						.forward(delt_x_y)
 						.push();
 				this.x_s = nextCoord.x();
@@ -410,9 +409,6 @@ class CalcUPN{
 }
 
 
-
-
-
 class Plotter{
 	
 	Turtle t;
@@ -420,11 +416,11 @@ class Plotter{
 	double scaleY;
 	ArrayList<Coord> coord = new ArrayList<>();
 
-	public Plotter(){				// Der Konstruktor erstellt eine Turtle mit den Basis Achsen
+	public Plotter(Token[] arithmetic_tokens){				// Der Konstruktor erstellt eine Turtle mit den Basis Achsen
 		this.t = new Turtle(0, 200, 0, 50, 100, 25, 0);
 		
 		this.t.width(0.5);
-		t.push()
+		this.t.push()
 			.forward(100)
 			.pop()
 			.push()
@@ -440,7 +436,8 @@ class Plotter{
 			.pop()
 			.penUp();
 		this.t.width(0.1);
-		this.cooSys(6.0,6.0);
+		this.cooSys(1.0,1.0);
+		this.drawFunc(arithmetic_tokens);
 	}
 
 
@@ -462,7 +459,7 @@ class Plotter{
 			i_left-=scaleX;
 		}
 
-		while(j_right<=25){
+		while(j_right <= 25){
 			this.horiln(j_right);
 			this.horiln(j_left);
 			j_right+=scaleY;
@@ -495,7 +492,7 @@ class Plotter{
 				.pop();
 	}
 
-	public void drawFunc(Token[] t){ // zeichnet die Funktion
+	public void drawFunc(Token[] token){ // zeichnet die Funktion
 		this.t.width(0.5)
 			.color(255,100,100)
 			.penUp()		 // setzt den Stift bei dem letzten -Y Wert
@@ -506,7 +503,7 @@ class Plotter{
 
 		for(double i = -(100.0/this.scaleX);i < (100.0/this.scaleX);i+=0.1){
 
-			double j = this.findY(t,i); // berechnet y bei x = i
+			double j = this.findY(token,i); // berechnet y bei x = i
 
 			this.coord.add(new Coord(j,i));
 
@@ -527,16 +524,16 @@ class Plotter{
 
 		}
 
-	public double findY(Token[] t,double x){
+	public double findY(Token[] tok,double x){
 
-		Token[] newt = new Token[t.length];
+		Token[] newt = new Token[tok.length];
 
-		for(int k = 0; k<t.length;k++){
-			if(t[k] instanceof Ident){
+		for(int k = 0; k<tok.length;k++){
+			if(tok[k] instanceof Ident){
 				newt[k]=new Num(x);
 			}
 			else{
-				newt[k] = t[k];
+				newt[k] = tok[k];
 			}
 		}
 

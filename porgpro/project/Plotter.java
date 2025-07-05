@@ -7,6 +7,7 @@ import lvp.views.Dot;
 import lvp.views.Turtle;
 
 
+
 public class Plotter{
 	
 	Turtle t;
@@ -14,11 +15,11 @@ public class Plotter{
 	double scaleY;
 	ArrayList<Coord> coord = new ArrayList<>();
 
-	public Plotter(){				// Der Konstruktor erstellt eine Turtle mit den Basis Achsen
+	public Plotter(Token[] arithmetic_tokens){				// Der Konstruktor erstellt eine Turtle mit den Basis Achsen
 		this.t = new Turtle(0, 200, 0, 50, 100, 25, 0);
 		
 		this.t.width(0.5);
-		t.push()
+		this.t.push()
 			.forward(100)
 			.pop()
 			.push()
@@ -34,7 +35,8 @@ public class Plotter{
 			.pop()
 			.penUp();
 		this.t.width(0.1);
-		this.cooSys(6.0,6.0);
+		this.cooSys(1.0,1.0);
+		this.drawFunc(arithmetic_tokens);
 	}
 
 
@@ -56,7 +58,7 @@ public class Plotter{
 			i_left-=scaleX;
 		}
 
-		while(j_right<=25){
+		while(j_right <= 25){
 			this.horiln(j_right);
 			this.horiln(j_left);
 			j_right+=scaleY;
@@ -89,7 +91,7 @@ public class Plotter{
 				.pop();
 	}
 
-	public void drawFunc(Token[] t){ // zeichnet die Funktion
+	public void drawFunc(Token[] token){ // zeichnet die Funktion
 		this.t.width(0.5)
 			.color(255,100,100)
 			.penUp()		 // setzt den Stift bei dem letzten -Y Wert
@@ -100,7 +102,7 @@ public class Plotter{
 
 		for(double i = -(100.0/this.scaleX);i < (100.0/this.scaleX);i+=0.1){
 
-			double j = this.findY(t,i); // berechnet y bei x = i
+			double j = this.findY(token,i); // berechnet y bei x = i
 
 			this.coord.add(new Coord(j,i));
 
@@ -121,16 +123,16 @@ public class Plotter{
 
 		}
 
-	public double findY(Token[] t,double x){
+	public double findY(Token[] tok,double x){
 
-		Token[] newt = new Token[t.length];
+		Token[] newt = new Token[tok.length];
 
-		for(int k = 0; k<t.length;k++){
-			if(t[k] instanceof Ident){
+		for(int k = 0; k<tok.length;k++){
+			if(tok[k] instanceof Ident){
 				newt[k]=new Num(x);
 			}
 			else{
-				newt[k] = t[k];
+				newt[k] = tok[k];
 			}
 		}
 
