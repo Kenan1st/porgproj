@@ -15,7 +15,7 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue = "x 6 ^ x 5 ^ + x 4 ^ - x 3 ^ + x 2 ^ - x +"; // Input Example
+    String exampleValue = "x 5 ^ "; // Input Example
 	//
    	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
@@ -50,6 +50,8 @@ void main(){
 
 	String h = TM.planter(g);
 
+
+
     // Dot
     Dot dot = new Dot();
     dot.draw("digraph G {"+h+"}");
@@ -57,6 +59,8 @@ void main(){
 	//
 	PO.t.write();
 }
+
+
 
 class Line{
 
@@ -71,6 +75,7 @@ class Line{
 		
 		this.x_s = lstCoords.get(0).x();
 		this.y_s = lstCoords.get(0).y();
+		this.drawLine();
 		}
 
 	public void drawLine(){
@@ -101,7 +106,12 @@ class Line{
 	}
 }
 
+
+
+
 record E() implements Expr{}
+
+
 
 enum UOp implements Expr{
 	POS,
@@ -115,9 +125,11 @@ enum UOp implements Expr{
 	}
 }
 
-record Coord(double y,double x){}
+
 
 record Cnst(double cnst) implements Expr{}
+
+
 
 enum BinOp implements Expr{
 	ADD,
@@ -126,6 +138,8 @@ enum BinOp implements Expr{
 	DIV,
 	POW
 }
+
+
 
 enum Funcs{
 	SIN,
@@ -136,9 +150,16 @@ enum Funcs{
 	LN
 }
 
+
+
 record P() implements Expr{}
 
+
+
 record UExpr(UOp op, Expr e) implements Expr {}
+
+
+
 
 record Func(Funcs f, List<Expr> e) implements Expr{
 
@@ -185,9 +206,16 @@ record Func(Funcs f, List<Expr> e) implements Expr{
 	}
 }
 
+
+
 sealed interface Expr permits UExpr,BOp,BinOp,Func,Va,Cnst,UOp,E,P{}
 
+
+
 record Va(String name) implements Expr{}
+
+
+
 
 record BOp(BinOp a, Expr e_1 ,Expr e_2) implements Expr{
 
@@ -229,6 +257,11 @@ record BOp(BinOp a, Expr e_1 ,Expr e_2) implements Expr{
 	}
 
 }
+
+
+
+
+
 
 class TreeMaker{
 
@@ -279,6 +312,9 @@ class TreeMaker{
 		return connects;
 	}
 }
+
+
+
 
 class CalcUPN{
 	
@@ -372,6 +408,10 @@ class CalcUPN{
 		}
 	}
 }
+
+
+
+
 
 class Plotter{
 	
@@ -483,7 +523,6 @@ class Plotter{
 			}
 
 		Line l = new Line(this.t,this.coord);
-		l.drawLine();
 		this.t = l.getNewTurtle();
 
 		}
@@ -506,6 +545,13 @@ class Plotter{
 		return cU.sol;
 	}
 }
+
+
+
+
+
+
+
 class UPNParser{
 	
 	private ArrayList<Token> t;
@@ -552,7 +598,11 @@ class UPNParser{
 			default -> throw new IllegalArgumentException("wie auch immer das möglich ist");
 		};
 	}
+
+
 }
+
+
 
 record Tan() implements Token{
 	@Override
@@ -561,7 +611,15 @@ record Tan() implements Token{
 	}
 }
 
+
+
+record Coord(double y,double x){}
+
+
+
 sealed interface Token permits Num,Op,Sp,Tf,Ident,Sqrt,Sin,Tan,Cos,Pow,Log,Pi,Eul,Space,Ln {}
+
+
 
 record Sqrt() implements Token{
 	@Override
@@ -570,11 +628,15 @@ record Sqrt() implements Token{
 	}
 }
 
+
+
 enum Tf implements Token{
 	SIN,
 	COS,
 	TAN,
 }
+
+
 
 enum Sp implements Token{
 	CLOSED,
@@ -582,7 +644,11 @@ enum Sp implements Token{
 	KOMMA
 }
 
+
+
 record Space() implements Token{}
+
+
 
 record Num(double value) implements Token{
 	public double getValue(){
@@ -595,6 +661,8 @@ record Num(double value) implements Token{
 	}
 }
 
+
+
 record Pi() implements Token{
 	@Override
 	public String toString(){
@@ -602,12 +670,16 @@ record Pi() implements Token{
 	}
 }
 
+
+
 record Ident(String name) implements Token{
 	@Override
 	public String toString(){
 		return this.name();
 	}
 }
+
+
 
 enum Op implements Token{
 	ADD,
@@ -636,6 +708,8 @@ enum Op implements Token{
     }
 }
 
+
+
 record Ln() implements Token{
 
 @Override
@@ -645,6 +719,8 @@ record Ln() implements Token{
 
 }
 
+
+
 record Sin() implements Token {
 	@Override
 	public String toString(){
@@ -652,7 +728,11 @@ record Sin() implements Token {
 	}
 }
 
+
+
 record Pow() implements Token{}
+
+
 
 record Log() implements Token{
 	@Override
@@ -661,6 +741,8 @@ record Log() implements Token{
 	}
 }
 
+
+
 record Eul() implements Token{
 	@Override
 	public String toString(){
@@ -668,12 +750,17 @@ record Eul() implements Token{
 	}
 }
 
+
+
 record Cos() implements Token{
 	@Override
 	public String toString(){
 		return "cos";
 	}
 }
+
+
+
 
 class Tokenizer{
 
@@ -791,6 +878,9 @@ class Tokenizer{
 	}
 }
 
+
+
+
 class FunctionResolver {
 
 	static String Expr= "";
@@ -858,8 +948,12 @@ class FunctionResolver {
 						if(t instanceof Ident) yield ((Ident)t).name();
 						else{throw new IllegalArgumentException("Nicht erkannter Token");}}
 			};
+
 	}
 }
+
+
+
 
 static class CalcTree{
 
@@ -881,3 +975,5 @@ static class CalcTree{
 	}
 
 }
+
+

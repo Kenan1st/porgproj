@@ -117,7 +117,6 @@ public class Plotter{
 			}
 
 		Line l = new Line(this.t,this.coord);
-		l.drawLine();
 		this.t = l.getNewTurtle();
 
 		}

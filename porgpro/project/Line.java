@@ -18,6 +18,7 @@ public class Line{
 		
 		this.x_s = lstCoords.get(0).x();
 		this.y_s = lstCoords.get(0).y();
+		this.drawLine();
 		}
 
 	public void drawLine(){
