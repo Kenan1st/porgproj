@@ -33,19 +33,24 @@ public class Plotter{
 		this.cooSys(10,1.0);
 	}
 
+
 	public void cooSys(double scaleX,double scaleY){ // erstellt ein Kooridnatensystem mit skallierung
 		double i = -100;
 		double j = -50;
 
-		while( i <= 100 && j <= 150){
-			this.vertln(i);
-			this.horiln(j);
+		while( i <= 100){
 			
+			this.vertln(i);
 			i+=scaleX;
+		}
+
+		while(j<=25){
+			this.horiln(j);
 			j+=scaleY;
 		}
 		
 	}
+
 
 	public void vertln(double spX){ // scaleparameterX zeigt an, wann nun ein vertikaler Strich gezogen werden soll
 			this.t.penUp()
