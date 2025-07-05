@@ -6,11 +6,13 @@ import lvp.skills.Interaction;
 import lvp.views.Dot;
 import lvp.views.Turtle;
 
+
 public class Plotter{
 	
 	Turtle t;
 	double scaleX;
 	double scaleY;
+	ArrayList<Coord> coord = new ArrayList<>();
 
 	public Plotter(){				// Der Konstruktor erstellt eine Turtle mit den Basis Achsen
 		this.t = new Turtle(0, 200, 0, 50, 100, 25, 0);
@@ -32,7 +34,7 @@ public class Plotter{
 			.pop()
 			.penUp();
 		this.t.width(0.1);
-		this.cooSys(1.0,1.0);
+		this.cooSys(6.0,6.0);
 	}
 
 
@@ -46,7 +48,7 @@ public class Plotter{
 		double j_left = scaleY;
 		double j_right = -scaleY;
 
-		while( i_right <= 100){
+		while(i_right <= 100){
 			
 			this.vertln(i_right);
 			this.vertln(i_left);
@@ -88,7 +90,8 @@ public class Plotter{
 	}
 
 	public void drawFunc(Token[] t){ // zeichnet die Funktion
-		this.t.color(255,100,100)
+		this.t.width(0.5)
+			.color(255,100,100)
 			.penUp()		 // setzt den Stift bei dem letzten -Y Wert
 			.right(90)
 			.forward(25)
@@ -96,7 +99,11 @@ public class Plotter{
 			.push();
 
 		for(double i = -(100.0/this.scaleX);i < (100.0/this.scaleX);i+=0.1){
+
 			double j = this.findY(t,i); // berechnet y bei x = i
+
+			this.coord.add(new Coord(j,i));
+
 
 			this.t.penUp()
 				.push()
@@ -108,6 +115,11 @@ public class Plotter{
 				.penUp()
 				.pop();
 			}
+
+		Line l = new Line(this.t,this.coord);
+		l.drawLine();
+		this.t = l.getNewTurtle();
+
 		}
 
 	public double findY(Token[] t,double x){
@@ -128,3 +140,4 @@ public class Plotter{
 		return cU.sol;
 	}
 }
+

@@ -58,6 +58,49 @@ void main(){
 	PO.t.write();
 }
 
+class Line{
+
+	Turtle newTurtle;
+	double x_s;
+	double y_s;
+	ArrayList<Coord> lstCoords;
+	
+	public Line(Turtle turtle, ArrayList<Coord> lstCoords){
+		this.lstCoords = lstCoords;
+		this.newTurtle = turtle;
+		
+		this.x_s = lstCoords.get(0).x();
+		this.y_s = lstCoords.get(0).y();
+		}
+
+	public void drawLine(){
+
+		this.newTurtle.penUp()
+				.forward(x_s)
+				.left(90)
+				.forward(y_s)
+				.penDown()
+				.push();
+			
+		for(int i = 1; i<lstCoords.size();i++){
+				Coord nextCoord = this.lstCoords.get(i);
+	
+				double delt_x_y = (this.x_s - nextCoord.x())/
+						 (this.y_s - nextCoord.y());
+				double degree = Math.atan(delt_x_y);
+				this.newTurtle.left(degree)
+						.forward(delt_x_y)
+						.push();
+				this.x_s = nextCoord.x();
+				this.y_s = nextCoord.y();
+		}
+	}
+
+	public Turtle getNewTurtle(){
+		return this.newTurtle;
+	}
+}
+
 record E() implements Expr{}
 
 enum UOp implements Expr{
@@ -71,6 +114,8 @@ enum UOp implements Expr{
 		};
 	}
 }
+
+record Coord(double y,double x){}
 
 record Cnst(double cnst) implements Expr{}
 
@@ -333,6 +378,7 @@ class Plotter{
 	Turtle t;
 	double scaleX;
 	double scaleY;
+	ArrayList<Coord> coord = new ArrayList<>();
 
 	public Plotter(){				// Der Konstruktor erstellt eine Turtle mit den Basis Achsen
 		this.t = new Turtle(0, 200, 0, 50, 100, 25, 0);
@@ -410,7 +456,8 @@ class Plotter{
 	}
 
 	public void drawFunc(Token[] t){ // zeichnet die Funktion
-		this.t.color(255,100,100)
+		this.t.width(0.5)
+			.color(255,100,100)
 			.penUp()		 // setzt den Stift bei dem letzten -Y Wert
 			.right(90)
 			.forward(25)
@@ -418,7 +465,11 @@ class Plotter{
 			.push();
 
 		for(double i = -(100.0/this.scaleX);i < (100.0/this.scaleX);i+=0.1){
+
 			double j = this.findY(t,i); // berechnet y bei x = i
+
+			this.coord.add(new Coord(j,i));
+
 
 			this.t.penUp()
 				.push()
@@ -430,6 +481,11 @@ class Plotter{
 				.penUp()
 				.pop();
 			}
+
+		Line l = new Line(this.t,this.coord);
+		l.drawLine();
+		this.t = l.getNewTurtle();
+
 		}
 
 	public double findY(Token[] t,double x){
