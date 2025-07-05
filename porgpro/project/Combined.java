@@ -15,8 +15,14 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue; // Input Example
-    Clerk.write(Interaction.input("./Combined.java", "// Input String Example", "String exampleString = \"$\";", "Geben Sie einen UPN ausdruck ein"));
+    String exampleValue = "x 5 ^ 7 + sin"; // Input Example
+	//
+   	Clerk.markdown(Text.fillOut("""
+		Momentane arithmetische Ausdruck ist:  """+
+		exampleValue + """
+		geben sie hier ihren eigenen ein:
+		"""));
+    Clerk.write(Interaction.input("./Combined.java", "// Input String Example", "String exampleValue = \"$\";", "Geben Sie einen UPN ausdruck ein"));
 
     Clerk.markdown(Text.fillOut(""" 
 		## Hier sehen sie den SyntaxBaum zum arithmetischen Ausdruck
@@ -360,8 +366,8 @@ class CalcUPN{
 class Plotter{
 	
 	Turtle t;
-	double vertp = 0.0;
-	double horip = 0.0;
+	double scaleX;
+	double scaleY;
 
 	public Plotter(){				// Der Konstruktor erstellt eine Turtle mit den Basis Achsen
 		this.t = new Turtle(0, 200, 0, 50, 100, 25, 0);
@@ -386,19 +392,28 @@ class Plotter{
 		this.cooSys(1.0,1.0);
 	}
 
+
 	public void cooSys(double scaleX,double scaleY){ // erstellt ein Kooridnatensystem mit skallierung
+		
+		this.scaleX = scaleX;
+		this.scaleY = scaleY;
+
 		double i = -100;
 		double j = -50;
 
-		while( i <= 100 && j <= 150){
-			this.vertln(i);
-			this.horiln(j);
+		while( i <= 100){
 			
+			this.vertln(i);
 			i+=scaleX;
+		}
+
+		while(j<=25){
+			this.horiln(j);
 			j+=scaleY;
 		}
 		
 	}
+
 
 	public void vertln(double spX){ // scaleparameterX zeigt an, wann nun ein vertikaler Strich gezogen werden soll
 			this.t.penUp()
@@ -430,14 +445,14 @@ class Plotter{
 			.left(90)
 			.push();
 
-		for(double i = -100.0;i < 100.0;i+=0.1){
+		for(double i = -(100.0/this.scaleX);i < (100.0/this.scaleX);i+=0.1){
 			double j = this.findY(t,i); // berechnet y bei x = i
 
 			this.t.penUp()
 				.push()
-				.forward(i)
+				.forward(i*this.scaleX)
 				.left(90)
-				.forward(j+24.925)
+				.forward((j*this.scaleY)+24.925)
 				.penDown()
 				.forward(0.075)
 				.penUp()
@@ -463,7 +478,6 @@ class Plotter{
 		return cU.sol;
 	}
 }
-
 
 
 

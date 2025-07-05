@@ -82,7 +82,8 @@ public class Plotter{
 	}
 
 	public void drawFunc(Token[] t){ // zeichnet die Funktion
-		this.t.penUp()		 // setzt den Stift bei dem letzten -Y Wert
+		this.t.color(255,100,100)
+			.penUp()		 // setzt den Stift bei dem letzten -Y Wert
 			.right(90)
 			.forward(25)
 			.left(90)
