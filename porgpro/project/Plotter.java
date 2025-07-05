@@ -9,6 +9,8 @@ import lvp.views.Turtle;
 public class Plotter{
 	
 	Turtle t;
+	double scaleX;
+	double scaleY;
 
 	public Plotter(){				// Der Konstruktor erstellt eine Turtle mit den Basis Achsen
 		this.t = new Turtle(0, 200, 0, 50, 100, 25, 0);
@@ -30,11 +32,15 @@ public class Plotter{
 			.pop()
 			.penUp();
 		this.t.width(0.1);
-		this.cooSys(10,1.0);
+		this.cooSys(1.0,1.0);
 	}
 
 
 	public void cooSys(double scaleX,double scaleY){ // erstellt ein Kooridnatensystem mit skallierung
+		
+		this.scaleX = scaleX;
+		this.scaleY = scaleY;
+
 		double i = -100;
 		double j = -50;
 
@@ -82,14 +88,14 @@ public class Plotter{
 			.left(90)
 			.push();
 
-		for(double i = -100.0;i < 100.0;i+=0.1){
+		for(double i = -(100.0/this.scaleX);i < (100.0/this.scaleX);i+=0.1){
 			double j = this.findY(t,i); // berechnet y bei x = i
 
 			this.t.penUp()
 				.push()
-				.forward(i)
+				.forward(i*this.scaleX)
 				.left(90)
-				.forward(j+24.925)
+				.forward((j*this.scaleY)+24.925)
 				.penDown()
 				.forward(0.075)
 				.penUp()
@@ -115,4 +121,3 @@ public class Plotter{
 		return cU.sol;
 	}
 }
-
