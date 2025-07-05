@@ -5,47 +5,45 @@ import project.tok.*;
 import project.ast.*;
 
 
-public class Line{
 
+class Line{
 	Turtle newTurtle;
 	double x_s;
 	double y_s;
 	ArrayList<Coord> lstCoords;
 	
-	public Line(Turtle turtle, ArrayList<Coord> lstCoords){
-		this.lstCoords = lstCoords;
+	public Line(Turtle turtle, ArrayList<Coord> oldlstCoords){
+		this.lstCoords = oldlstCoords;
 		this.newTurtle = turtle;
 		
-		this.x_s = lstCoords.get(0).x();
-		this.y_s = lstCoords.get(0).y();
-		this.drawLine();
+		this.x_s = ((Coord)this.lstCoords.get(0)).x();
+		this.y_s = ((Coord)this.lstCoords.get(0)).y();
+		this.drawLines();
 		}
 
-	public void drawLine(){
+	public void drawLines(){
 
 		this.newTurtle.penUp()
 				.forward(x_s)
 				.left(90)
 				.forward(y_s)
-				.penDown()
 				.push();
 			
-		for(int i = 1; i<lstCoords.size();i++){
+		for(int i = 1; i<this.lstCoords.size();i++){
 				Coord nextCoord = this.lstCoords.get(i);
 	
-				double delt_x_y = (this.x_s - nextCoord.x())/
-						 (this.y_s - nextCoord.y());
-				double degree = Math.atan(delt_x_y);
+				double ank_gek = ((this.x_s - nextCoord.x()) / (this.y_s - nextCoord.y()));
+				double hyp = Math.sqrt(Math.pow((this.x_s - nextCoord.x()),2)+
+					Math.pow((this.y_s - nextCoord.y()),2));
+				double degree = Math.atan(ank_gek);
+
 				this.newTurtle.left(degree)
-						.forward(delt_x_y)
+						.penDown()
+						.forward(hyp)
 						.push();
 				this.x_s = nextCoord.x();
 				this.y_s = nextCoord.y();
 		}
-	}
-
-	public Turtle getNewTurtle(){
-		return this.newTurtle;
 	}
 }
 

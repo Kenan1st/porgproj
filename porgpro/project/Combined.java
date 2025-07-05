@@ -15,7 +15,7 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue = "x 2 ^"; // Input Example
+    String exampleValue = "length 2 ^"; // Input Example
 	//
    	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
@@ -61,18 +61,17 @@ void main(){
 
 
 class Line{
-
 	Turtle newTurtle;
 	double x_s;
 	double y_s;
 	ArrayList<Coord> lstCoords;
 	
-	public Line(Turtle turtle, ArrayList<Coord> lstCoords){
-		this.lstCoords = lstCoords;
+	public Line(Turtle turtle, ArrayList<Coord> oldlstCoords){
+		this.lstCoords = oldlstCoords;
 		this.newTurtle = turtle;
 		
-		this.x_s = ((Coord)lstCoords.get(0)).x();
-		this.y_s = ((Coord)lstCoords.get(0)).y();
+		this.x_s = ((Coord)this.lstCoords.get(0)).x();
+		this.y_s = ((Coord)this.lstCoords.get(0)).y();
 		this.drawLines();
 		}
 
@@ -84,24 +83,21 @@ class Line{
 				.forward(y_s)
 				.push();
 			
-		for(int i = 1; i<lstCoords.size();i++){
+		for(int i = 1; i<this.lstCoords.size();i++){
 				Coord nextCoord = this.lstCoords.get(i);
 	
-				double delt_x_y = (this.x_s - nextCoord.x())/
-						 (this.y_s - nextCoord.y());
-				double degree = Math.atan(delt_x_y);
+				double ank_gek = ((this.x_s - nextCoord.x()) / (this.y_s - nextCoord.y()));
+				double hyp = Math.sqrt(Math.pow((this.x_s - nextCoord.x()),2)+
+					Math.pow((this.y_s - nextCoord.y()),2));
+				double degree = Math.atan(ank_gek);
 
 				this.newTurtle.left(degree)
 						.penDown()
-						.forward(delt_x_y)
+						.forward(hyp)
 						.push();
 				this.x_s = nextCoord.x();
 				this.y_s = nextCoord.y();
 		}
-	}
-
-	public Turtle getNewTurtle(){
-		return this.newTurtle;
 	}
 }
 
@@ -520,7 +516,10 @@ class Plotter{
 			}
 
 		Line l = new Line(this.t,this.coord);
-		this.t = l.getNewTurtle();
+
+		l.drawLines();
+
+		this.t = l.newTurtle;
 
 		}
 
