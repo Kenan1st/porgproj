@@ -41,18 +41,24 @@ public class Plotter{
 		this.scaleX = scaleX;
 		this.scaleY = scaleY;
 
-		double i = -100;
-		double j = -50;
+		double i_right = scaleX;
+		double i_left = -scaleX;
+		double j_left = scaleY;
+		double j_right = -scaleY;
 
-		while( i <= 100){
+		while( i_right <= 100){
 			
-			this.vertln(i);
-			i+=scaleX;
+			this.vertln(i_right);
+			this.vertln(i_left);
+			i_right+=scaleX;
+			i_left-=scaleX;
 		}
 
-		while(j<=25){
-			this.horiln(j);
-			j+=scaleY;
+		while(j_right<=25){
+			this.horiln(j_right);
+			this.horiln(j_left);
+			j_right+=scaleY;
+			j_left-= scaleY;
 		}
 		
 	}
@@ -61,7 +67,7 @@ public class Plotter{
 	public void vertln(double spX){ // scaleparameterX zeigt an, wann nun ein vertikaler Strich gezogen werden soll
 			this.t.penUp()
 				.push()
-				.backward(spX)
+				.forward(spX)
 				.left(90)
 				.forward(50)
 				.penDown()
@@ -73,7 +79,7 @@ public class Plotter{
 			this.t.penUp()
 				.push()
 				.left(90)
-				.backward(spY)
+				.forward(spY)
 				.left(90)
 				.forward(100)
 				.penDown()
