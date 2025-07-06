@@ -37,7 +37,11 @@ void main(){
 	Token [] Z = fr.resolveAll(t);
 
 	Plotter PO = new Plotter(Z);
-	
+
+	/*System.out.println(PO.coord.get(0));
+	System.out.println(PO.coord.get(PO.coord.size()-1));
+	System.out.println(PO.coord.size());
+	*/
 	UPNParser P = new UPNParser(Z);
 
 	Expr g = P.parse();
@@ -60,44 +64,78 @@ void main(){
 
 
 
-class Line{
+class Lines{
 	Turtle newTurtle;
-	double x_s;
-	double y_s;
-	ArrayList<Coord> lstCoords;
+	double x_s_left;
+	double y_s_left;
+	double x_s_right;
+	double y_s_right;
+	ArrayList<Coord> lstCoords_left;
+	ArrayList<Coord> lstCoords_right;
 	
-	public Line(Turtle turtle, ArrayList<Coord> oldlstCoords){
-		this.lstCoords = oldlstCoords;
+	public Lines(Turtle turtle, ArrayList<Coord> oldlstCoords_left, ArrayList<Coord> oldlstCoords_right){
+		this.lstCoords_left = oldlstCoords_left;
+		this.lstCoords_right = oldlstCoords_right;
 		this.newTurtle = turtle;
 		
-		this.x_s = ((Coord)this.lstCoords.get(0)).x();
-		this.y_s = ((Coord)this.lstCoords.get(0)).y();
+		this.x_s_left = this.lstCoords_left.get(0).x();
+		this.y_s_left = this.lstCoords_left.get(0).y();
+		this.y_s_right = this.lstCoords_right.get(0).y();
+		this.x_s_right = this.lstCoords_right.get(0).x();
+
 		this.drawLines();
 		}
 
 	public void drawLines(){
-
-		this.newTurtle.penUp()
-				.forward(x_s)
-				.left(90)
-				.forward(y_s)
-				.push();
-			
-		for(int i = 1; i<this.lstCoords.size();i++){
-				Coord nextCoord = this.lstCoords.get(i);
 	
-				double ank_gek = ((this.x_s - nextCoord.x()) / (this.y_s - nextCoord.y()));
-				double hyp = Math.sqrt(Math.pow((this.x_s - nextCoord.x()),2)+
-					Math.pow((this.y_s - nextCoord.y()),2));
-				double degree = Math.atan(ank_gek);
+		for(int i = 1; i<this.lstCoords_left.size();i++){
+				Coord nextCoord_right = this.lstCoords_left.get(i);
+				Coord nextCoord_left = this.lstCoords_right.get(i);
+	
+				
+				double [] lengths_left = calcLengths(this.x_s_left, nextCoord_left.x(), this.y_s_left, nextCoord_left.y());
+				double [] lengths_right = calcLengths(this.x_s_right, nextCoord_right.x(), this.y_s_right, nextCoord_right.y());
 
-				this.newTurtle.left(degree)
+				this.newTurtle.push()
+						.penUp()
+						.forward(this.x_s_left)
+						.left(90)
+						.forward(this.y_s_left)
+						.right(lengths_left[1])
 						.penDown()
-						.forward(hyp)
-						.push();
-				this.x_s = nextCoord.x();
-				this.y_s = nextCoord.y();
+						.forward(lengths_left[0])
+						.pop();
+				
+				this.newTurtle.push()
+						.penUp()
+						.forward(this.x_s_right)
+						.left(90)
+						.forward(this.y_s_right)
+						.right(lengths_right[1])
+						.penDown()
+						.forward(lengths_right[0])
+						.pop();
+						
+				this.x_s_left= nextCoord_left.x();
+				this.y_s_left = nextCoord_left.y();
+				this.y_s_right = nextCoord_right.y();
+				this.x_s_right = nextCoord_right.x();
 		}
+	}
+
+	public double[] calcLengths(double x_0,double x_1, double y_0,double y_1){
+			
+			double delt_x = (x_0-x_1);
+			double delt_y = (y_0-y_1);
+
+			double gek_ank = (delt_y/delt_x);
+			double hyp = Math.sqrt(
+					Math.pow(delt_x,2.0)+
+					Math.pow(delt_y,2.0)
+					);
+			double degree = Math.toDegrees(Math.atan(gek_ank));
+
+		return new double[]{hyp,degree};
 	}
 }
 
@@ -410,7 +448,8 @@ class Plotter{
 	Turtle t;
 	double scaleX;
 	double scaleY;
-	ArrayList<Coord> coord = new ArrayList<>();
+	ArrayList<Coord> coord_left = new ArrayList<>();
+	ArrayList<Coord> coord_right = new ArrayList<>();
 
 	public Plotter(Token[] arithmetic_tokens){				// Der Konstruktor erstellt eine Turtle mit den Basis Achsen
 		this.t = new Turtle(0, 200, 0, 50, 100, 25, 0);
@@ -432,7 +471,7 @@ class Plotter{
 			.pop()
 			.penUp();
 		this.t.width(0.1);
-		this.cooSys(1.0,1.0);
+		this.cooSys(5,5);
 		this.drawFunc(arithmetic_tokens);
 	}
 
@@ -488,40 +527,39 @@ class Plotter{
 				.pop();
 	}
 
-	public void drawFunc(Token[] token){ // zeichnet die Funktion
-		this.t.width(0.5)
-			.color(255,100,100)
-			.penUp()		 // setzt den Stift bei dem letzten -Y Wert
-			.right(90)
-			.forward(25)
-			.left(90)
-			.push();
-
-		for(double i = -(100.0/this.scaleX);i < (100.0/this.scaleX);i+=0.1){
-
-			double j = this.findY(token,i); // berechnet y bei x = i
-
-			this.coord.add(new Coord(j,i));
-
-
-			this.t.penUp()
-				.push()
-				.forward(i*this.scaleX)
+	
+	public void coordpoints(double x, double y){
+			this.t.push()
+				.penUp()
+				.forward(x)
 				.left(90)
-				.forward((j*this.scaleY)+24.925)
+				.forward(y-0.05)
 				.penDown()
-				.forward(0.075)
+				.forward(0.1)
 				.penUp()
 				.pop();
-			}
+	}
 
-		Line l = new Line(this.t,this.coord);
+	public void drawFunc(Token[] token){ // zeichnet die Funktion
+			this.t.width(0.5)
+				.color(255,100,100)
+				.push();
 
-		l.drawLines();
+			for(double i = 0, k = 0;i < (100.0/this.scaleX);i+=0.1,k-=0.1){
 
-		this.t = l.newTurtle;
+				double j = this.findY(token,i); // berechnet y bei x = i
+				double p = this.findY(token,k);
+				this.coord_right.add(new Coord((j*this.scaleY),(i*this.scaleX)));
+				this.coord_left.add(new Coord((p*this.scaleY),(k*this.scaleX)));
+				
+				this.coordpoints((i*this.scaleX),(j*this.scaleY));
+				this.coordpoints((k*this.scaleX),(p*this.scaleY));
+
+			Lines l = new Lines(this.t,this.coord_left,this.coord_right);
+			this.t = l.newTurtle;
 
 		}
+	}
 
 	public double findY(Token[] tok,double x){
 
@@ -541,12 +579,6 @@ class Plotter{
 		return cU.sol;
 	}
 }
-
-
-
-
-
-
 
 class UPNParser{
 	
