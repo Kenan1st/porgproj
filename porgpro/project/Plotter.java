@@ -8,12 +8,14 @@ import lvp.views.Turtle;
 
 
 
+
 public class Plotter{
 	
 	Turtle t;
 	double scaleX;
 	double scaleY;
-	ArrayList<Coord> coord = new ArrayList<>();
+	ArrayList<Coord> coord_left = new ArrayList<>();
+	ArrayList<Coord> coord_right = new ArrayList<>();
 
 	public Plotter(Token[] arithmetic_tokens){				// Der Konstruktor erstellt eine Turtle mit den Basis Achsen
 		this.t = new Turtle(0, 200, 0, 50, 100, 25, 0);
@@ -35,7 +37,7 @@ public class Plotter{
 			.pop()
 			.penUp();
 		this.t.width(0.1);
-		this.cooSys(1.0,1.0);
+		this.cooSys(7.5,7.5);
 		this.drawFunc(arithmetic_tokens);
 	}
 
@@ -91,37 +93,39 @@ public class Plotter{
 				.pop();
 	}
 
-	public void drawFunc(Token[] token){ // zeichnet die Funktion
-		this.t.width(0.5)
-			.color(255,100,100)
-			.penUp()		 // setzt den Stift bei dem letzten -Y Wert
-			.right(90)
-			.forward(25)
-			.left(90)
-			.push();
-
-		for(double i = -(100.0/this.scaleX);i < (100.0/this.scaleX);i+=0.1){
-
-			double j = this.findY(token,i); // berechnet y bei x = i
-
-			this.coord.add(new Coord(j,i));
-
-
-			this.t.penUp()
-				.push()
-				.forward(i*this.scaleX)
+	
+	public void coordpoints(double x, double y){
+			this.t.push()
+				.penUp()
+				.forward(x)
 				.left(90)
-				.forward((j*this.scaleY)+24.925)
+				.forward(y-0.05)
 				.penDown()
-				.forward(0.075)
+				.forward(0.1)
 				.penUp()
 				.pop();
-			}
+	}
 
-		Line l = new Line(this.t,this.coord);
-		this.t = l.getNewTurtle();
+	public void drawFunc(Token[] token){ // zeichnet die Funktion
+			this.t.width(0.5)
+				.color(255,100,100)
+				.push();
+
+			for(double i = 0, k = 0;i < (100.0/this.scaleX);i+=0.1,k-=0.1){
+
+				double j = this.findY(token,i); // berechnet y bei x = i
+				double p = this.findY(token,k);
+				this.coord_right.add(new Coord((j*this.scaleY),(i*this.scaleX)));
+				this.coord_left.add(new Coord((p*this.scaleY),(k*this.scaleX)));
+				
+				this.coordpoints((i*this.scaleX),(j*this.scaleY));
+				this.coordpoints((k*this.scaleX),(p*this.scaleY));
+
+		//	Line l = new Line(this.t,this.coord);
+		//	this.t = l.newTurtle;
 
 		}
+	}
 
 	public double findY(Token[] tok,double x){
 
