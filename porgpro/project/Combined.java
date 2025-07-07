@@ -15,7 +15,7 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue = "5 6 + x 3 ^ * x 2 ^ - x +"; // Input Example
+    String exampleValue = "5 x * 3 ^ x 2 ^ - x +"; // Input Example
 	//
    	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
@@ -70,12 +70,12 @@ class Lines{
 	double y_s_left;
 	double x_s_right;
 	double y_s_right;
-	ArrayList<Coord> lstCoords_left;
 	ArrayList<Coord> lstCoords_right;
-	double [] lengths_left;
+	ArrayList<Coord> lstCoords_left;
 	double [] lengths_right;
+	double [] lengths_left;
 	
-	public Lines(Turtle turtle, ArrayList<Coord> oldlstCoords_left, ArrayList<Coord> oldlstCoords_right){
+	public Lines(Turtle turtle, ArrayList<Coord> oldlstCoords_right, ArrayList<Coord> oldlstCoords_left){
 		this.lstCoords_left = oldlstCoords_left;
 		this.lstCoords_right = oldlstCoords_right;
 		this.newTurtle = turtle;
@@ -103,7 +103,7 @@ class Lines{
 						.forward(this.x_s_left)
 						.left(90)
 						.forward(this.y_s_left)
-						.left(this.lengths_left[1])
+						.right(270-this.lengths_left[1])
 						.penDown()
 						.forward(this.lengths_left[0])
 						.pop();
@@ -113,7 +113,7 @@ class Lines{
 						.forward(this.x_s_right)
 						.left(90)
 						.forward(this.y_s_right)
-						.right(this.lengths_right[1])
+						.left(90+this.lengths_right[1])
 						.penDown()
 						.forward(this.lengths_right[0])
 						.pop();
@@ -134,7 +134,7 @@ class Lines{
 					Math.pow(delt_x,2.0)+
 					Math.pow(delt_y,2.0)
 					);
-			double degree = Math.atan2(delt_y,delt_x);
+			double degree = Math.toDegrees(Math.atan2(delt_y,delt_x));
 
 		return new double[]{hyp,degree};
 	}
@@ -542,7 +542,7 @@ class Plotter{
 	}
 
 	public void drawFunc(Token[] token){ // zeichnet die Funktion
-			this.t.width(0.25)
+			this.t.width(0.1)
 				.color(255,100,100)
 				.push();
 
@@ -550,13 +550,13 @@ class Plotter{
 
 				double j = this.findY(token,i); // berechnet y bei x = i
 				double p = this.findY(token,k);
-				this.coord_right.add(new Coord((j*this.scaleY),(i*this.scaleX)));
-				this.coord_left.add(new Coord((p*this.scaleY),(k*this.scaleX)));
+				this.coord_left.add(new Coord((j*this.scaleY),(i*this.scaleX)));
+				this.coord_right.add(new Coord((p*this.scaleY),(k*this.scaleX)));
 				
 				this.coordpoints((i*this.scaleX),(j*this.scaleY));
 				this.coordpoints((k*this.scaleX),(p*this.scaleY));
 
-			Lines l = new Lines(this.t,this.coord_left,this.coord_right);
+			Lines l = new Lines(this.t,this.coord_right,this.coord_left);
 			this.t = l.newTurtle;
 
 		}
