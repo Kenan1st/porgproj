@@ -24,8 +24,6 @@ void main(){
 	Token [] Z = fr.resolveAll(t);
 
 	Plotter PO = new Plotter(Z);
-	
-	UPNParser P = new UPNParser(Z);
 
 	Expr g = P.parse();
 
