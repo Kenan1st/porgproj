@@ -15,7 +15,7 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue = "5 x * 3 ^ x 2 ^ - x +"; // Input Example
+    String exampleValue = "0.5 x * 3 ^ x 2 ^ 0.9 * - x +"; // Input Example
 	//
    	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
@@ -38,10 +38,6 @@ void main(){
 
 	Plotter PO = new Plotter(Z);
 
-	/*System.out.println(PO.coord.get(0));
-	System.out.println(PO.coord.get(PO.coord.size()-1));
-	System.out.println(PO.coord.size());
-	*/
 	UPNParser P = new UPNParser(Z);
 
 	Expr g = P.parse();

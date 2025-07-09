@@ -9,6 +9,7 @@ import lvp.views.Turtle;
 
 
 
+
 public class Plotter{
 	
 	Turtle t;
@@ -37,7 +38,7 @@ public class Plotter{
 			.pop()
 			.penUp();
 		this.t.width(0.1);
-		this.cooSys(7.5,7.5);
+		this.cooSys(5,5);
 		this.drawFunc(arithmetic_tokens);
 	}
 
@@ -107,7 +108,7 @@ public class Plotter{
 	}
 
 	public void drawFunc(Token[] token){ // zeichnet die Funktion
-			this.t.width(0.5)
+			this.t.width(0.1)
 				.color(255,100,100)
 				.push();
 
@@ -115,14 +116,14 @@ public class Plotter{
 
 				double j = this.findY(token,i); // berechnet y bei x = i
 				double p = this.findY(token,k);
-				this.coord_right.add(new Coord((j*this.scaleY),(i*this.scaleX)));
-				this.coord_left.add(new Coord((p*this.scaleY),(k*this.scaleX)));
+				this.coord_left.add(new Coord((j*this.scaleY),(i*this.scaleX)));
+				this.coord_right.add(new Coord((p*this.scaleY),(k*this.scaleX)));
 				
 				this.coordpoints((i*this.scaleX),(j*this.scaleY));
 				this.coordpoints((k*this.scaleX),(p*this.scaleY));
 
-		//	Line l = new Line(this.t,this.coord);
-		//	this.t = l.newTurtle;
+			Lines l = new Lines(this.t,this.coord_right,this.coord_left);
+			this.t = l.newTurtle;
 
 		}
 	}
