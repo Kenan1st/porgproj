@@ -2,7 +2,7 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue = "x 2 ^"; // Input Example
+    String exampleValue = "x 5 * sin"; // Input Example
 	//
    	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
@@ -23,7 +23,17 @@ void main(){
 	
 	Token [] Z = fr.resolveAll(t);
 
+	Validater val = new Validater(Z);
+
+	String dot_arg = "";
+
 	Plotter PO = new Plotter(Z);
+
+	Dot dot = new Dot();
+
+	if(val.upn){	
+
+	UPNParser P = new UPNParser(Z);
 
 	Expr g = P.parse();
 
@@ -31,14 +41,38 @@ void main(){
 
 	TreeMaker TM = new TreeMaker();
 
-	String h = TM.planter(g);
+	dot_arg = TM.planter(g);	
+	
+	if(val.ar_expr){
 
+	CalcUPN solution = new CalcUPN(Z);
 
+	Clerk.markdown(Text.fillOut("""
+		das Egebnis des arithmethischen ausdrucks ist : """+
+		solution.sol +"""
+	"""));
+	}
+		dot.draw("digraph G {"+dot_arg+"}");
 
-    // Dot
-    Dot dot = new Dot();
-    dot.draw("digraph G {"+h+"}");
-    // Dot
-	//
-	PO.t.write();
+		PO.t.write();
+	}
+
+	else{
+		if(val.inf){
+	
+		if(val.ar_expr){
+
+		}
+
+		}
+		else{
+			if(val.ar_expr){
+				dot_arg = Z[0].toString();
+				PO.t.write();
+		}
+			else{ throw new IllegalArgumentException("Falscher Ausdruck");}
+		}
+	}
+
 }
+
