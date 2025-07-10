@@ -1,3 +1,4 @@
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -15,7 +16,7 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue = "0.5 x * 3 ^ 2.7 x * 2 ^ - x + sin"; // Input Example
+    String exampleValue = "0.2*x^2 - 0.7*x^3 + 5*x"; // Input Example
 	//
    	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
@@ -36,6 +37,17 @@ void main(){
 	
 	Token [] Z = fr.resolveAll(t);
 
+	Validater val = new Validater(Z);
+
+	String dot_arg = "";
+
+	Dot dot = new Dot();
+
+	if(val.inf){
+		Inf2Upn i2U = new Inf2Upn(Z);
+		Z = i2U.outPutToken;
+	}
+
 	Plotter PO = new Plotter(Z);
 
 	UPNParser P = new UPNParser(Z);
@@ -46,17 +58,65 @@ void main(){
 
 	TreeMaker TM = new TreeMaker();
 
-	String h = TM.planter(g);
+	dot_arg = TM.planter(g);	
+	
+	if(val.ar_expr){
 
+	CalcUPN solution = new CalcUPN(Z);
 
+	Clerk.markdown(Text.fillOut("""
+		das Egebnis des arithmethischen ausdrucks ist : """+
+		solution.sol +"""
+	"""));
+	}
+		dot.draw("digraph G {"+dot_arg+"}");
 
-    // Dot
-    Dot dot = new Dot();
-    dot.draw("digraph G {"+h+"}");
-    // Dot
-	//
-	PO.t.write();
+		PO.t.write();
+
 }
+
+class Validater{
+
+	boolean upn = false;
+	boolean inf = false;
+	boolean ar_expr = true;
+	
+
+	public Validater(Token[] tokens){
+
+		if(tokens.length < 2 && tokens[0] instanceof Ident){this.ar_expr = false;}
+
+		if(tokens.length < 2 && tokens[0] instanceof Num){this.ar_expr = true;}
+
+		else{
+			
+
+			if((tokens[0] instanceof Num || tokens[0] instanceof Ident) &&
+			   (tokens[1] instanceof Num || tokens[1] instanceof Ident)){
+				this.upn = true;
+
+				for(Token t : tokens){
+					if(t instanceof Ident){this.ar_expr = false;}
+				}
+			}
+
+			else{
+				this.inf = true;
+				
+				for(Token t : tokens){
+					if(t instanceof Ident){this.ar_expr = false;}
+			}
+			}
+		}
+		return;
+	}
+}
+
+
+
+
+
+
 
 
 
@@ -440,6 +500,13 @@ class CalcUPN{
 }
 
 
+
+
+
+
+
+
+
 class Plotter{
 	
 	Turtle t;
@@ -468,7 +535,7 @@ class Plotter{
 			.pop()
 			.penUp();
 		this.t.width(0.1);
-		this.cooSys(10,5);
+		this.cooSys(10,1);
 		this.drawFunc(arithmetic_tokens);
 	}
 
@@ -542,7 +609,7 @@ class Plotter{
 				.color(255,100,100)
 				.push();
 
-			for(double i = 0, k = 0;i < (100.0/this.scaleX);i+=0.001,k-=0.001){
+			for(double i = 0, k = 0;i < (100.0/this.scaleX);i+=0.01,k-=0.01){
 
 				double j = this.findY(token,i); // berechnet y bei x = i
 				double p = this.findY(token,k);
@@ -575,6 +642,12 @@ class Plotter{
 		return cU.sol;
 	}
 }
+
+
+
+
+
+
 
 class UPNParser{
 	
@@ -1001,3 +1074,102 @@ static class CalcTree{
 }
 
 
+
+
+
+class Inf2Upn{
+
+	Stack<Token>operatorStack;
+
+	Token[] outPutToken;
+	
+	public Inf2Upn(Token[] tokens){
+
+		this.operatorStack = new Stack<>();
+		ArrayList<Token> outputQueue = new ArrayList<>();
+
+		for(int i = 0; i<tokens.length;i++){
+
+			Token tk = tokens[i];
+
+			if(tk instanceof Num || tk instanceof Ident || tk instanceof Eul || tk instanceof Pi){
+				outputQueue.add(tk);
+			}
+			if(tk instanceof Sin || tk instanceof Cos || tk instanceof Tan || tk instanceof Sqrt || tk instanceof Log){
+				this.operatorStack.add(tk);
+			}
+			if(tk instanceof Op){
+				while(!this.operatorStack.isEmpty() && 
+					(this.operatorStack.peek() instanceof Sin ||
+					 this.operatorStack.peek() instanceof Cos ||
+					 this.operatorStack.peek() instanceof Tan ||
+					 this.operatorStack.peek() instanceof Sqrt||
+					 this.operatorStack.peek() instanceof Log ||
+					 this.operatorStack.peek() instanceof Op)
+						&& this.compare(this.operatorStack.peek(),tk)){
+				
+					outputQueue.add(this.operatorStack.pop());
+				}
+				this.operatorStack.add(tk);
+			}
+			if(tk instanceof Space){continue;}
+			if(tk == Sp.OPEN){
+				this.operatorStack.add(tk);
+			}
+			if(tk == Sp.CLOSED){
+				while(!this.operatorStack.isEmpty() && this.operatorStack.peek()!= Sp.OPEN){
+					outputQueue.add(this.operatorStack.pop());
+				}
+				if(this.operatorStack.isEmpty()){
+					throw new IllegalArgumentException("Fehlende Klammer");
+				}
+				this.operatorStack.pop();
+				if(!this.operatorStack.isEmpty() && 
+					(this.operatorStack.peek() instanceof Sin ||
+					 this.operatorStack.peek() instanceof Cos ||
+					 this.operatorStack.peek() instanceof Tan ||
+					 this.operatorStack.peek() instanceof Sqrt||
+					 this.operatorStack.peek() instanceof Log )){
+					outputQueue.add(this.operatorStack.pop());
+				}
+			}
+		}
+
+		while(!this.operatorStack.isEmpty()){
+			if(this.operatorStack.peek() instanceof Sp){
+				throw new IllegalArgumentException("Fehlende Klammer");
+			}
+			outputQueue.add(this.operatorStack.pop());
+		}
+
+		this.outPutToken = new Token[outputQueue.size()];
+
+		for(int i = 0; i<outputQueue.size();i++){
+			this.outPutToken[i]  =  outputQueue.get(i);
+		}
+	}
+
+	public boolean compare(Token StT, Token tk){
+		if(prio(StT) >= prio(tk)){
+			return true;
+		}
+		else{
+			return false;
+		}
+		
+	}
+
+	public int prio(Token t){
+		return switch(t){
+			case Op.ADD -> 10;
+			case Op.SUB -> 10;
+			case Op.MUL -> 20;
+			case Op.DIV -> 20;
+			case Op.POW -> 30;
+			case Sp.OPEN -> 50;
+			case Sp.CLOSED -> 50;
+			case Num n -> throw new IllegalArgumentException();
+			default -> 45;
+		};
+	}
+}
