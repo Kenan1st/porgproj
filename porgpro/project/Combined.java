@@ -11,58 +11,94 @@ import lvp.skills.Text;
 import lvp.views.Dot;
 import lvp.views.Turtle;
 
-
 void main(){
 
  Clerk.clear();
 
-    String exampleValue = " log(sin(x^4),tan(5*10)) "; // Input Example
-	//
-   	Clerk.markdown(Text.fillOut("""
+	Clerk.markdown(Text.fillOut("""
+		Diese Java-Datei ist im folgenden so aufgebaut ,dass sich die Aufgaben des Tokenizer vollständig vom 
+		rest trennen.
+ 		Sprich die enums,records und interfaces mit denen der Tokenizer arbeitet arbeiten nicht bei der 
+		Kalkulation der Werte.
+		Dort werden änhlich benannte verwendet. Das einordnen des Ausdrucks in Infix oder UP - Notaton erfolgt über einen 
+		Validieren(Validater) der sich
+		sehr schlicht die ersten beiden Tokens anschaut und daraufhin validiert,
+		ob es sich um die Infix- oder Up-Notation handelt. Fals dem so ist wird der Infix ausdruck in UPN umgewandelt.
+		Handelt es sich um einen arithmetischen Ausdruck, welcher keine Funtkion ist (Validater),
+		so wird das ergebnis unter dem Baum aufgezigt und er erscheint als Konstante Linie auf dem Graphen 
+		bei dem Lösungswert.
+
+		"""));
+
+
+String exampleValue = "(sin((e ^ x)) + (x ^ 2.0))"; // Input String Example
+
+	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
 		exampleValue + """
 		geben sie hier ihren eigenen ein:
 		"""));
-    Clerk.write(Interaction.input("./Combined.java", "// Input String Example", "String exampleValue = \"$\";", "Geben Sie einen UPN ausdruck ein"));
+	Clerk.write(Interaction.input("./Combined.java", "// Input String Example", "String exampleValue = \"$\";", "Geben Sie einen UPN ausdruck ein"));
 
-    Clerk.markdown(Text.fillOut(""" 
+	int scaleX = 10; //Input scaleX
+
+	Clerk.write(Text.fillOut("""
+		Hier können sie die skalierung der x-Achse des gezeigten Graphen angeben:
+		"""));
+	Clerk.write(Interaction.input("./Combined.java","Input scaleX", "int scaleX = $;","Geben sie scaleX ein"));
+
+	int scaleY = 5; //Input scaleY
+
+	Clerk.write(Text.fillOut("""
+		Hier können sie die skalierung der y-Achse des gezeigten Graphen angeben:
+		"""));
+	Clerk.write(Interaction.input("./Combined.java","Input scaleX", "int scaleY = $;","Geben sie scaleY ein"));
+
+	Clerk.markdown(Text.fillOut(""" 
 		## Hier sehen sie den SyntaxBaum zum arithmetischen Ausdruck
-		""", Text.codeBlock("./Plotter.java" , "//Input")));
+		""", Text.codeBlock("./Combined.java" , "//Input")));
+
+	if(!exampleValue.equals("")){
 
 	Tokenizer TO = new Tokenizer(exampleValue);
 	
 	Token [] t = TO.maker();
 
-	FunctionResolver fr = new FunctionResolver();
-	
-	Token [] Z = fr.resolveAll(t);
+	FunctionResolver fr = new FunctionResolver();	// Der FunctionResolver wandelt identfier sofern es möglich ist in functionen oder die Konstanten pi und e um
+							// Er übernimmt das richtige verstehen der eingabe in einen weiterverarbeitenden arithmetischen Ausdruck
+	Token [] aexpr_as_token = fr.resolveAll(t);
 
-	Validater val = new Validater(Z);
+	Validater val = new Validater(aexpr_as_token);
 
-	String dot_arg = "";
+	String dot_arg = "";				// hier wird das "Argument" für den Dot-Baum initialisiert
 
 	Dot dot = new Dot();
+	
+	String s = "";
 
-	if(val.inf){
-		Inf2Upn i2U = new Inf2Upn(Z);
-		Z = i2U.outPutToken;
+	if(val.inf){					// Wenn der Validierer feststellt, dass es sich um die Infix-Notation handelt, wandelt dann
+		Inf2Upn i2U = new Inf2Upn(aexpr_as_token);		// die Inf2Upn Instanz mit Ihrem Konstruktor das TokenArray in die richtige UP-Notation um
+		aexpr_as_token = i2U.outPutToken;			// und speichert diese in der gleichen Variable
+	}
+	else{
+		Upn2Inf u2I= new Upn2Inf(aexpr_as_token);
+		s = u2I.outputInf;
 	}
 
-	Plotter PO = new Plotter(Z);
+	Plotter PO = new Plotter(aexpr_as_token,(double)scaleX,(double)scaleY);			
 
-	UPNParser P = new UPNParser(Z);
+	UPNParser P = new UPNParser(aexpr_as_token);			// Der UPNParser wandelt das TokenArray um in eine einzige Expression die in sich noch weitere birgt
+		//
+	Expr g = P.parse();				
 
-	Expr g = P.parse();
+	TreeMaker TM = new TreeMaker();			
 
-	CalcTree U = new CalcTree(g);
-
-	TreeMaker TM = new TreeMaker();
-
-	dot_arg = TM.planter(g);	
+	dot_arg = TM.planter(g);			// Die TreeMaker-instanz TM gibt mit ihrer planter()-Methode die vorher geparste Expression 
+							// genau diese Expression in einen String um die den Baum als Dot-Notation darstellt
 	
-	if(val.ar_expr){
-
-	CalcUPN solution = new CalcUPN(Z);
+	if(val.ar_expr){				// handelt es Sich bei dem arithmetischen Ausdruck nicht um eine Funtkion sondern einen Bloßen Ausdruck
+							// so wird dessen Ergebnis ,in der Variable sol ,in der Instanz solution von der Klasse CalcUPN gespeichert
+	CalcUPN solution = new CalcUPN(aexpr_as_token);
 
 	Clerk.markdown(Text.fillOut("""
 		das Egebnis des arithmethischen ausdrucks ist : """+
@@ -70,21 +106,71 @@ void main(){
 	"""));
 	}
 	
-	String s ="";
-
-	for(Token tokensss : Z){s += " "+tokensss.toString();}
-	
+	if(val.inf){
+	for(Token I2Utoken : aexpr_as_token){s += I2Utoken.toString() +" ";}	// falls es sich um einen UPN-Ausdruck handelt gibt diese forschleife der nächsten Markdown-Zeile ein String
+								// mit der Infix-Notation des arithmethischen Ausdrucks wiedier
 	Clerk.markdown(Text.fillOut("""
 			Hier der UPN Ausdruck zum InfixAusdruck: """+
 			s + """
 			"""));
+	}
+	else{
+								// mit der Infix-Notation des arithmethischen Ausdrucks wiedier
+	Clerk.markdown(Text.fillOut("""
+			Hier der Infix Ausdruck zum UPNAusdruck: """+
+			s + """
+			"""));
 
+
+	}
 		dot.draw("digraph G {"+dot_arg+"}");
+
 
 		PO.t.write();
 		PO.t.timelineSlider();
-
+	}
 }
+
+class Upn2Inf{
+
+	String outputInf;
+	
+	public Upn2Inf(Token [] tok){
+
+	Stack<String> s = new Stack<>();
+
+	for(Token tk : tok){
+		if(tk instanceof Num || tk instanceof Pi || tk instanceof Eul || tk instanceof Ident){
+			s.push(tk.toString());
+			continue;
+		}
+
+		if(tk instanceof Sin || tk instanceof Cos || tk instanceof Tan || tk instanceof Sqrt || tk instanceof Log || tk instanceof Ln){
+			String operand = s.pop();
+
+			String Ausdruck = tk.toString() + "(" + operand + ")";
+			s.push(Ausdruck);
+			continue;
+		}
+		if(tk instanceof Op){
+			String rightop = s.pop();
+			String leftop = s.pop();
+
+			String Ausdruck = "(" + leftop + " " + tk.toString() + " " + rightop + ")";
+			s.push(Ausdruck);
+			continue;
+		}
+		else{
+			throw new IllegalArgumentException("Unerkannter Token");
+		}
+	}
+	
+	if(s.size() != 1){throw new IllegalArgumentException("Falscher RPN-AUSDRUCK");}
+	
+	this.outputInf = s.pop();
+	}
+}
+
 class Validater{
 
 	boolean upn = false;
@@ -122,7 +208,12 @@ class Validater{
 	}
 }
 
-class Lines{
+
+
+
+
+
+class Lines{							// Lines bildet die Linien zwischen zwei berechnet Punkten in der Turtle
 	Turtle newTurtle;
 	double x_s_left;
 	double y_s_left;
@@ -133,7 +224,9 @@ class Lines{
 	double [] lengths_right;
 	double [] lengths_left;
 	
-	public Lines(Turtle turtle, ArrayList<Coord> oldlstCoords_right, ArrayList<Coord> oldlstCoords_left){
+	public Lines(Turtle turtle, ArrayList<Coord> oldlstCoords_right, ArrayList<Coord> oldlstCoords_left){ // Im Konstruktor werden 2 Listen und einee Turtle entgegengenommen
+									// welche dann als Klassenvariablen verwendet werden und schließlich mit drawLines() das Zeichnen
+		// 							// der Linien ausführt
 		this.lstCoords_left = oldlstCoords_left;
 		this.lstCoords_right = oldlstCoords_right;
 		this.newTurtle = turtle;
@@ -149,7 +242,7 @@ class Lines{
 	public void drawLines(){
 	
 		for(int i = 1; i<this.lstCoords_left.size();i++){
-				Coord nextCoord_right = this.lstCoords_left.get(i);
+				Coord nextCoord_right = this.lstCoords_left.get(i);	// in dieser for-schleife 
 				Coord nextCoord_left = this.lstCoords_right.get(i);
 	
 				this.lengths_left = calcLengths(this.x_s_left, nextCoord_left.x(), this.y_s_left, nextCoord_left.y());
@@ -279,7 +372,12 @@ record Func(Funcs f, List<Expr> e) implements Expr{
 
 	public double trans(double d, double d_1){
 		return switch(this.f()){
+			case Funcs.SIN -> Math.sin(d);
+			case Funcs.COS -> Math.cos(d);
+			case Funcs.TAN -> Math.tan(d);
 			case Funcs.LOG -> Math.log(d) / Math.log(d_1);
+			case Funcs.SQRT -> Math.sqrt(d);
+			case Funcs.LN -> Math.log(d) / Math.log(Math.E);
 			default -> throw new IllegalArgumentException("keine bekannte Funktion");
 		};
 	}
@@ -289,7 +387,7 @@ record Func(Funcs f, List<Expr> e) implements Expr{
 			case Funcs.SIN -> Math.sin(d);
 			case Funcs.COS -> Math.cos(d);
 			case Funcs.TAN -> Math.tan(d);
-			case Funcs.LOG -> Math.log(d) / Math.log(2);
+			case Funcs.LOG -> Math.log(d);
 			case Funcs.SQRT -> Math.sqrt(d);
 			case Funcs.LN -> Math.log(d) / Math.log(Math.E);
 			default -> throw new IllegalArgumentException("keine bekannte Funktion");
@@ -384,14 +482,17 @@ class TreeMaker{
 
 			int down = this.k;
 			this.k += 1;
-
+			int up = this.k;
 			connects += "n"+this.k+"[label=\""+((Func)e_in).f() + "\"] ;\n";
 
 			connects += "n"+this.k+ " -> " +"n"+ down + ";\n";
 
 			if(((Func)e_in).f() == Funcs.LOG){
+				
 				int root = this.k;
+
 				connects += this.planter(((Func)e_in).e().get(1))+"\n";
+				
 				connects += "n"+root+ " -> n" +this.k+ " ;\n";
 			}
 		}
@@ -407,6 +508,7 @@ class TreeMaker{
 		return connects;
 	}
 }
+
 
 
 
@@ -508,6 +610,14 @@ class CalcUPN{
 	}
 }
 
+
+
+
+
+
+
+
+
 class Plotter{
 	
 	Turtle t;
@@ -516,7 +626,7 @@ class Plotter{
 	ArrayList<Coord> coord_left = new ArrayList<>();
 	ArrayList<Coord> coord_right = new ArrayList<>();
 
-	public Plotter(Token[] arithmetic_tokens){				// Der Konstruktor erstellt eine Turtle mit den Basis Achsen
+	public Plotter(Token[] arithmetic_tokens,double scaleX,double scaleY){				// Der Konstruktor erstellt eine Turtle mit den Basis Achsen
 		this.t = new Turtle(0, 200, 0, 50, 100, 25, 0);
 		
 		this.t.width(0.5);
@@ -537,7 +647,7 @@ class Plotter{
 			.penUp();
 		this.t.width(0.1)
 			.push();
-		this.cooSys(10,5);
+		this.cooSys(scaleX,scaleY);
 		this.drawFunc(arithmetic_tokens);
 	}
 
@@ -578,7 +688,7 @@ class Plotter{
 				.forward(spX)
 				.left(90)
 				.push()
-				.backward(0.5)
+				.backward(0.25)
 				.text(""+(spX/this.scaleX)+"",px+" Arial")
 				.pop()
 				.forward(50)
@@ -598,7 +708,7 @@ class Plotter{
 				.forward(spY)
 				.push()
 				.right(90)
-				.forward(0.5)
+				.forward(0.25)
 				.text(""+(spY/this.scaleY)+"",px+" Arial")
 				.pop()
 				.left(90)
@@ -630,7 +740,7 @@ class Plotter{
 				.color(255,100,100)
 				.push();
 
-			for(double i = 0, k = 0;i < (100.0/this.scaleX);i+=0.001,k-=0.001){
+			for(double i = 0, k = 0;i < (100.0/this.scaleX);i+=0.01,k-=0.01){
 
 				double j = this.findY(token,i); // berechnet y bei x = i
 				double p = this.findY(token,k);
@@ -663,6 +773,13 @@ class Plotter{
 		return cU.sol;
 	}
 }
+
+
+
+
+
+
+
 
 class UPNParser{
 	
@@ -715,6 +832,7 @@ class UPNParser{
 
 
 }
+
 
 
 
@@ -1094,6 +1212,7 @@ static class CalcTree{
 
 
 
+
 class Inf2Upn{
 
 	Stack<Token>operatorStack;
@@ -1192,3 +1311,7 @@ class Inf2Upn{
 		};
 	}
 }
+
+
+
+
