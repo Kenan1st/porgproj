@@ -29,8 +29,7 @@ public class TreeMaker{
 			connects += "n"+this.k+" -> " + "n"+right+";\n";
 
 		}
-		if(e_in instanceof Func){	
-		
+		if(e_in instanceof Func){
 			connects += this.planter(((Func)e_in).e().get(0))+"";
 
 			int down = this.k;
@@ -40,8 +39,10 @@ public class TreeMaker{
 
 			connects += "n"+this.k+ " -> " +"n"+ down + ";\n";
 
-			if(((Func)e_in).f() == Funcs.LOG && ((Func)e_in).e().size()>1){
-				connects += this.planter(((Func)e_in).e().get(1))+"";
+			if(((Func)e_in).f() == Funcs.LOG){
+				int root = this.k;
+				connects += this.planter(((Func)e_in).e().get(1))+"\n";
+				connects += "n"+root+ " -> n" +this.k+ " ;\n";
 			}
 		}
 		if(e_in instanceof Va){

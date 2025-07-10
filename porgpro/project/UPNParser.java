@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class UPNParser{
+public 
+class UPNParser{
 	
 	private ArrayList<Token> t;
 
@@ -40,7 +41,7 @@ public class UPNParser{
 				case Eul() -> new Cnst(Math.E);
 				case Log() -> {Token[] newtk = new Token[this.t.size()-2];
 						for(int i = 0; i<this.t.size()-2;i++){newtk[i] = this.t.get(i);};
-						yield new Func(Funcs.LOG, List.of(this.parse(),new UPNParser(newtk).parse()));}
+						yield new Func(Funcs.LOG, List.of(this.parse(),this.parse()));}
 				default -> throw new IllegalArgumentException("Fehler in Token");
 
 			};

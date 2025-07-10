@@ -16,7 +16,7 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue = " log(sin(e^x),tan(10)) "; // Input Example
+    String exampleValue = " log(sin(x^4),tan(5*10)) "; // Input Example
 	//
    	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
@@ -379,8 +379,7 @@ class TreeMaker{
 			connects += "n"+this.k+" -> " + "n"+right+";\n";
 
 		}
-		if(e_in instanceof Func){	
-		
+		if(e_in instanceof Func){
 			connects += this.planter(((Func)e_in).e().get(0))+"";
 
 			int down = this.k;
@@ -390,8 +389,10 @@ class TreeMaker{
 
 			connects += "n"+this.k+ " -> " +"n"+ down + ";\n";
 
-			if(((Func)e_in).f() == Funcs.LOG && ((Func)e_in).e().size()>1){
-				connects += this.planter(((Func)e_in).e().get(1))+"";
+			if(((Func)e_in).f() == Funcs.LOG){
+				int root = this.k;
+				connects += this.planter(((Func)e_in).e().get(1))+"\n";
+				connects += "n"+root+ " -> n" +this.k+ " ;\n";
 			}
 		}
 		if(e_in instanceof Va){
@@ -695,7 +696,7 @@ class UPNParser{
 				case Eul() -> new Cnst(Math.E);
 				case Log() -> {Token[] newtk = new Token[this.t.size()-2];
 						for(int i = 0; i<this.t.size()-2;i++){newtk[i] = this.t.get(i);};
-						yield new Func(Funcs.LOG, List.of(this.parse(),new UPNParser(newtk).parse()));}
+						yield new Func(Funcs.LOG, List.of(this.parse(),this.parse()));}
 				default -> throw new IllegalArgumentException("Fehler in Token");
 
 			};
