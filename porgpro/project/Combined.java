@@ -279,12 +279,7 @@ record Func(Funcs f, List<Expr> e) implements Expr{
 
 	public double trans(double d, double d_1){
 		return switch(this.f()){
-			case Funcs.SIN -> Math.sin(d);
-			case Funcs.COS -> Math.cos(d);
-			case Funcs.TAN -> Math.tan(d);
 			case Funcs.LOG -> Math.log(d) / Math.log(d_1);
-			case Funcs.SQRT -> Math.sqrt(d);
-			case Funcs.LN -> Math.log(d) / Math.log(Math.E);
 			default -> throw new IllegalArgumentException("keine bekannte Funktion");
 		};
 	}
@@ -294,7 +289,7 @@ record Func(Funcs f, List<Expr> e) implements Expr{
 			case Funcs.SIN -> Math.sin(d);
 			case Funcs.COS -> Math.cos(d);
 			case Funcs.TAN -> Math.tan(d);
-			case Funcs.LOG -> Math.log(d);
+			case Funcs.LOG -> Math.log(d) / Math.log(2);
 			case Funcs.SQRT -> Math.sqrt(d);
 			case Funcs.LN -> Math.log(d) / Math.log(Math.E);
 			default -> throw new IllegalArgumentException("keine bekannte Funktion");
@@ -384,7 +379,7 @@ class TreeMaker{
 			connects += "n"+this.k+" -> " + "n"+right+";\n";
 
 		}
-		if(e_in instanceof Func){
+		if(e_in instanceof Func){	
 		
 			connects += this.planter(((Func)e_in).e().get(0))+"";
 
@@ -392,9 +387,12 @@ class TreeMaker{
 			this.k += 1;
 
 			connects += "n"+this.k+"[label=\""+((Func)e_in).f() + "\"] ;\n";
-			//this.k += 1;
 
 			connects += "n"+this.k+ " -> " +"n"+ down + ";\n";
+
+			if(((Func)e_in).f() == Funcs.LOG && ((Func)e_in).e().size()>1){
+				connects += this.planter(((Func)e_in).e().get(1))+"";
+			}
 		}
 		if(e_in instanceof Va){
 			this.k += 1;
@@ -691,11 +689,13 @@ class UPNParser{
 				case Sin() -> new Func(Funcs.SIN, List.of(this.parse()));
 				case Cos() -> new Func(Funcs.COS, List.of(this.parse()));
 				case Tan() -> new Func(Funcs.TAN, List.of(this.parse()));
-				case Log() -> new Func(Funcs.LOG, List.of(this.parse()));
+				case Ln() -> new Func(Funcs.LN, List.of(this.parse()));
 				case Sqrt() -> new Func(Funcs.SQRT, List.of(this.parse()));
 				case Pi() -> new Cnst(Math.PI);
 				case Eul() -> new Cnst(Math.E);
-				case Ln() -> new Func(Funcs.LN, List.of(this.parse()));
+				case Log() -> {Token[] newtk = new Token[this.t.size()-2];
+						for(int i = 0; i<this.t.size()-2;i++){newtk[i] = this.t.get(i);};
+						yield new Func(Funcs.LOG, List.of(this.parse(),new UPNParser(newtk).parse()));}
 				default -> throw new IllegalArgumentException("Fehler in Token");
 
 			};

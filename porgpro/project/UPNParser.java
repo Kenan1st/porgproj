@@ -34,11 +34,13 @@ public class UPNParser{
 				case Sin() -> new Func(Funcs.SIN, List.of(this.parse()));
 				case Cos() -> new Func(Funcs.COS, List.of(this.parse()));
 				case Tan() -> new Func(Funcs.TAN, List.of(this.parse()));
-				case Log() -> new Func(Funcs.LOG, List.of(this.parse()));
+				case Ln() -> new Func(Funcs.LN, List.of(this.parse()));
 				case Sqrt() -> new Func(Funcs.SQRT, List.of(this.parse()));
 				case Pi() -> new Cnst(Math.PI);
 				case Eul() -> new Cnst(Math.E);
-				case Ln() -> new Func(Funcs.LN, List.of(this.parse()));
+				case Log() -> {Token[] newtk = new Token[this.t.size()-2];
+						for(int i = 0; i<this.t.size()-2;i++){newtk[i] = this.t.get(i);};
+						yield new Func(Funcs.LOG, List.of(this.parse(),new UPNParser(newtk).parse()));}
 				default -> throw new IllegalArgumentException("Fehler in Token");
 
 			};
@@ -57,3 +59,4 @@ public class UPNParser{
 
 
 }
+
