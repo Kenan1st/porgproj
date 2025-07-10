@@ -16,7 +16,7 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue = " e x ^ sin x e ^ tan - ln  "; // Input Example
+    String exampleValue = " log(sin(e^x),tan(10)) "; // Input Example
 	//
    	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
@@ -72,7 +72,7 @@ void main(){
 	
 	String s ="";
 
-	for(Token tokensss : Z){s += tokensss.toString();}
+	for(Token tokensss : Z){s += " "+tokensss.toString();}
 	
 	Clerk.markdown(Text.fillOut("""
 			Hier der UPN Ausdruck zum InfixAusdruck: """+
