@@ -75,7 +75,7 @@ public class Plotter{
 
 	public void vertln(double spX){ // scaleparameterX zeigt an, wann nun ein vertikaler Strich gezogen werden soll
 			String px = "1.5px";
-			if(spX < 5 && spX > -5){px = "0.5px";}
+			if(this.scaleX < 5 && this.scaleX > -5){px = "0.5px";}
 			this.t.penUp()
 				.push()
 				.forward(spX)
@@ -93,7 +93,7 @@ public class Plotter{
 
 	public void horiln(double spY){ // scaleParameterY zeigt an, wann nun ein horizontaler Strich gezogen werden soll
 			String px = "1.5px";
-			if(spY < 5 && spY > -5){px = "0.5px";}
+			if(this.scaleY < 3 && this.scaleY > -3){px = "0.5px";}
 
 			this.t.penUp()
 				.push()
@@ -162,10 +162,6 @@ public class Plotter{
 		}
 
 		CalcUPN cU = new CalcUPN(newt);
-		
-		return cU.sol;
-	}
-}		CalcUPN cU = new CalcUPN(newt);
 		
 		return cU.sol;
 	}

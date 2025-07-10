@@ -16,7 +16,7 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue = " ln(sin(e^x)-tan(x^e)) "; // Input Example
+    String exampleValue = " 0.5*x^4 - 1.5*x^3 + 0.3*x^2 - x  "; // Input Example
 	//
    	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
@@ -562,7 +562,7 @@ class Plotter{
 
 	public void vertln(double spX){ // scaleparameterX zeigt an, wann nun ein vertikaler Strich gezogen werden soll
 			String px = "1.5px";
-			if(spX < 5 && spX > -5){px = "0.5px";}
+			if(this.scaleX < 5 && this.scaleX > -5){px = "0.5px";}
 			this.t.penUp()
 				.push()
 				.forward(spX)
@@ -580,7 +580,7 @@ class Plotter{
 
 	public void horiln(double spY){ // scaleParameterY zeigt an, wann nun ein horizontaler Strich gezogen werden soll
 			String px = "1.5px";
-			if(spY < 5 && spY > -5){px = "0.5px";}
+			if(this.scaleY < 3 && this.scaleY > -3){px = "0.5px";}
 
 			this.t.penUp()
 				.push()
