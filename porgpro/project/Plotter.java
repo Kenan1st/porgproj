@@ -10,6 +10,7 @@ import lvp.views.Turtle;
 
 
 
+
 public class Plotter{
 	
 	Turtle t;
@@ -38,7 +39,7 @@ public class Plotter{
 			.pop()
 			.penUp();
 		this.t.width(0.1);
-		this.cooSys(5,5);
+		this.cooSys(10,5);
 		this.drawFunc(arithmetic_tokens);
 	}
 
@@ -112,7 +113,7 @@ public class Plotter{
 				.color(255,100,100)
 				.push();
 
-			for(double i = 0, k = 0;i < (100.0/this.scaleX);i+=0.1,k-=0.1){
+			for(double i = 0, k = 0;i < (100.0/this.scaleX);i+=0.001,k-=0.001){
 
 				double j = this.findY(token,i); // berechnet y bei x = i
 				double p = this.findY(token,k);
@@ -121,12 +122,11 @@ public class Plotter{
 				
 				this.coordpoints((i*this.scaleX),(j*this.scaleY));
 				this.coordpoints((k*this.scaleX),(p*this.scaleY));
-
+				}
 			Lines l = new Lines(this.t,this.coord_right,this.coord_left);
 			this.t = l.newTurtle;
 
 		}
-	}
 
 	public double findY(Token[] tok,double x){
 

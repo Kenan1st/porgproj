@@ -16,7 +16,7 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue = "0.2*x^2 - 0.7*x^3 + 5*x"; // Input Example
+    String exampleValue = " ln(e) "; // Input Example
 	//
    	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
@@ -74,7 +74,6 @@ void main(){
 		PO.t.write();
 
 }
-
 class Validater{
 
 	boolean upn = false;
@@ -154,7 +153,8 @@ class Lines{
 				this.lengths_left = calcLengths(this.x_s_left, nextCoord_left.x(), this.y_s_left, nextCoord_left.y());
 				this.lengths_right = calcLengths(this.x_s_right, nextCoord_right.x(), this.y_s_right, nextCoord_right.y());
 
-				this.newTurtle.push()
+				this.newTurtle.penUp()
+						.push()
 						.penUp()
 						.forward(this.x_s_left)
 						.left(90)
@@ -162,9 +162,11 @@ class Lines{
 						.right(270-this.lengths_left[1])
 						.penDown()
 						.forward(this.lengths_left[0])
-						.pop();
+						.pop()
+						.penUp();
 				
-				this.newTurtle.push()
+				this.newTurtle.penUp()
+						.push()
 						.penUp()
 						.forward(this.x_s_right)
 						.left(90)
@@ -172,7 +174,8 @@ class Lines{
 						.left(90+this.lengths_right[1])
 						.penDown()
 						.forward(this.lengths_right[0])
-						.pop();
+						.pop()
+						.penUp();
 						
 				this.x_s_left= nextCoord_left.x();
 				this.y_s_left = nextCoord_left.y();
@@ -493,6 +496,10 @@ class CalcUPN{
 			double cont = this.nums.pop().value();
 			return Math.sqrt(cont);
 			}
+		if(t instanceof Ln){
+			double cont = this.nums.pop().value();
+			return Math.log(cont);
+		}
 		else{
 			throw new IllegalArgumentException("Token Unbekannt" + t);
 		}
@@ -534,8 +541,9 @@ class Plotter{
 			.backward(100)
 			.pop()
 			.penUp();
-		this.t.width(0.1);
-		this.cooSys(10,1);
+		this.t.width(0.1)
+			.push();
+		this.cooSys(10,5);
 		this.drawFunc(arithmetic_tokens);
 	}
 
@@ -576,7 +584,8 @@ class Plotter{
 				.forward(50)
 				.penDown()
 				.backward(100)
-				.pop();
+				.pop()
+				.penUp();
 	}
 
 	public void horiln(double spY){ // scaleParameterY zeigt an, wann nun ein horizontaler Strich gezogen werden soll
@@ -588,12 +597,14 @@ class Plotter{
 				.forward(100)
 				.penDown()
 				.backward(200)
-				.pop();
+				.pop()
+				.penUp();
 	}
 
 	
 	public void coordpoints(double x, double y){
-			this.t.push()
+			this.t.penUp()
+				.push()
 				.penUp()
 				.forward(x)
 				.left(90)
@@ -601,11 +612,13 @@ class Plotter{
 				.penDown()
 				.forward(0.1)
 				.penUp()
-				.pop();
+				.pop()
+				.penUp();
 	}
 
 	public void drawFunc(Token[] token){ // zeichnet die Funktion
-			this.t.width(0.1)
+			this.t.penUp()
+				.width(0.1)
 				.color(255,100,100)
 				.push();
 
@@ -642,12 +655,6 @@ class Plotter{
 		return cU.sol;
 	}
 }
-
-
-
-
-
-
 
 class UPNParser{
 	
@@ -1095,7 +1102,7 @@ class Inf2Upn{
 			if(tk instanceof Num || tk instanceof Ident || tk instanceof Eul || tk instanceof Pi){
 				outputQueue.add(tk);
 			}
-			if(tk instanceof Sin || tk instanceof Cos || tk instanceof Tan || tk instanceof Sqrt || tk instanceof Log){
+			if(tk instanceof Sin || tk instanceof Cos || tk instanceof Tan || tk instanceof Sqrt || tk instanceof Log || tk instanceof Ln){
 				this.operatorStack.add(tk);
 			}
 			if(tk instanceof Op){
@@ -1173,3 +1180,5 @@ class Inf2Upn{
 		};
 	}
 }
+
+

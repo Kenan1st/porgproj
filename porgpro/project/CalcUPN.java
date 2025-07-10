@@ -95,6 +95,10 @@ public class CalcUPN{
 			double cont = this.nums.pop().value();
 			return Math.sqrt(cont);
 			}
+		if(t instanceof Ln){
+			double cont = this.nums.pop().value();
+			return Math.log(cont);
+		}
 		else{
 			throw new IllegalArgumentException("Token Unbekannt" + t);
 		}

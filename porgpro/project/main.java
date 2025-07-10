@@ -2,7 +2,7 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue = "x 5 * sin"; // Input Example
+    String exampleValue = "0.2*x^2 - 0.7*x^3 + 5*x"; // Input Example
 	//
    	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
@@ -27,11 +27,14 @@ void main(){
 
 	String dot_arg = "";
 
-	Plotter PO = new Plotter(Z);
-
 	Dot dot = new Dot();
 
-	if(val.upn){	
+	if(val.inf){
+		Inf2Upn i2U = new Inf2Upn(Z);
+		Z = i2U.outPutToken;
+	}
+
+	Plotter PO = new Plotter(Z);
 
 	UPNParser P = new UPNParser(Z);
 
@@ -55,24 +58,5 @@ void main(){
 		dot.draw("digraph G {"+dot_arg+"}");
 
 		PO.t.write();
-	}
-
-	else{
-		if(val.inf){
-	
-		if(val.ar_expr){
-
-		}
-
-		}
-		else{
-			if(val.ar_expr){
-				dot_arg = Z[0].toString();
-				PO.t.write();
-		}
-			else{ throw new IllegalArgumentException("Falscher Ausdruck");}
-		}
-	}
 
 }
-
