@@ -26,7 +26,7 @@ public class Inf2Upn{
 			if(tk instanceof Num || tk instanceof Ident || tk instanceof Eul || tk instanceof Pi){
 				outputQueue.add(tk);
 			}
-			if(tk instanceof Sin || tk instanceof Cos || tk instanceof Tan || tk instanceof Sqrt || tk instanceof Log){
+			if(tk instanceof Sin || tk instanceof Cos || tk instanceof Tan || tk instanceof Sqrt || tk instanceof Log || tk instanceof Ln){
 				this.operatorStack.add(tk);
 			}
 			if(tk instanceof Op){
@@ -60,7 +60,8 @@ public class Inf2Upn{
 					 this.operatorStack.peek() instanceof Cos ||
 					 this.operatorStack.peek() instanceof Tan ||
 					 this.operatorStack.peek() instanceof Sqrt||
-					 this.operatorStack.peek() instanceof Log )){
+					 this.operatorStack.peek() instanceof Log ||
+					 this.operatorStack.peek() instanceof Ln)){
 					outputQueue.add(this.operatorStack.pop());
 				}
 			}
@@ -104,3 +105,5 @@ public class Inf2Upn{
 		};
 	}
 }
+
+

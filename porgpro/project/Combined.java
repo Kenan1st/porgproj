@@ -1136,7 +1136,8 @@ class Inf2Upn{
 					 this.operatorStack.peek() instanceof Cos ||
 					 this.operatorStack.peek() instanceof Tan ||
 					 this.operatorStack.peek() instanceof Sqrt||
-					 this.operatorStack.peek() instanceof Log )){
+					 this.operatorStack.peek() instanceof Log ||
+					 this.operatorStack.peek() instanceof Ln)){
 					outputQueue.add(this.operatorStack.pop());
 				}
 			}
