@@ -14,8 +14,8 @@ class Validater{
 		else{
 			
 
-			if((tokens[0] instanceof Num || tokens[0] instanceof Ident) &&
-			   (tokens[1] instanceof Num || tokens[1] instanceof Ident)){
+			if((tokens[0] instanceof Num || tokens[0] instanceof Ident || tokens[0] instanceof Eul || tokens[0] instanceof Pi) &&
+			   (tokens[1] instanceof Num || tokens[1] instanceof Ident || tokens[1] instanceof Eul || tokens[1] instanceof Pi)){
 				this.upn = true;
 
 				for(Token t : tokens){
@@ -34,3 +34,4 @@ class Validater{
 		return;
 	}
 }
+

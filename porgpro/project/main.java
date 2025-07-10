@@ -2,7 +2,7 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue = "0.2*x^2 - 0.7*x^3 + 5*x"; // Input Example
+    String exampleValue = " e x ^ sin x e ^ tan - ln  "; // Input Example
 	//
    	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
@@ -55,8 +55,19 @@ void main(){
 		solution.sol +"""
 	"""));
 	}
+	
+	String s ="";
+
+	for(Token tokensss : Z){s += tokensss.toString();}
+	
+	Clerk.markdown(Text.fillOut("""
+			Hier der UPN Ausdruck zum InfixAusdruck: """+
+			s + """
+			"""));
+
 		dot.draw("digraph G {"+dot_arg+"}");
 
 		PO.t.write();
+		PO.t.timelineSlider();
 
 }

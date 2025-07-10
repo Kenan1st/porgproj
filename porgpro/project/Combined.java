@@ -16,7 +16,7 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue = " ln(sin(e^x)-tan(x^e))  "; // Input Example
+    String exampleValue = " e x ^ sin x e ^ tan - ln  "; // Input Example
 	//
    	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
@@ -69,9 +69,20 @@ void main(){
 		solution.sol +"""
 	"""));
 	}
+	
+	String s ="";
+
+	for(Token tokensss : Z){s += tokensss.toString();}
+	
+	Clerk.markdown(Text.fillOut("""
+			Hier der UPN Ausdruck zum InfixAusdruck: """+
+			s + """
+			"""));
+
 		dot.draw("digraph G {"+dot_arg+"}");
 
 		PO.t.write();
+		PO.t.timelineSlider();
 
 }
 class Validater{
@@ -90,8 +101,8 @@ class Validater{
 		else{
 			
 
-			if((tokens[0] instanceof Num || tokens[0] instanceof Ident) &&
-			   (tokens[1] instanceof Num || tokens[1] instanceof Ident)){
+			if((tokens[0] instanceof Num || tokens[0] instanceof Ident || tokens[0] instanceof Eul || tokens[0] instanceof Pi) &&
+			   (tokens[1] instanceof Num || tokens[1] instanceof Ident || tokens[1] instanceof Eul || tokens[1] instanceof Pi)){
 				this.upn = true;
 
 				for(Token t : tokens){
@@ -620,7 +631,7 @@ class Plotter{
 				.color(255,100,100)
 				.push();
 
-			for(double i = 0, k = 0;i < (100.0/this.scaleX);i+=0.01,k-=0.01){
+			for(double i = 0, k = 0;i < (100.0/this.scaleX);i+=0.001,k-=0.001){
 
 				double j = this.findY(token,i); // berechnet y bei x = i
 				double p = this.findY(token,k);
@@ -1180,5 +1191,3 @@ class Inf2Upn{
 		};
 	}
 }
-
-
