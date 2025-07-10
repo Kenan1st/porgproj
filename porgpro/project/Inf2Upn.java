@@ -8,7 +8,8 @@ import java.util.Stack;
 import java.util.ArrayDeque;
 
 
-public class Inf2Upn{
+public 
+class Inf2Upn{
 
 	Stack<Token>operatorStack;
 
@@ -36,7 +37,8 @@ public class Inf2Upn{
 					 this.operatorStack.peek() instanceof Tan ||
 					 this.operatorStack.peek() instanceof Sqrt||
 					 this.operatorStack.peek() instanceof Log ||
-					 this.operatorStack.peek() instanceof Op)
+					 this.operatorStack.peek() instanceof Op ||
+					 this.operatorStack.peek() instanceof Ln)
 						&& this.compare(this.operatorStack.peek(),tk)){
 				
 					outputQueue.add(this.operatorStack.pop());

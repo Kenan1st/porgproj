@@ -38,7 +38,8 @@ public class Plotter{
 			.backward(100)
 			.pop()
 			.penUp();
-		this.t.width(0.1);
+		this.t.width(0.1)
+			.push();
 		this.cooSys(10,5);
 		this.drawFunc(arithmetic_tokens);
 	}
@@ -73,31 +74,48 @@ public class Plotter{
 
 
 	public void vertln(double spX){ // scaleparameterX zeigt an, wann nun ein vertikaler Strich gezogen werden soll
+			String px = "1.5px";
+			if(spX < 5 && spX > -5){px = "0.5px";}
 			this.t.penUp()
 				.push()
 				.forward(spX)
 				.left(90)
+				.push()
+				.backward(0.5)
+				.text(""+(spX/this.scaleX)+"",px+" Arial")
+				.pop()
 				.forward(50)
 				.penDown()
 				.backward(100)
-				.pop();
+				.pop()
+				.penUp();
 	}
 
 	public void horiln(double spY){ // scaleParameterY zeigt an, wann nun ein horizontaler Strich gezogen werden soll
+			String px = "1.5px";
+			if(spY < 5 && spY > -5){px = "0.5px";}
+
 			this.t.penUp()
 				.push()
 				.left(90)
 				.forward(spY)
+				.push()
+				.right(90)
+				.forward(0.5)
+				.text(""+(spY/this.scaleY)+"",px+" Arial")
+				.pop()
 				.left(90)
 				.forward(100)
 				.penDown()
 				.backward(200)
-				.pop();
+				.pop()
+				.penUp();
 	}
 
 	
 	public void coordpoints(double x, double y){
-			this.t.push()
+			this.t.penUp()
+				.push()
 				.penUp()
 				.forward(x)
 				.left(90)
@@ -105,15 +123,17 @@ public class Plotter{
 				.penDown()
 				.forward(0.1)
 				.penUp()
-				.pop();
+				.pop()
+				.penUp();
 	}
 
 	public void drawFunc(Token[] token){ // zeichnet die Funktion
-			this.t.width(0.1)
+			this.t.penUp()
+				.width(0.1)
 				.color(255,100,100)
 				.push();
 
-			for(double i = 0, k = 0;i < (100.0/this.scaleX);i+=0.001,k-=0.001){
+			for(double i = 0, k = 0;i < (100.0/this.scaleX);i+=0.01,k-=0.01){
 
 				double j = this.findY(token,i); // berechnet y bei x = i
 				double p = this.findY(token,k);
@@ -142,6 +162,10 @@ public class Plotter{
 		}
 
 		CalcUPN cU = new CalcUPN(newt);
+		
+		return cU.sol;
+	}
+}		CalcUPN cU = new CalcUPN(newt);
 		
 		return cU.sol;
 	}

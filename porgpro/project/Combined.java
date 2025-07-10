@@ -16,7 +16,7 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue = " ln(e) "; // Input Example
+    String exampleValue = " ln(sin(e^x)-tan(x^e)) "; // Input Example
 	//
    	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
@@ -110,14 +110,6 @@ class Validater{
 		return;
 	}
 }
-
-
-
-
-
-
-
-
 
 class Lines{
 	Turtle newTurtle;
@@ -506,14 +498,6 @@ class CalcUPN{
 	}
 }
 
-
-
-
-
-
-
-
-
 class Plotter{
 	
 	Turtle t;
@@ -577,10 +561,16 @@ class Plotter{
 
 
 	public void vertln(double spX){ // scaleparameterX zeigt an, wann nun ein vertikaler Strich gezogen werden soll
+			String px = "1.5px";
+			if(spX < 5 && spX > -5){px = "0.5px";}
 			this.t.penUp()
 				.push()
 				.forward(spX)
 				.left(90)
+				.push()
+				.backward(0.5)
+				.text(""+(spX/this.scaleX)+"",px+" Arial")
+				.pop()
 				.forward(50)
 				.penDown()
 				.backward(100)
@@ -589,10 +579,18 @@ class Plotter{
 	}
 
 	public void horiln(double spY){ // scaleParameterY zeigt an, wann nun ein horizontaler Strich gezogen werden soll
+			String px = "1.5px";
+			if(spY < 5 && spY > -5){px = "0.5px";}
+
 			this.t.penUp()
 				.push()
 				.left(90)
 				.forward(spY)
+				.push()
+				.right(90)
+				.forward(0.5)
+				.text(""+(spY/this.scaleY)+"",px+" Arial")
+				.pop()
 				.left(90)
 				.forward(100)
 				.penDown()
