@@ -16,7 +16,7 @@ void main(){
 
  Clerk.clear();
 
-    String exampleValue = " 0.5*x^4 - 1.5*x^3 + 0.3*x^2 - x  "; // Input Example
+    String exampleValue = " ln(sin(e^x)-tan(x^e))  "; // Input Example
 	//
    	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
@@ -141,9 +141,11 @@ class Lines{
 				Coord nextCoord_right = this.lstCoords_left.get(i);
 				Coord nextCoord_left = this.lstCoords_right.get(i);
 	
-				
 				this.lengths_left = calcLengths(this.x_s_left, nextCoord_left.x(), this.y_s_left, nextCoord_left.y());
 				this.lengths_right = calcLengths(this.x_s_right, nextCoord_right.x(), this.y_s_right, nextCoord_right.y());
+
+				if(!Double.isFinite(lengths_right[0])){continue;}
+				if(!Double.isFinite(lengths_right[1])){continue;}
 
 				this.newTurtle.penUp()
 						.push()
@@ -172,10 +174,8 @@ class Lines{
 				this.x_s_left= nextCoord_left.x();
 				this.y_s_left = nextCoord_left.y();
 				this.y_s_right = nextCoord_right.y();
-				this.x_s_right = nextCoord_right.x();
-		}
+				this.x_s_right = nextCoord_right.x();}
 	}
-
 	public double[] calcLengths(double x_0,double x_1, double y_0,double y_1){
 			
 			double delt_x = (x_0-x_1);

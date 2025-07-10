@@ -5,10 +5,6 @@ import project.tok.*;
 import project.ast.*;
 
 
-
-
-
-
 class Lines{
 	Turtle newTurtle;
 	double x_s_left;
@@ -39,11 +35,14 @@ class Lines{
 				Coord nextCoord_right = this.lstCoords_left.get(i);
 				Coord nextCoord_left = this.lstCoords_right.get(i);
 	
-				
 				this.lengths_left = calcLengths(this.x_s_left, nextCoord_left.x(), this.y_s_left, nextCoord_left.y());
 				this.lengths_right = calcLengths(this.x_s_right, nextCoord_right.x(), this.y_s_right, nextCoord_right.y());
 
-				this.newTurtle.push()
+				if(!Double.isFinite(lengths_right[0])){continue;}
+				if(!Double.isFinite(lengths_right[1])){continue;}
+
+				this.newTurtle.penUp()
+						.push()
 						.penUp()
 						.forward(this.x_s_left)
 						.left(90)
@@ -51,9 +50,11 @@ class Lines{
 						.right(270-this.lengths_left[1])
 						.penDown()
 						.forward(this.lengths_left[0])
-						.pop();
+						.pop()
+						.penUp();
 				
-				this.newTurtle.push()
+				this.newTurtle.penUp()
+						.push()
 						.penUp()
 						.forward(this.x_s_right)
 						.left(90)
@@ -61,15 +62,14 @@ class Lines{
 						.left(90+this.lengths_right[1])
 						.penDown()
 						.forward(this.lengths_right[0])
-						.pop();
+						.pop()
+						.penUp();
 						
 				this.x_s_left= nextCoord_left.x();
 				this.y_s_left = nextCoord_left.y();
 				this.y_s_right = nextCoord_right.y();
-				this.x_s_right = nextCoord_right.x();
-		}
+				this.x_s_right = nextCoord_right.x();}
 	}
-
 	public double[] calcLengths(double x_0,double x_1, double y_0,double y_1){
 			
 			double delt_x = (x_0-x_1);
