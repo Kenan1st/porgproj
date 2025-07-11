@@ -77,10 +77,12 @@ String exampleValue = "e^x"; // Input String Example
 
 	Clerk.markdown(Text.fillOut("""
 		Hier einpaar test funktionen:
+
+		!!! Wichtig: es darf nur eine checkbox angeklickt sein, um die richtige Funktion darzustellen.
 		"""));
 	
 	// ceckbox
-boolean test1= false; // test1
+boolean test1= true; // test1
 	Clerk.markdown(Text.fillOut("""
 		sin(e^x)
 		"""));
@@ -110,7 +112,7 @@ boolean test3= false; // test3
 	// checkbox
 	
 	// ceckbox
-boolean test4= true; // test4
+boolean test4= false; // test4
 	Clerk.markdown(Text.fillOut("""
 		ln(e^x)
 		"""));
