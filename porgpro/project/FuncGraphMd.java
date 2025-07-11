@@ -23,17 +23,17 @@ void main(){
 		Den Records und enums wurden eigene toString-Methoden geschrieben, damit sie später bei zb. der Dot-Notation eine einfachere
 		Serialisierung der Werte ermöglichen. Sie werden auch ähnlich benannt.
 		Das einordnen des Ausdrucks in Infix oder UP - Notaton erfolgt über einen 
-		Validieren(Validater) 
+		Validierer(Validater) 
 		```java
 		${4}
 		```
 		der sich
 		sehr schlicht die ersten beiden Tokens anschaut und daraufhin validiert,
-		ob es sich um die Infix- oder Up-Notation handelt. Fals dem so ist wird der Infix ausdruck in UPN umgewandelt.
+		ob es sich um die Infix- oder Up-Notation handelt. Falls dem so ist wird der Infix ausdruck in UPN umgewandelt.
 		Handelt es sich um einen arithmetischen Ausdruck, welcher keine Funtkion ist (Validater),
 		so wird das ergebnis unter dem Baum aufgezeigt und er erscheint als Konstante Linie auf dem Graphen 
 		bei dem Lösungswert.
-		Die Turtle von dem Mittelpunkt aus nach links und nach rechts aufgebaut und so wir auch die Funktion aufgemalt.
+		Die Turtle von dem Mittelpunkt aus nach links und nach rechts aufgebaut und so wird auch die Funktion aufgemalt.
 		```java
 		${2}
 		```
@@ -46,9 +46,9 @@ void main(){
 		${1}
 		```
 		Dies half bei der Skalireung des Graphen und des Koordinatensystems.
-		Je nach Komplexität und Skalierung des Graphen benötigt die website länger zur berechnung, da bei einigen Funktion über 40.000 linien gezeichnet werden
-		Momentan ist die die forschleife im Plotter die die menge an Punkten und so auch an linien angibt auf 0.01 gewählt weshalb mann womöglich einige sekunden 
-		warten muss um den Graphen angezeigt zu bekommen.
+		Je nach Komplexität und Skalierung des Graphen benötigt die website länger zur berechnung, da bei einigen Funktion über 40.000 linien gezeichnet werden.
+		Momentan sind die läufer der for-schleife im Plotter , die die Men an Punkten und so auch an linien angeben, auf 0.01 gewählt weshalb 
+		mann womöglich einige sekunden warten muss, um den Graphen angezeigt zu bekommen.
 
 		```java
 		${0}
@@ -58,93 +58,111 @@ void main(){
 		```java
 		${5}
 		```
-		""", Text.codeBlock("./Combined.java","// Menge an Punkten -> Linien"),
-			Text.codeBlock("./Combined.java","// Hardcode-Turtle"),
-			Text.codeBlock("./Combined.java","// left_right_build"),
-			Text.codeBlock("./Combined.java","// left_right_lines"),
-			Text.codeBlock("./Combined.java","// validater"),
-			Text.codeBlock("./Combined.java","// PlotterLines")));
+		Die Berechnung erfolgt immer über einen UPN-Ausdruck welcher in CalcUPN validiert/ berechnet wird
+		```java
+		${6}
+		```
+		""", Text.codeBlock("./FuncGraphMd.java","// Menge an Punkten -> Linien"),
+			Text.codeBlock("./FuncGraphMd.java","// Hardcode-Turtle"),
+			Text.codeBlock("./FuncGraphMd.java","// left_right_build"),
+			Text.codeBlock("./FuncGraphMd.java","// left_right_lines"),
+			Text.codeBlock("./FuncGraphMd.java","// validater"),
+			Text.codeBlock("./FuncGraphMd.java","// PlotterLines"),
+			Text.codeBlock("./FuncGraphMd.java","// CalcUP")));
 
 	Clerk.markdown(Text.fillOut("""
 		# Funktionen:
-		- sqrt(expr)
-		- log(basis,expr)
-		- trigonometrische Funtkionen zb: sin(expr)
+		- sqrt(expr ...)
+		- log(basis,expr ...)
+		- sin(expr ...)
+		- cos(expr ...)
+		- tan(expr ...)
+		- ln(expr ...)
+		
+		# Operatoren
+		- expr ... + expr ...
+		- expr ... - expr ...
+		- expr ... * expr ...
+		- expr ... / expr ...
+		- expr ... ^ expr ...
 	
 		"""));
 
-String exampleValue = "e^x"; // Input String Example
+	String exampleValue = "e^(sin(x))"; // Input String Example
 
 	Clerk.markdown(Text.fillOut("""
 		Hier einpaar test funktionen:
 
 		!!! Wichtig: es darf nur eine checkbox angeklickt sein, um die richtige Funktion darzustellen.
+		Zudem müssen die checkboxen ausgeklickt sein INF1008 Theoretische Informatik 2, 
+		wenn sie ihren eigenen Ausdruck eingeben (beinhaltet Latenz)
 		"""));
 	
-	// ceckbox
-boolean test1= true; // test1
+	boolean test1= false; // test1
 	Clerk.markdown(Text.fillOut("""
 		sin(e^x)
 		"""));
-	Clerk.write(Interaction.checkbox("./Combined.java","// test1","boolean test1= $;", test1));
-	if(test1){exampleValue = "sin(e^x)";}
+	Clerk.write(Interaction.checkbox("./FuncGraphMd.java","// test1","boolean test1= $;", test1));
 	
-	// checkbox
-
-	// ceckbox
-boolean test2= false; // test2
+	if(test1){
+		exampleValue = "sin(e^x)";
+	}
+	
+	boolean test2= false; // test2
 	Clerk.markdown(Text.fillOut("""
 		0.5*x^4 - 2*x^3 + 0.3*x^2 - x
 		"""));
-	Clerk.write(Interaction.checkbox("./Combined.java","// test2","boolean test2= $;", test2));
-	if(test2){exampleValue = "0.5*x^4 - 2*x^3 + 0.3*x^2 - x";}
+	Clerk.write(Interaction.checkbox("./FuncGraphMd.java","// test2","boolean test2= $;", test2));
 	
-	// checkbox
+	if(test2){
+		exampleValue = "0.5*x^4 - 2*x^3 + 0.3*x^2 - x";
+	}
 
-	// ceckbox
-boolean test3= false; // test3
+	boolean test3= false; // test3
 	Clerk.markdown(Text.fillOut("""
 		log(x^e,10)
 		"""));
-	Clerk.write(Interaction.checkbox("./Combined.java","// test3","boolean test3= $;", test3));
-	if(test3){exampleValue = "log(x^e,10)";}
+	Clerk.write(Interaction.checkbox("./FuncGraphMd.java","// test3","boolean test3= $;", test3));
 	
-	// checkbox
-	
-	// ceckbox
-boolean test4= false; // test4
+	if(test3){
+		exampleValue = "log(x^e,10)";
+	}
+
+	boolean test4= false; // test4
 	Clerk.markdown(Text.fillOut("""
 		ln(e^x)
 		"""));
-	Clerk.write(Interaction.checkbox("./Combined.java","// test4","boolean test4= $;", test4));
-	if(test4){exampleValue = "ln(e^x)";}
+	Clerk.write(Interaction.checkbox("./FuncGraphMd.java","// test4","boolean test4= $;", test4));
 	
-	// checkbox
+	if(test4){
+		exampleValue = "ln(e^x)";
+	}
 	
 	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
 		exampleValue + """
 		geben sie hier ihren eigenen ein:
 		"""));
-	Clerk.write(Interaction.input("./Combined.java", "// Input String Example", "String exampleValue = \"$\";", "Geben Sie einen UPN ausdruck ein"));
+	Clerk.write(Interaction.input("./FuncGraphMd.java", "// Input String Example", "String exampleValue = \"$\";", "Geben Sie einen UPN ausdruck ein"));
 
-int scaleX = 10; // Input scaleX
+	double scaleX = 15; // Input scaleX
 
 	Clerk.write(Text.fillOut("""
 		Hier können sie die skalierung der x-Achse des gezeigten Graphen angeben:
 		"""));
-	Clerk.write(Interaction.input("./Combined.java","// Input scaleX", "int scaleX = $;","Geben sie scaleX ein"));
+	Clerk.write(Interaction.input("./FuncGraphMd.java","// Input scaleX", "double scaleX = $;","Geben sie scaleX ein"));
 
-int scaleY = 5; // Input scaleY
+	double scaleY = 7.5; // Input scaleY
 
 	Clerk.write(Text.fillOut("""
 		Hier können sie die skalierung der y-Achse des gezeigten Graphen angeben:
 		"""));
-	Clerk.write(Interaction.input("./Combined.java","// Input scaleY", "int scaleY = $;","Geben sie scaleY ein"));
+	Clerk.write(Interaction.input("./FuncGraphMd.java","// Input scaleY", "double scaleY = $;","Geben sie scaleY ein"));
 
 	Clerk.markdown(Text.fillOut(""" 
 		## Hier sehen sie den SyntaxBaum zum arithmetischen Ausdruck
-		""", Text.codeBlock("./Combined.java" , "//Input")));
+
+		""", Text.codeBlock("./FuncGraphMd.java" , "//Input")));
 
 	if(!exampleValue.equals("")){
 
@@ -165,7 +183,7 @@ int scaleY = 5; // Input scaleY
 		String s = "";
 
 		if(val.inf){						// Wenn der Validierer feststellt, dass es sich um die Infix-Notation handelt, wandelt dann
-			//
+		
 			Inf2Upn i2U = new Inf2Upn(aexpr_as_token);		// die Inf2Upn Instanz mit Ihrem Konstruktor das TokenArray in die richtige UP-Notation um
 			aexpr_as_token = i2U.outPutToken;			// und speichert diese in der gleichen Variable
 		}
@@ -175,7 +193,7 @@ int scaleY = 5; // Input scaleY
 			s = u2I.outputInf;
 		}
 	
-		Plotter PO = new Plotter(aexpr_as_token,(double)scaleX,(double)scaleY);			
+		Plotter PO = new Plotter(aexpr_as_token,scaleX,scaleY);			
 
 		UPNParser P = new UPNParser(aexpr_as_token);			// Der UPNParser wandelt das TokenArray um in eine einzige Expression die in sich noch weitere birgt
 		//
@@ -212,6 +230,20 @@ int scaleY = 5; // Input scaleY
 				"""));
 		}
 			dot.draw("digraph G {"+dot_arg+"}");
+
+		Clerk.markdown(Text.fillOut("""
+			Hier der code zum tree
+			```java
+			${0}
+			```
+
+			Er verwendet einen vorgefertigten UPN-ausdruck aus dem UPN-Parser, welcher brauchbare records
+			erstellt und die inhalte weiter validiert durch einen rekursiven aufruf
+			```java
+			${1}
+			```
+			""",Text.codeBlock("./FuncGraphMd.java","// treebuild"),
+			   Text.codeBlock("./FuncGraphMd.java","// UPNP")));
 	
 			PO.t.write();
 			PO.t.timelineSlider();
@@ -252,7 +284,7 @@ class Upn2Inf{
 		}
 	}
 	
-	if(s.size() != 1){throw new IllegalArgumentException("Falscher RPN-AUSDRUCK");}
+	if(s.size() != 1){throw new IllegalArgumentException("Falscher UPN-AUSDRUCK");}
 	
 	this.outputInf = s.pop();
 	}
@@ -509,6 +541,8 @@ record BOp(BinOp a, Expr e_1 ,Expr e_2) implements Expr{
 
 }
 
+// treebuild
+
 class TreeMaker{ // baut den Baum auf
 
 	public int k;
@@ -526,7 +560,9 @@ class TreeMaker{ // baut den Baum auf
 			// Jeder Zweig im Baum bekommt eine eigen id und bekommt diese als Label gesetzt
 			// Zudem bauen sich die id's von links unten auf was bedeutet dass die kleinste id am tiefsten "linksten" Punkt liegt
 			// Vergleichbar wie im Suchbaum in der theoretischen Informatik
-			// Zudem durch den rekursiven Aufruf von planter() , wird k immer auch bei der Wurzel erhöht wenn der linke teil gebildet wird
+			// Zudem durch den rekursiven Aufruf von planter() , wird k immer auch bei der Wurzel(höchste stelle des baumes) 
+			// erhöht wenn der linke teil gebildet wird
+			// die root kriegt somit die länge des "linksten" Zweiges als id
 			
 			connects += this.planter(((BOp)e_in).e_1()) + "\n";
 			int left = this.k;
@@ -573,6 +609,9 @@ class TreeMaker{ // baut den Baum auf
 		return connects;
 	}
 }
+// treebuild
+
+// CalcUP
 
 class CalcUPN{
 	
@@ -585,7 +624,8 @@ class CalcUPN{
 
 
 		// hier werden die Werte auf einen Stack gelegt damit man sie bei einer Rechnung
-		// pop()-en kann um sie dann zu verwenden und mit dem ergebnis weiter zu rechnen
+		// pop()-en kann um sie dann zu verwenden, um mit dem ergebnis weiter zu rechnen
+		// dann wird also genau das ergebnis des Teilausdrucks gepusht
 		// am ende wird das ergebnis in sol gespeichert
 
 		this.tok = tk;
@@ -604,7 +644,7 @@ class CalcUPN{
 					this.nums.push(new Num(Math.E));
 					continue;
 				}
-				else{
+				else{	// bei Operatoren werden diese Zuerst ausgerechnet und dann das ergebnis zum Stack hinzugefügt
 					double result = calc(this.tok[i]);
     					this.nums.push(new Num(result));
 				}
@@ -640,7 +680,7 @@ class CalcUPN{
 				double right = this.nums.pop().value();
 				double left = this.nums.pop().value();
 				yield Math.pow(left,right) ;}
-			
+				// handelt es sich nicht um einen Binären operator so werden nun die Funktionen ausgewertet
 			default -> this.func(t);
 		};
 	}
@@ -676,6 +716,8 @@ class CalcUPN{
 		}
 	}
 }
+
+// CalcUP
 
 class Plotter{
 	
@@ -815,15 +857,19 @@ class Plotter{
 		for(double i = 0, k = 0;i < (100.0/this.scaleX);i+=0.01,k-=0.01){ //<--Menge an gezeichneten Punkten/Linien
 	// Menge an Punkten -> Linien
 				double j = this.findY(token,i); // berechnet y bei x = i
-				double p = this.findY(token,k);
+				double p = this.findY(token,k); // berechnet y bei x = k also -i
 				this.coord_left.add(new Coord((j*this.scaleY),(i*this.scaleX)));
 				this.coord_right.add(new Coord((p*this.scaleY),(k*this.scaleX)));
 				
-				this.coordpoints((i*this.scaleX),(j*this.scaleY));
-				this.coordpoints((k*this.scaleX),(p*this.scaleY));
+				this.coordpoints((i*this.scaleX),(j*this.scaleY)); // zeichnet die Punkte rechts
+				this.coordpoints((k*this.scaleX),(p*this.scaleY)); // zeichnet die Punkte links
 				}
+
+		// Nachdem die Listen nach links und rechts zuende sind werden sie an Lines übergeben
+		// dort werden die Linien gezeichnet und die Turtle "geupdatet"
+
 			Lines l = new Lines(this.t,this.coord_right,this.coord_left);
-			this.t = l.newTurtle;
+			this.t = l.newTurtle; //<--- updated this.t
 
 		}
 	// Ersetzt Ident-Tokens durch den aktuellen x-Wert, wertet den Ausdruck mit CalcUPN aus und liefert y
@@ -843,7 +889,7 @@ class Plotter{
 	}
 	// PlotterLines
 }
-
+// UPNP
 class UPNParser{
 	
 	private ArrayList<Token> t;
@@ -880,7 +926,7 @@ class UPNParser{
 				case Eul() -> new Cnst(Math.E);
 				case Log() -> {Token[] newtk = new Token[this.t.size()-2];
 						for(int i = 0; i<this.t.size()-2;i++){newtk[i] = this.t.get(i);};
-						yield new Func(Funcs.LOG, List.of(this.parse(),this.parse()));} // der Logarithmus erwartet 2 Listenelemnte 
+						yield new Func(Funcs.LOG, List.of(this.parse(),this.parse()));} // der Logarithmus erwartet 2 Listenelemente 
 				default -> throw new IllegalArgumentException("Fehler in Token");
 
 			};
@@ -894,13 +940,13 @@ class UPNParser{
 			case Op.MUL -> BinOp.MUL;
 			case Op.DIV -> BinOp.DIV;
 			case Op.POW -> BinOp.POW;
-			default -> throw new IllegalArgumentException("wie auch immer das möglich ist");
+			default -> throw new IllegalArgumentException("Operator nicht bekannt"+o);
 		};
 	}
 
 
 }
-
+// UPNP
 record Tan() implements Token{
 	@Override
 	public String toString(){
