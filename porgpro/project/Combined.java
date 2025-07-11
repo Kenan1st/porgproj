@@ -244,17 +244,20 @@ class Lines{							// Lines bildet die Linien zwischen zwei berechnet Punkten in
 		for(int i = 1; i<this.lstCoords_left.size();i++){
 				Coord nextCoord_right = this.lstCoords_left.get(i);	// in dieser for-schleife 
 				Coord nextCoord_left = this.lstCoords_right.get(i);
+
+			// calcLengths berechnet die Hypotenuse und die gradzahl in dem es die Werte x0,x1 und y0,y1 entgegennimmt und diese dann
+			// mit dem Satz des Pythagoras und dem arctan ausrechnet
 	
 				this.lengths_left = calcLengths(this.x_s_left, nextCoord_left.x(), this.y_s_left, nextCoord_left.y());
 				this.lengths_right = calcLengths(this.x_s_right, nextCoord_right.x(), this.y_s_right, nextCoord_right.y());
 
-				if(!Double.isFinite(lengths_right[0])){continue;}
+				if(!Double.isFinite(lengths_right[0])){continue;} // Probelembehandlung bei irrellen Zahlen wie sqrt(-1)
 				if(!Double.isFinite(lengths_right[1])){continue;}
 
 				this.newTurtle.penUp()
 						.push()
 						.penUp()
-						.forward(this.x_s_left)
+						.forward(this.x_s_left) // Zeichnet den linken Teil der Funktion als Graphen
 						.left(90)
 						.forward(this.y_s_left)
 						.right(270-this.lengths_left[1])
@@ -266,7 +269,7 @@ class Lines{							// Lines bildet die Linien zwischen zwei berechnet Punkten in
 				this.newTurtle.penUp()
 						.push()
 						.penUp()
-						.forward(this.x_s_right)
+						.forward(this.x_s_right) // Zeichnet den rechten teil der Funktion als Graphen
 						.left(90)
 						.forward(this.y_s_right)
 						.left(90+this.lengths_right[1])
@@ -275,7 +278,7 @@ class Lines{							// Lines bildet die Linien zwischen zwei berechnet Punkten in
 						.pop()
 						.penUp();
 						
-				this.x_s_left= nextCoord_left.x();
+				this.x_s_left= nextCoord_left.x(); // die Koordinate zum nächsten Punkt werden als Start Punkt der nächsten Linie verwendet
 				this.y_s_left = nextCoord_left.y();
 				this.y_s_right = nextCoord_right.y();
 				this.x_s_right = nextCoord_right.x();}
@@ -305,20 +308,9 @@ record E() implements Expr{}
 enum UOp implements Expr{
 	POS,
 	NEG;
-
-	public double apply(double d){
-		return switch(this){
-			case POS -> d;
-			case NEG -> -d;
-		};
-	}
 }
 
-
-
 record Cnst(double cnst) implements Expr{}
-
-
 
 enum BinOp implements Expr{
 	ADD,
@@ -327,8 +319,6 @@ enum BinOp implements Expr{
 	DIV,
 	POW
 }
-
-
 
 enum Funcs{
 	SIN,
@@ -339,28 +329,21 @@ enum Funcs{
 	LN
 }
 
-
-
 record P() implements Expr{}
 
-
-
 record UExpr(UOp op, Expr e) implements Expr {}
-
-
-
 
 record Func(Funcs f, List<Expr> e) implements Expr{
 
 	public double function(){
-		CalcTree c = new CalcTree(this.e.get(0));
+		CalcTree c = new CalcTree(this.e.get(0));	// wird zur berechnung in Calctree verwendet und "wechselt" sich mit calctree ab um den Wert auszurehcnen
 		
 		double cup = c.calc();
 		double cup_1;
 
 		if(this.e.size() >= 2){
 
-		CalcTree c_1 = new CalcTree(this.e.get(1)); 
+		CalcTree c_1 = new CalcTree(this.e.get(1)); // dieser Fall kommt nur in Log auf da diese Funktion die einzige ist die 2 Argumente einnimmt
 		cup_1 = c_1.calc();
 		return trans(cup,cup_1);
 		}
@@ -370,7 +353,7 @@ record Func(Funcs f, List<Expr> e) implements Expr{
 		
 	}
 
-	public double trans(double d, double d_1){
+	public double trans(double d, double d_1){				// Hier wird die jeweilige Mathematische Funktion nach dem enum-namen angewendet
 		return switch(this.f()){
 			case Funcs.SIN -> Math.sin(d);
 			case Funcs.COS -> Math.cos(d);
@@ -387,7 +370,7 @@ record Func(Funcs f, List<Expr> e) implements Expr{
 			case Funcs.SIN -> Math.sin(d);
 			case Funcs.COS -> Math.cos(d);
 			case Funcs.TAN -> Math.tan(d);
-			case Funcs.LOG -> Math.log(d);
+			case Funcs.LOG -> Math.log(d) / Math.log(2);
 			case Funcs.SQRT -> Math.sqrt(d);
 			case Funcs.LN -> Math.log(d) / Math.log(Math.E);
 			default -> throw new IllegalArgumentException("keine bekannte Funktion");
@@ -395,22 +378,15 @@ record Func(Funcs f, List<Expr> e) implements Expr{
 	}
 }
 
-
-
 sealed interface Expr permits UExpr,BOp,BinOp,Func,Va,Cnst,UOp,E,P{}
 
-
-
 record Va(String name) implements Expr{}
-
-
-
 
 record BOp(BinOp a, Expr e_1 ,Expr e_2) implements Expr{
 
 	public double operation(){
 		return switch(this.a()){
-			case BinOp.ADD -> this.expConv(this.e_1()) + this.expConv(this.e_2());
+			case BinOp.ADD -> this.expConv(this.e_1()) + this.expConv(this.e_2());	// teilt den ausdruck auf und bearbeitet ich bei weiteren expr weiter und berechnet ihn am Ende
 			case BinOp.SUB -> this.expConv(this.e_1()) - this.expConv(this.e_2());
 			case BinOp.MUL -> this.expConv(this.e_1()) * this.expConv(this.e_2());
 			case BinOp.DIV -> this.expConv(this.e_1()) / this.expConv(this.e_2());
@@ -425,7 +401,7 @@ record BOp(BinOp a, Expr e_1 ,Expr e_2) implements Expr{
 				return ((Func)e).function();
 			}
 			if(e instanceof Va){
-				throw new IllegalArgumentException("hier kein Identifier");
+				throw new IllegalArgumentException("hier kein Identifier"); // gibt die nächste Expression an
 			}
 			if(e instanceof E){
 				return Math.E;
@@ -447,17 +423,12 @@ record BOp(BinOp a, Expr e_1 ,Expr e_2) implements Expr{
 
 }
 
-
-
-
-
-
-class TreeMaker{
+class TreeMaker{ // baut den Baum auf
 
 	public int k;
 
 	public TreeMaker(){
-		this.k = 0;
+		this.k = 0;	
 	}
 
 	public String planter(Expr e_in){
@@ -465,6 +436,11 @@ class TreeMaker{
 		String connects = "";
 
 		if(e_in instanceof BOp){
+
+			// Jeder Zweig im Baum bekommt eine eigen id und bekommt diese als Label gesetzt
+			// Zudem bauen sich die id's von links unten auf was bedeutet dass die kleinste id am tiefsten "linksten" Punkt liegt
+			// Vergleichbar wie im Suchbaum in der theoretischen Informatik
+			// Zudem durch den rekursiven Aufruf von planter() wird k immer auch bei der Rooerhöht wenn der linke teil gebildet wird
 			
 			connects += this.planter(((BOp)e_in).e_1()) + "\n";
 			int left = this.k;
@@ -487,6 +463,8 @@ class TreeMaker{
 
 			connects += "n"+this.k+ " -> " +"n"+ down + ";\n";
 
+			// Hier wird die ausnahme des Logarithmus in betrahct gezogen bei dem die Liste e() 2 elemte besitzt
+
 			if(((Func)e_in).f() == Funcs.LOG){
 				
 				int root = this.k;
@@ -496,6 +474,7 @@ class TreeMaker{
 				connects += "n"+root+ " -> n" +this.k+ " ;\n";
 			}
 		}
+		// ansonsten werden die id's zu den konstanten oder identifiern gesetzt
 		if(e_in instanceof Va){
 			this.k += 1;
 			connects += "n"+this.k+"[label=\""+((Va)e_in).name()+"\"];";
@@ -509,10 +488,6 @@ class TreeMaker{
 	}
 }
 
-
-
-
-
 class CalcUPN{
 	
 	Stack<Num> nums = new Stack<>();
@@ -520,6 +495,12 @@ class CalcUPN{
 	double sol = 0.0;
 
 	public CalcUPN(Token[] tk){
+
+
+
+		// hier werden die Werte auf einen Stack gelegt damit man sie bei einer Rechnung
+		// pop()-en kann um sie dann zu verwenden und mit dem ergebnis weiter zu rechnen
+		// am ende wird das ergebnis in sol gespeichert
 
 		this.tok = tk;
 		
@@ -545,7 +526,7 @@ class CalcUPN{
 		}	
 		this.sol = this.nums.pop().value();
 	}
-
+	// Verarbeitet ein Operator-Token: Poppt Operanden vom Stack, wendet operatorische Rechnung an und liefert das Zwischenergebnis.
 	public double calc(Token t){
 		return switch(t){
 			
@@ -577,7 +558,7 @@ class CalcUPN{
 			default -> this.func(t);
 		};
 	}
-
+    // Verarbeitet Funktions-Token (Sin, Cos, Tan, Log, Sqrt, Ln): wendet die jeweilige Java-Math-Funktion auf den Stack-Wert an.
 	public double func(Token t){
 		if(t instanceof Sin){
 			double cont = this.nums.pop().value();
@@ -610,14 +591,6 @@ class CalcUPN{
 	}
 }
 
-
-
-
-
-
-
-
-
 class Plotter{
 	
 	Turtle t;
@@ -625,8 +598,8 @@ class Plotter{
 	double scaleY;
 	ArrayList<Coord> coord_left = new ArrayList<>();
 	ArrayList<Coord> coord_right = new ArrayList<>();
-
-	public Plotter(Token[] arithmetic_tokens,double scaleX,double scaleY){				// Der Konstruktor erstellt eine Turtle mit den Basis Achsen
+    // Initialisiert Turtle, zeichnet die Hauptachsen und startet Koordinatensystem- sowie Funktionszeichnung
+	public Plotter(Token[] arithmetic_tokens,double scaleX,double scaleY){	
 		this.t = new Turtle(0, 200, 0, 50, 100, 25, 0);
 		
 		this.t.width(0.5);
@@ -651,8 +624,8 @@ class Plotter{
 		this.drawFunc(arithmetic_tokens);
 	}
 
-
-	public void cooSys(double scaleX,double scaleY){ // erstellt ein Kooridnatensystem mit skallierung
+    // Erstellt ein Koordinatensystem mit der angegebenen Skalierung für X- und Y-Achse
+	public void cooSys(double scaleX,double scaleY){
 		
 		this.scaleX = scaleX;
 		this.scaleY = scaleY;
@@ -661,7 +634,7 @@ class Plotter{
 		double i_left = -scaleX;
 		double j_left = scaleY;
 		double j_right = -scaleY;
-
+		//erstellt zu erst die vertikalen dann die horizontalen linien
 		while(i_right <= 100){
 			
 			this.vertln(i_right);
@@ -679,8 +652,9 @@ class Plotter{
 		
 	}
 
-
-	public void vertln(double spX){ // scaleparameterX zeigt an, wann nun ein vertikaler Strich gezogen werden soll
+	// Zeichnet eine vertikale Markierung bei der X-Position spX und fügt die Beschriftung hinzu.
+	// Passt ebenfalls die Schriftgröße an
+	public void vertln(double spX){
 			String px = "1.5px";
 			if(this.scaleX < 5 && this.scaleX > -5){px = "0.5px";}
 			this.t.penUp()
@@ -718,8 +692,8 @@ class Plotter{
 				.pop()
 				.penUp();
 	}
-
 	
+	// Zeichnet einen kurzen Punkt bei den übergebenen Koordinaten (x,y)
 	public void coordpoints(double x, double y){
 			this.t.penUp()
 				.push()
@@ -733,6 +707,9 @@ class Plotter{
 				.pop()
 				.penUp();
 	}
+
+	// Berechnet Funktionspunkte für positive und negative x, speichert sie und zeichnet die Kurve 
+	// Wichtig sie zeichnet nach links und nach rechts von (0|0)
 
 	public void drawFunc(Token[] token){ // zeichnet die Funktion
 			this.t.penUp()
@@ -754,7 +731,7 @@ class Plotter{
 			this.t = l.newTurtle;
 
 		}
-
+	// Ersetzt Ident-Tokens durch den aktuellen x-Wert, wertet den Ausdruck mit CalcUPN aus und liefert y
 	public double findY(Token[] tok,double x){
 
 		Token[] newt = new Token[tok.length];
@@ -773,13 +750,6 @@ class Plotter{
 		return cU.sol;
 	}
 }
-
-
-
-
-
-
-
 
 class UPNParser{
 	
@@ -833,9 +803,6 @@ class UPNParser{
 
 }
 
-
-
-
 record Tan() implements Token{
 	@Override
 	public String toString(){
@@ -843,15 +810,9 @@ record Tan() implements Token{
 	}
 }
 
-
-
 record Coord(double y,double x){}
 
-
-
 sealed interface Token permits Num,Op,Sp,Tf,Ident,Sqrt,Sin,Tan,Cos,Pow,Log,Pi,Eul,Space,Ln {}
-
-
 
 record Sqrt() implements Token{
 	@Override
@@ -860,15 +821,11 @@ record Sqrt() implements Token{
 	}
 }
 
-
-
 enum Tf implements Token{
 	SIN,
 	COS,
 	TAN,
 }
-
-
 
 enum Sp implements Token{
 	CLOSED,
@@ -876,11 +833,7 @@ enum Sp implements Token{
 	KOMMA
 }
 
-
-
 record Space() implements Token{}
-
-
 
 record Num(double value) implements Token{
 	public double getValue(){
@@ -893,8 +846,6 @@ record Num(double value) implements Token{
 	}
 }
 
-
-
 record Pi() implements Token{
 	@Override
 	public String toString(){
@@ -902,16 +853,12 @@ record Pi() implements Token{
 	}
 }
 
-
-
 record Ident(String name) implements Token{
 	@Override
 	public String toString(){
 		return this.name();
 	}
 }
-
-
 
 enum Op implements Token{
 	ADD,
@@ -940,8 +887,6 @@ enum Op implements Token{
     }
 }
 
-
-
 record Ln() implements Token{
 
 @Override
@@ -951,8 +896,6 @@ record Ln() implements Token{
 
 }
 
-
-
 record Sin() implements Token {
 	@Override
 	public String toString(){
@@ -960,11 +903,7 @@ record Sin() implements Token {
 	}
 }
 
-
-
 record Pow() implements Token{}
-
-
 
 record Log() implements Token{
 	@Override
@@ -973,8 +912,6 @@ record Log() implements Token{
 	}
 }
 
-
-
 record Eul() implements Token{
 	@Override
 	public String toString(){
@@ -982,17 +919,12 @@ record Eul() implements Token{
 	}
 }
 
-
-
 record Cos() implements Token{
 	@Override
 	public String toString(){
 		return "cos";
 	}
 }
-
-
-
 
 class Tokenizer{
 
@@ -1110,9 +1042,6 @@ class Tokenizer{
 	}
 }
 
-
-
-
 class FunctionResolver {
 
 	static String Expr= "";
@@ -1184,9 +1113,6 @@ class FunctionResolver {
 	}
 }
 
-
-
-
 static class CalcTree{
 
 	Expr e;
@@ -1207,11 +1133,6 @@ static class CalcTree{
 	}
 
 }
-
-
-
-
-
 
 class Inf2Upn{
 
@@ -1311,7 +1232,3 @@ class Inf2Upn{
 		};
 	}
 }
-
-
-
-
