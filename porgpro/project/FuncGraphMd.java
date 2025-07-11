@@ -143,7 +143,7 @@ void main(){
 		exampleValue + """
 		geben sie hier ihren eigenen ein:
 		"""));
-	Clerk.write(Interaction.input("./FuncGraphMd.java", "// Input String Example", "String exampleValue = \"$\";", "Geben Sie einen UPN ausdruck ein"));
+	Clerk.write(Interaction.input("./FuncGraphMd.java", "// Input String Example", "String exampleValue = \"$\";", "hier arithmetischen Ausdruck"));
 
 	double scaleX = 15; // Input scaleX
 
