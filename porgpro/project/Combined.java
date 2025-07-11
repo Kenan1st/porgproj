@@ -13,6 +13,8 @@ void main(){
  Clerk.clear();
 
 	Clerk.markdown(Text.fillOut("""
+		WICHTIG!!: Bei der Eingabe werden die Zeilen in denen die Werte im Code stehen verschoben und sind somit ab dann nicht mehr Richtig eingerückt.
+
 		Diese Java-Datei ist im folgenden so aufgebaut ,dass sich die Aufgaben des Tokenizer vollständig vom 
 		rest trennen.
  		Sprich die enums,records und interfaces mit denen der Tokenizer arbeitet arbeiten nicht bei der 
