@@ -1,9 +1,6 @@
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Stack;
 import lvp.Clerk;
 import lvp.skills.Interaction;
@@ -20,19 +17,77 @@ void main(){
 		rest trennen.
  		Sprich die enums,records und interfaces mit denen der Tokenizer arbeitet arbeiten nicht bei der 
 		Kalkulation der Werte.
-		Dort werden änhlich benannte verwendet. Das einordnen des Ausdrucks in Infix oder UP - Notaton erfolgt über einen 
+		Sie werden umgewandelt, behalten aber ihren Kontext.
+		Den Records und enums wurden eigene toString-Methoden geschrieben, damit sie später bei zb. der Dot-Notation eine einfachere
+		Serialisierung der Werte ermöglichen. Sie werden auch ähnlich benannt.
+		Das einordnen des Ausdrucks in Infix oder UP - Notaton erfolgt über einen 
 		Validieren(Validater) der sich
 		sehr schlicht die ersten beiden Tokens anschaut und daraufhin validiert,
 		ob es sich um die Infix- oder Up-Notation handelt. Fals dem so ist wird der Infix ausdruck in UPN umgewandelt.
 		Handelt es sich um einen arithmetischen Ausdruck, welcher keine Funtkion ist (Validater),
 		so wird das ergebnis unter dem Baum aufgezigt und er erscheint als Konstante Linie auf dem Graphen 
 		bei dem Lösungswert.
-
+		Die Turtle von dem Mitellpunkt aus nach links und nach rechts aufgebaut und so wir auch die Funktion aufgemalt.
+		Dies half bei der Skalireung des Graphen und des Koordinatensystems.
+		Je nach Komplexität und Skalierung des Graphen benötigt die website länger zur berechnung, da bei einigen Funktion über 40.000 linien gezeichnet werden
+		Momentan ist die die forshcleife im Plotter die die menge an Punkten und so auch an linien angibt auf 0.001 gewählt weshalb mann womöglich einige sekunden 
+		warten muss um den Graphen angezeigt zu bekommen.
+		Zudem wird bei absenden einer Funktion, soweit der Graph noch nicht geladen ist, eine kleine Latenz deutlich, bei der der arithmetische Ausdruck erst nach vollendung des Graphen abgesendet wird.
+		"""));
+	Clerk.markdown(Text.fillOut("""
+		# Funktionen:
+		- sqrt(expr)
+		- log(basis,expr)
+		- trigonometrische Funtkionen zb: sin(expr)
+	
 		"""));
 
+String exampleValue = "e^x"; // Input String Example
 
-String exampleValue = "(sin((e ^ x)) + (x ^ 2.0))"; // Input String Example
+	Clerk.markdown(Text.fillOut("""
+		Hier einpaar test funktionen:
+		"""));
+	
+	// ceckbox
+	boolean test1= false; // test1
+	Clerk.markdown(Text.fillOut("""
+		sin(e^x)
+		"""));
+	Clerk.write(Interaction.checkbox("./Combined.java","test1","boolean test1= $;", test1));
+	if(test1){exampleValue = "sin(e^x)";}
+	
+	// checkbox
 
+	// ceckbox
+	boolean test2= false; // test2
+	Clerk.markdown(Text.fillOut("""
+		0.5*x^4 - 2*x^3 + 0.3*x^2 - x
+		"""));
+	Clerk.write(Interaction.checkbox("./Combined.java","test2","boolean test2= $;", test2));
+	if(test2){exampleValue = "		0.5*x^4 - 2*x^3 + 0.3*x^2 - x";}
+	
+	// checkbox
+
+	// ceckbox
+	boolean test3= false; // test3
+	Clerk.markdown(Text.fillOut("""
+		log(x^e,10)
+		"""));
+	Clerk.write(Interaction.checkbox("./Combined.java","test3","boolean test3= $;", test3));
+	if(test3){exampleValue = "log(x^e,10)";}
+	
+	// checkbox
+	
+	// ceckbox
+	boolean test4= false; // test4
+	Clerk.markdown(Text.fillOut("""
+		ln(e^x)
+		"""));
+	Clerk.write(Interaction.checkbox("./Combined.java","test4","boolean test4= $;", test4));
+	if(test4){exampleValue = "ln(e^x)";}
+	
+	// checkbox
+	
 	Clerk.markdown(Text.fillOut("""
 		Momentane arithmetische Ausdruck ist:  """+
 		exampleValue + """
@@ -60,74 +115,73 @@ String exampleValue = "(sin((e ^ x)) + (x ^ 2.0))"; // Input String Example
 
 	if(!exampleValue.equals("")){
 
-	Tokenizer TO = new Tokenizer(exampleValue);
+		Tokenizer TO = new Tokenizer(exampleValue);
 	
-	Token [] t = TO.maker();
+		Token [] t = TO.maker();
 
-	FunctionResolver fr = new FunctionResolver();	// Der FunctionResolver wandelt identfier sofern es möglich ist in functionen oder die Konstanten pi und e um
+		FunctionResolver fr = new FunctionResolver();	// Der FunctionResolver wandelt identfier sofern es möglich ist in functionen oder die Konstanten pi und e um
 							// Er übernimmt das richtige verstehen der eingabe in einen weiterverarbeitenden arithmetischen Ausdruck
-	Token [] aexpr_as_token = fr.resolveAll(t);
+		Token [] aexpr_as_token = fr.resolveAll(t);
 
-	Validater val = new Validater(aexpr_as_token);
+		Validater val = new Validater(aexpr_as_token);
 
-	String dot_arg = "";				// hier wird das "Argument" für den Dot-Baum initialisiert
+		String dot_arg = "";				// hier wird das "Argument" für den Dot-Baum initialisiert
 
-	Dot dot = new Dot();
+		Dot dot = new Dot();
 	
-	String s = "";
+		String s = "";
 
-	if(val.inf){					// Wenn der Validierer feststellt, dass es sich um die Infix-Notation handelt, wandelt dann
-		Inf2Upn i2U = new Inf2Upn(aexpr_as_token);		// die Inf2Upn Instanz mit Ihrem Konstruktor das TokenArray in die richtige UP-Notation um
-		aexpr_as_token = i2U.outPutToken;			// und speichert diese in der gleichen Variable
-	}
-	else{
-		Upn2Inf u2I= new Upn2Inf(aexpr_as_token);
-		s = u2I.outputInf;
-	}
+		if(val.inf){						// Wenn der Validierer feststellt, dass es sich um die Infix-Notation handelt, wandelt dann
+			//
+			Inf2Upn i2U = new Inf2Upn(aexpr_as_token);		// die Inf2Upn Instanz mit Ihrem Konstruktor das TokenArray in die richtige UP-Notation um
+			aexpr_as_token = i2U.outPutToken;			// und speichert diese in der gleichen Variable
+		}
 
-	Plotter PO = new Plotter(aexpr_as_token,(double)scaleX,(double)scaleY);			
+		else{
+			Upn2Inf u2I= new Upn2Inf(aexpr_as_token);
+			s = u2I.outputInf;
+		}
 
-	UPNParser P = new UPNParser(aexpr_as_token);			// Der UPNParser wandelt das TokenArray um in eine einzige Expression die in sich noch weitere birgt
+		Plotter PO = new Plotter(aexpr_as_token,(double)scaleX,(double)scaleY);			
+	
+		UPNParser P = new UPNParser(aexpr_as_token);			// Der UPNParser wandelt das TokenArray um in eine einzige Expression die in sich noch weitere birgt
 		//
-	Expr g = P.parse();				
-
-	TreeMaker TM = new TreeMaker();			
-
-	dot_arg = TM.planter(g);			// Die TreeMaker-instanz TM gibt mit ihrer planter()-Methode die vorher geparste Expression 
-							// genau diese Expression in einen String um die den Baum als Dot-Notation darstellt
+		Expr g = P.parse();				
 	
-	if(val.ar_expr){				// handelt es Sich bei dem arithmetischen Ausdruck nicht um eine Funtkion sondern einen Bloßen Ausdruck
+		TreeMaker TM = new TreeMaker();			
+	
+		dot_arg = TM.planter(g);			// Die TreeMaker-instanz TM gibt mit ihrer planter()-Methode die vorher geparste Expression 
+								// genau diese Expression in einen String um die den Baum als Dot-Notation darstellt
+	
+		if(val.ar_expr){				// handelt es Sich bei dem arithmetischen Ausdruck nicht um eine Funtkion sondern einen Bloßen Ausdruck
 							// so wird dessen Ergebnis ,in der Variable sol ,in der Instanz solution von der Klasse CalcUPN gespeichert
-	CalcUPN solution = new CalcUPN(aexpr_as_token);
+			CalcUPN solution = new CalcUPN(aexpr_as_token);
 
-	Clerk.markdown(Text.fillOut("""
-		das Egebnis des arithmethischen ausdrucks ist : """+
-		solution.sol +"""
-	"""));
-	}
+			Clerk.markdown(Text.fillOut("""
+				das Egebnis des arithmethischen ausdrucks ist : """+
+				solution.sol +"""
+			"""));
+		}
 	
-	if(val.inf){
-	for(Token I2Utoken : aexpr_as_token){s += I2Utoken.toString() +" ";}	// falls es sich um einen UPN-Ausdruck handelt gibt diese forschleife der nächsten Markdown-Zeile ein String
+		if(val.inf){
+			for(Token I2Utoken : aexpr_as_token){s += I2Utoken.toString() +" ";}	// falls es sich um einen UPN-Ausdruck handelt gibt diese forschleife der nächsten Markdown-Zeile ein String
 								// mit der Infix-Notation des arithmethischen Ausdrucks wiedier
-	Clerk.markdown(Text.fillOut("""
-			Hier der UPN Ausdruck zum InfixAusdruck: """+
-			s + """
-			"""));
-	}
-	else{
+			Clerk.markdown(Text.fillOut("""
+				Hier der UPN Ausdruck zum InfixAusdruck: """+
+				s + """
+				"""));
+		}
+		else{
 								// mit der Infix-Notation des arithmethischen Ausdrucks wiedier
-	Clerk.markdown(Text.fillOut("""
-			Hier der Infix Ausdruck zum UPNAusdruck: """+
-			s + """
-			"""));
-
-
-	}
-		dot.draw("digraph G {"+dot_arg+"}");
-
-
-		PO.t.write();
-		PO.t.timelineSlider();
+			Clerk.markdown(Text.fillOut("""
+				Hier der Infix Ausdruck zum UPNAusdruck: """+
+				s + """
+				"""));
+		}
+			dot.draw("digraph G {"+dot_arg+"}");
+	
+			PO.t.write();
+			PO.t.timelineSlider();
 	}
 }
 
@@ -207,11 +261,6 @@ class Validater{
 		return;
 	}
 }
-
-
-
-
-
 
 class Lines{							// Lines bildet die Linien zwischen zwei berechnet Punkten in der Turtle
 	Turtle newTurtle;
@@ -297,9 +346,6 @@ class Lines{							// Lines bildet die Linien zwischen zwei berechnet Punkten in
 		return new double[]{hyp,degree};
 	}
 }
-
-
-
 
 record E() implements Expr{}
 
@@ -395,13 +441,15 @@ record BOp(BinOp a, Expr e_1 ,Expr e_2) implements Expr{
 		};
 	}
 
+	// gibt die nächste Expression an
+
 	public double expConv(Expr e){
 		if(!(e instanceof Cnst)){
 			if(e instanceof Func){
 				return ((Func)e).function();
 			}
 			if(e instanceof Va){
-				throw new IllegalArgumentException("hier kein Identifier"); // gibt die nächste Expression an
+				throw new IllegalArgumentException("hier kein Identifier");
 			}
 			if(e instanceof E){
 				return Math.E;
@@ -413,7 +461,7 @@ record BOp(BinOp a, Expr e_1 ,Expr e_2) implements Expr{
 				return ((BOp)e).operation();
 			}
 			else{
-				throw new IllegalArgumentException("Fehler in Func");
+				throw new IllegalArgumentException("Fehler in expConv: Expression nicht erkannt");
 		}
 		}
 		else{
@@ -440,7 +488,7 @@ class TreeMaker{ // baut den Baum auf
 			// Jeder Zweig im Baum bekommt eine eigen id und bekommt diese als Label gesetzt
 			// Zudem bauen sich die id's von links unten auf was bedeutet dass die kleinste id am tiefsten "linksten" Punkt liegt
 			// Vergleichbar wie im Suchbaum in der theoretischen Informatik
-			// Zudem durch den rekursiven Aufruf von planter() wird k immer auch bei der Rooerhöht wenn der linke teil gebildet wird
+			// Zudem durch den rekursiven Aufruf von planter() , wird k immer auch bei der Wurzel erhöht wenn der linke teil gebildet wird
 			
 			connects += this.planter(((BOp)e_in).e_1()) + "\n";
 			int left = this.k;
@@ -558,7 +606,7 @@ class CalcUPN{
 			default -> this.func(t);
 		};
 	}
-    // Verarbeitet Funktions-Token (Sin, Cos, Tan, Log, Sqrt, Ln): wendet die jeweilige Java-Math-Funktion auf den Stack-Wert an.
+    	// Verarbeitet Funktions-Token (Sin, Cos, Tan, Log, Sqrt, Ln): wendet die jeweilige Java-Math-Funktion auf den Stack-Wert an.
 	public double func(Token t){
 		if(t instanceof Sin){
 			double cont = this.nums.pop().value();
@@ -598,7 +646,9 @@ class Plotter{
 	double scaleY;
 	ArrayList<Coord> coord_left = new ArrayList<>();
 	ArrayList<Coord> coord_right = new ArrayList<>();
-    // Initialisiert Turtle, zeichnet die Hauptachsen und startet Koordinatensystem- sowie Funktionszeichnung
+
+	// die hauptachsen und Linien zu den Werten wurden gehardcoded damit es etwas übersichtlicher erscheint
+    	// Initialisiert Turtle, zeichnet die Hauptachsen und startet Koordinatensystem- sowie Funktionszeichnung
 	public Plotter(Token[] arithmetic_tokens,double scaleX,double scaleY){	
 		this.t = new Turtle(0, 200, 0, 50, 100, 25, 0);
 		
@@ -624,7 +674,7 @@ class Plotter{
 		this.drawFunc(arithmetic_tokens);
 	}
 
-    // Erstellt ein Koordinatensystem mit der angegebenen Skalierung für X- und Y-Achse
+    	// Erstellt ein Koordinatensystem mit der angegebenen Skalierung für X- und Y-Achse
 	public void cooSys(double scaleX,double scaleY){
 		
 		this.scaleX = scaleX;
@@ -717,7 +767,7 @@ class Plotter{
 				.color(255,100,100)
 				.push();
 
-			for(double i = 0, k = 0;i < (100.0/this.scaleX);i+=0.01,k-=0.01){
+			for(double i = 0, k = 0;i < (100.0/this.scaleX);i+=0.001,k-=0.001){ //<-------------- menge an gezeichneten Linien
 
 				double j = this.findY(token,i); // berechnet y bei x = i
 				double p = this.findY(token,k);
@@ -755,12 +805,14 @@ class UPNParser{
 	
 	private ArrayList<Token> t;
 
+	// Initialisiert den Parser mit dem Token-Array und speichert sie in einer internen Liste
 	public UPNParser(Token [] tok){
 
 		this.t = new ArrayList<>(Arrays.asList(tok));
 		
 	}
 
+	// Wandelt die Token in umgekehrter polnischer Notation rekursiv in einen Ausdrucksbaum (Expr) um
 	public Expr parse(){
 		
 		var z = this.t.removeLast();
@@ -769,11 +821,13 @@ class UPNParser{
 			
 				case Num n -> new Cnst(n.value());
 				case Ident s -> new Va(s.name());
-				case Op o -> {	var p = this.OpConv(o);
-						var r = this.parse();
+				case Op o -> {	var p = this.OpConv(o); // bei dem lesen eines operators wird eine neue BOp instanz erstellt
+						var r = this.parse();	// mit den letzten beiden werten in der ArrayList
 						var l = this.parse();
 						yield new BOp(p,l,r);
 						}
+				
+				// die trigonometrischen Records erwarten eine Liste, mit einem Elemtent entahlten ,als 2. Argument
 				case Sin() -> new Func(Funcs.SIN, List.of(this.parse()));
 				case Cos() -> new Func(Funcs.COS, List.of(this.parse()));
 				case Tan() -> new Func(Funcs.TAN, List.of(this.parse()));
@@ -783,12 +837,13 @@ class UPNParser{
 				case Eul() -> new Cnst(Math.E);
 				case Log() -> {Token[] newtk = new Token[this.t.size()-2];
 						for(int i = 0; i<this.t.size()-2;i++){newtk[i] = this.t.get(i);};
-						yield new Func(Funcs.LOG, List.of(this.parse(),this.parse()));}
+						yield new Func(Funcs.LOG, List.of(this.parse(),this.parse()));} // der Logarithmus erwartet 2 Listenelemnte 
 				default -> throw new IllegalArgumentException("Fehler in Token");
 
 			};
 	}
-
+	
+	// Übersetzt ein Operator-Token in das interne BinOp-Enum für binäre Operationen
 	public BinOp OpConv(Op o){
 		return switch(o){
 			case Op.ADD -> BinOp.ADD;
@@ -931,6 +986,8 @@ class Tokenizer{
 	Token[] tk;
 	int pointer = 0;
 
+	// Liest alle folgenden Token bis zum Ende, entfernt Space-Tokens und liefert das finale Token-Array
+
 	public Token[] maker(){
 		ArrayList<Token> tokens = new ArrayList<>();
 		
@@ -949,6 +1006,8 @@ class Tokenizer{
 
 	ArrayList<Character> s = new ArrayList<>();
 
+	// Initialisiert den Tokenizer mit einem Eingabestring und speichert alle Zeichen in einer Liste
+
 	public Tokenizer(String b){
 		
 		for (char cc : b.toCharArray()) { // süeichert string in Arraylist
@@ -956,6 +1015,8 @@ class Tokenizer{
         	}
 
 	}
+
+	// Ermittelt, wie viele Zeichen zu einer Zahl gehören (inklusive eines Dezimalpunkts) und prüft auf Mehrfachpunkte
 
 	public int numend(){
 		boolean val = false;
@@ -974,6 +1035,8 @@ class Tokenizer{
 		return this.s.size(); // anstonsten ist die Zahl alles was es im string gibt.
 	}	
 
+	// Ermittelt die Länge eines Identifikators, also zusammenhängende Buchstaben am Listenanfang
+
 	public int identend(){
 		boolean val = false;
 			for(int i = 0; i< this.s.size();i++){
@@ -983,6 +1046,8 @@ class Tokenizer{
 			}
 		return this.s.size();
 	}
+
+	// Gibt das nächste Token zurück: Zahl, Operator, Separator, Space oder Ident/Pi und entfernt es aus der Liste
 
 	public Token next(){
 		if(this.s.isEmpty()){return null;} // die Arraylist ist irgenwann leer
@@ -1024,6 +1089,8 @@ class Tokenizer{
 		return n;
 	}
 
+	// Identifiziert mehrbuchstabige Namen oder π (pi optisch schwer erkennlich) und gibt das passende Token zurück
+
 	public Token charFinder(){
 		if(this.s.get(0) >= 'a' && this.s.get(0) <= 'z' || 
 				   this.s.get(0) >= 'A' && this.s.get(0) <= 'Z'){
@@ -1045,6 +1112,8 @@ class Tokenizer{
 class FunctionResolver {
 
 	static String Expr= "";
+
+	// Wandelt ein Ident-Token in das passende Funktions- oder Konstanten-Token um, andere Tokens bleiben unverändert
 	
 	public static Token resolve(Token token) {
 		if (token instanceof Ident identToken) {
@@ -1064,6 +1133,7 @@ class FunctionResolver {
 		return token;
 	}
 
+	// Löst alle Tokens nacheinander auf, baut daraus einen Ausdrucksstring auf und speichert diesen in Expr
 	public static Token[] resolveAll(Token[] tokens) {
 		List<Token> result = new ArrayList<>();
 		String s = "";
@@ -1073,19 +1143,21 @@ class FunctionResolver {
 			s += stringify(R);
 						
 		}
-	putin(s);
+	putIn(s);
 	Expr = s;
 	return result.toArray(new Token[0]);
     }
-
+	// Gibt den zuletzt erzeugten Ausdrucksstring zurück
 	public String getExpr(){
 		return this.Expr;
 	}
-
-	public static void putin(String s){
+	
+	// Speichert den übergebenen Ausdrucksstring in der statischen Variable Expr
+	public static void putIn(String s){
 		Expr = s;
 	}
 
+	// Erzeugt die textuelle Darstellung eines Tokens, inklusive Funktionsnamen und Leerzeichen
 	public static String stringify(Token t){
 		return switch(t){
 					case Num n -> String.valueOf(n.value())+ " ";
@@ -1140,6 +1212,12 @@ class Inf2Upn{
 
 	Token[] outPutToken;
 	
+	// Initialisiert den Shunting-Yard-Algorithmus (online-pseudocode-rausgesucht): konvertiert Infix-Tokens in UPN und füllt outPutToken
+	// jedesmal wenn eine Konstante oder ein identifier gelesen wird diese in einer operator ArrayList gespeichert
+	// bei einer Funktion wird diese auf einen seperaten operatorStack gepusht und wie ein Operaot behandelt
+	// wenn ein Binärer operator gelesen wird , so wird die priorität des letzten operator gelsen und entschieden ob der letzte operator in die outputqueu
+	// "geadded" wird. Bei Klammern wird wird eine innere schleife nach Prinzip der gesamten Methode wieder auf den Stack pusht un popt und der arrayList hinzufügt
+	//
 	public Inf2Upn(Token[] tokens){
 
 		this.operatorStack = new Stack<>();
@@ -1170,7 +1248,7 @@ class Inf2Upn{
 				}
 				this.operatorStack.add(tk);
 			}
-			if(tk instanceof Space){continue;}
+			if(tk instanceof Space){continue;}		// wenn ein (Space)" " gelesn wird wird kein fehler geworfen sondern einfach weitergelesen
 			if(tk == Sp.OPEN){
 				this.operatorStack.add(tk);
 			}
@@ -1203,10 +1281,14 @@ class Inf2Upn{
 
 		this.outPutToken = new Token[outputQueue.size()];
 
+		// Am Ende wird die ArrayList in ein Array überführt
+
 		for(int i = 0; i<outputQueue.size();i++){
 			this.outPutToken[i]  =  outputQueue.get(i);
 		}
 	}
+	
+	// compare vergleicht die Priorität von 2 Token
 
 	public boolean compare(Token StT, Token tk){
 		if(prio(StT) >= prio(tk)){
@@ -1218,6 +1300,7 @@ class Inf2Upn{
 		
 	}
 
+	// prio setzt die Prioritäten der Operatoren/Funktionen
 	public int prio(Token t){
 		return switch(t){
 			case Op.ADD -> 10;
