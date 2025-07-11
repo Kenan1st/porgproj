@@ -21,19 +21,48 @@ void main(){
 		Den Records und enums wurden eigene toString-Methoden geschrieben, damit sie später bei zb. der Dot-Notation eine einfachere
 		Serialisierung der Werte ermöglichen. Sie werden auch ähnlich benannt.
 		Das einordnen des Ausdrucks in Infix oder UP - Notaton erfolgt über einen 
-		Validieren(Validater) der sich
+		Validieren(Validater) 
+		```java
+		${4}
+		```
+		der sich
 		sehr schlicht die ersten beiden Tokens anschaut und daraufhin validiert,
 		ob es sich um die Infix- oder Up-Notation handelt. Fals dem so ist wird der Infix ausdruck in UPN umgewandelt.
 		Handelt es sich um einen arithmetischen Ausdruck, welcher keine Funtkion ist (Validater),
-		so wird das ergebnis unter dem Baum aufgezigt und er erscheint als Konstante Linie auf dem Graphen 
+		so wird das ergebnis unter dem Baum aufgezeigt und er erscheint als Konstante Linie auf dem Graphen 
 		bei dem Lösungswert.
-		Die Turtle von dem Mitellpunkt aus nach links und nach rechts aufgebaut und so wir auch die Funktion aufgemalt.
+		Die Turtle von dem Mittelpunkt aus nach links und nach rechts aufgebaut und so wir auch die Funktion aufgemalt.
+		```java
+		${2}
+		```
+		und auch in den Lines.
+		```java
+		${3}
+		```
+		Die Hauptachsen sind hardcoded da sie recht simpel zu kodieren waren
+		```java
+		${1}
+		```
 		Dies half bei der Skalireung des Graphen und des Koordinatensystems.
 		Je nach Komplexität und Skalierung des Graphen benötigt die website länger zur berechnung, da bei einigen Funktion über 40.000 linien gezeichnet werden
-		Momentan ist die die forshcleife im Plotter die die menge an Punkten und so auch an linien angibt auf 0.001 gewählt weshalb mann womöglich einige sekunden 
+		Momentan ist die die forschleife im Plotter die die menge an Punkten und so auch an linien angibt auf 0.01 gewählt weshalb mann womöglich einige sekunden 
 		warten muss um den Graphen angezeigt zu bekommen.
-		Zudem wird bei absenden einer Funktion, soweit der Graph noch nicht geladen ist, eine kleine Latenz deutlich, bei der der arithmetische Ausdruck erst nach vollendung des Graphen abgesendet wird.
-		"""));
+
+		```java
+		${0}
+		```
+		Zudem wird bei absenden einer Funktion, soweit der Graph noch nicht geladen ist, eine kleine Latenz deutlich, 
+		bei der der arithmetische Ausdruck erst nach vollendung des Graphen abgesendet wird.
+		```java
+		${5}
+		```
+		""", Text.codeBlock("./Combined.java","// Menge an Punkten -> Linien"),
+			Text.codeBlock("./Combined.java","// Hardcode-Turtle"),
+			Text.codeBlock("./Combined.java","// left_right_build"),
+			Text.codeBlock("./Combined.java","// left_right_lines"),
+			Text.codeBlock("./Combined.java","// validater"),
+			Text.codeBlock("./Combined.java","// PlotterLines")));
+
 	Clerk.markdown(Text.fillOut("""
 		# Funktionen:
 		- sqrt(expr)
@@ -49,41 +78,41 @@ String exampleValue = "e^x"; // Input String Example
 		"""));
 	
 	// ceckbox
-	boolean test1= false; // test1
+boolean test1= false; // test1
 	Clerk.markdown(Text.fillOut("""
 		sin(e^x)
 		"""));
-	Clerk.write(Interaction.checkbox("./Combined.java","test1","boolean test1= $;", test1));
+	Clerk.write(Interaction.checkbox("./Combined.java","// test1","boolean test1= $;", test1));
 	if(test1){exampleValue = "sin(e^x)";}
 	
 	// checkbox
 
 	// ceckbox
-	boolean test2= false; // test2
+boolean test2= false; // test2
 	Clerk.markdown(Text.fillOut("""
 		0.5*x^4 - 2*x^3 + 0.3*x^2 - x
 		"""));
-	Clerk.write(Interaction.checkbox("./Combined.java","test2","boolean test2= $;", test2));
-	if(test2){exampleValue = "		0.5*x^4 - 2*x^3 + 0.3*x^2 - x";}
+	Clerk.write(Interaction.checkbox("./Combined.java","// test2","boolean test2= $;", test2));
+	if(test2){exampleValue = "0.5*x^4 - 2*x^3 + 0.3*x^2 - x";}
 	
 	// checkbox
 
 	// ceckbox
-	boolean test3= false; // test3
+boolean test3= false; // test3
 	Clerk.markdown(Text.fillOut("""
 		log(x^e,10)
 		"""));
-	Clerk.write(Interaction.checkbox("./Combined.java","test3","boolean test3= $;", test3));
+	Clerk.write(Interaction.checkbox("./Combined.java","// test3","boolean test3= $;", test3));
 	if(test3){exampleValue = "log(x^e,10)";}
 	
 	// checkbox
 	
 	// ceckbox
-	boolean test4= false; // test4
+boolean test4= true; // test4
 	Clerk.markdown(Text.fillOut("""
 		ln(e^x)
 		"""));
-	Clerk.write(Interaction.checkbox("./Combined.java","test4","boolean test4= $;", test4));
+	Clerk.write(Interaction.checkbox("./Combined.java","// test4","boolean test4= $;", test4));
 	if(test4){exampleValue = "ln(e^x)";}
 	
 	// checkbox
@@ -95,19 +124,19 @@ String exampleValue = "e^x"; // Input String Example
 		"""));
 	Clerk.write(Interaction.input("./Combined.java", "// Input String Example", "String exampleValue = \"$\";", "Geben Sie einen UPN ausdruck ein"));
 
-	int scaleX = 10; //Input scaleX
+int scaleX = 10; // Input scaleX
 
 	Clerk.write(Text.fillOut("""
 		Hier können sie die skalierung der x-Achse des gezeigten Graphen angeben:
 		"""));
-	Clerk.write(Interaction.input("./Combined.java","Input scaleX", "int scaleX = $;","Geben sie scaleX ein"));
+	Clerk.write(Interaction.input("./Combined.java","// Input scaleX", "int scaleX = $;","Geben sie scaleX ein"));
 
-	int scaleY = 5; //Input scaleY
+int scaleY = 5; // Input scaleY
 
 	Clerk.write(Text.fillOut("""
 		Hier können sie die skalierung der y-Achse des gezeigten Graphen angeben:
 		"""));
-	Clerk.write(Interaction.input("./Combined.java","Input scaleX", "int scaleY = $;","Geben sie scaleY ein"));
+	Clerk.write(Interaction.input("./Combined.java","// Input scaleY", "int scaleY = $;","Geben sie scaleY ein"));
 
 	Clerk.markdown(Text.fillOut(""" 
 		## Hier sehen sie den SyntaxBaum zum arithmetischen Ausdruck
@@ -141,9 +170,9 @@ String exampleValue = "e^x"; // Input String Example
 			Upn2Inf u2I= new Upn2Inf(aexpr_as_token);
 			s = u2I.outputInf;
 		}
-
-		Plotter PO = new Plotter(aexpr_as_token,(double)scaleX,(double)scaleY);			
 	
+		Plotter PO = new Plotter(aexpr_as_token,(double)scaleX,(double)scaleY);			
+
 		UPNParser P = new UPNParser(aexpr_as_token);			// Der UPNParser wandelt das TokenArray um in eine einzige Expression die in sich noch weitere birgt
 		//
 		Expr g = P.parse();				
@@ -231,7 +260,8 @@ class Validater{
 	boolean inf = false;
 	boolean ar_expr = true;
 	
-
+	// validater
+	
 	public Validater(Token[] tokens){
 
 		if(tokens.length < 2 && tokens[0] instanceof Ident){this.ar_expr = false;}
@@ -239,8 +269,6 @@ class Validater{
 		if(tokens.length < 2 && tokens[0] instanceof Num){this.ar_expr = true;}
 
 		else{
-			
-
 			if((tokens[0] instanceof Num || tokens[0] instanceof Ident || tokens[0] instanceof Eul || tokens[0] instanceof Pi) &&
 			   (tokens[1] instanceof Num || tokens[1] instanceof Ident || tokens[1] instanceof Eul || tokens[1] instanceof Pi)){
 				this.upn = true;
@@ -249,7 +277,6 @@ class Validater{
 					if(t instanceof Ident){this.ar_expr = false;}
 				}
 			}
-
 			else{
 				this.inf = true;
 				
@@ -260,6 +287,7 @@ class Validater{
 		}
 		return;
 	}
+	// validater
 }
 
 class Lines{							// Lines bildet die Linien zwischen zwei berechnet Punkten in der Turtle
@@ -287,20 +315,24 @@ class Lines{							// Lines bildet die Linien zwischen zwei berechnet Punkten in
 
 		this.drawLines();
 		}
-
+	// left_right_lines
+	
 	public void drawLines(){
 	
 		for(int i = 1; i<this.lstCoords_left.size();i++){
-				Coord nextCoord_right = this.lstCoords_left.get(i);	// in dieser for-schleife 
-				Coord nextCoord_left = this.lstCoords_right.get(i);
+				Coord nextCoord_right = this.lstCoords_left.get(i);	// in dieser for-schleife geht der code 
+				Coord nextCoord_left = this.lstCoords_right.get(i);	// die einzelnen Punkte ab
 
-			// calcLengths berechnet die Hypotenuse und die gradzahl in dem es die Werte x0,x1 und y0,y1 entgegennimmt und diese dann
-			// mit dem Satz des Pythagoras und dem arctan ausrechnet
+			// calcLengths berechnet die Hypotenuse und die gradzahl in dem es die Werte x0,x1 und y0,y1 
+			// entgegennimmt und diese dann mit dem Satz des Pythagoras und dem arctan ausrechnet
 	
-				this.lengths_left = calcLengths(this.x_s_left, nextCoord_left.x(), this.y_s_left, nextCoord_left.y());
-				this.lengths_right = calcLengths(this.x_s_right, nextCoord_right.x(), this.y_s_right, nextCoord_right.y());
+				this.lengths_left = 
+					calcLengths(this.x_s_left, nextCoord_left.x(), this.y_s_left, nextCoord_left.y());
+				this.lengths_right = 
+					calcLengths(this.x_s_right, nextCoord_right.x(), this.y_s_right, nextCoord_right.y());
 
-				if(!Double.isFinite(lengths_right[0])){continue;} // Probelembehandlung bei irrellen Zahlen wie sqrt(-1)
+				if(!Double.isFinite(lengths_right[0])){continue;} // Probelembehandlung bei irrellen Zahlen 
+										  // wie sqrt(-1)
 				if(!Double.isFinite(lengths_right[1])){continue;}
 
 				this.newTurtle.penUp()
@@ -327,11 +359,13 @@ class Lines{							// Lines bildet die Linien zwischen zwei berechnet Punkten in
 						.pop()
 						.penUp();
 						
-				this.x_s_left= nextCoord_left.x(); // die Koordinate zum nächsten Punkt werden als Start Punkt der nächsten Linie verwendet
+				this.x_s_left= nextCoord_left.x(); // die Koordinate zum nächsten Punkt werden als 
+								   // Start Punkt der nächsten Linie verwendet
 				this.y_s_left = nextCoord_left.y();
 				this.y_s_right = nextCoord_right.y();
 				this.x_s_right = nextCoord_right.x();}
 	}
+	// left_right_lines
 	public double[] calcLengths(double x_0,double x_1, double y_0,double y_1){
 			
 			double delt_x = (x_0-x_1);
@@ -651,7 +685,8 @@ class Plotter{
     	// Initialisiert Turtle, zeichnet die Hauptachsen und startet Koordinatensystem- sowie Funktionszeichnung
 	public Plotter(Token[] arithmetic_tokens,double scaleX,double scaleY){	
 		this.t = new Turtle(0, 200, 0, 50, 100, 25, 0);
-		
+	// Hardcode-Turtle
+	
 		this.t.width(0.5);
 		this.t.push()
 			.forward(100)
@@ -668,6 +703,7 @@ class Plotter{
 			.backward(100)
 			.pop()
 			.penUp();
+	// Hardcode-Turtle
 		this.t.width(0.1)
 			.push();
 		this.cooSys(scaleX,scaleY);
@@ -675,6 +711,8 @@ class Plotter{
 	}
 
     	// Erstellt ein Koordinatensystem mit der angegebenen Skalierung für X- und Y-Achse
+	// left_right_build
+	
 	public void cooSys(double scaleX,double scaleY){
 		
 		this.scaleX = scaleX;
@@ -702,6 +740,7 @@ class Plotter{
 		
 	}
 
+	// left_right_build
 	// Zeichnet eine vertikale Markierung bei der X-Position spX und fügt die Beschriftung hinzu.
 	// Passt ebenfalls die Schriftgröße an
 	public void vertln(double spX){
@@ -760,15 +799,17 @@ class Plotter{
 
 	// Berechnet Funktionspunkte für positive und negative x, speichert sie und zeichnet die Kurve 
 	// Wichtig sie zeichnet nach links und nach rechts von (0|0)
-
+	// PlotterLines
+	
 	public void drawFunc(Token[] token){ // zeichnet die Funktion
-			this.t.penUp()
-				.width(0.1)
-				.color(255,100,100)
-				.push();
-
-			for(double i = 0, k = 0;i < (100.0/this.scaleX);i+=0.001,k-=0.001){ //<-------------- menge an gezeichneten Linien
-
+		this.t.penUp()
+			.width(0.1)
+			.color(255,100,100)
+			.push();
+	// Menge an Punkten -> Linien
+	
+		for(double i = 0, k = 0;i < (100.0/this.scaleX);i+=0.01,k-=0.01){ //<--Menge an gezeichneten Punkten/Linien
+	// Menge an Punkten -> Linien
 				double j = this.findY(token,i); // berechnet y bei x = i
 				double p = this.findY(token,k);
 				this.coord_left.add(new Coord((j*this.scaleY),(i*this.scaleX)));
@@ -783,7 +824,6 @@ class Plotter{
 		}
 	// Ersetzt Ident-Tokens durch den aktuellen x-Wert, wertet den Ausdruck mit CalcUPN aus und liefert y
 	public double findY(Token[] tok,double x){
-
 		Token[] newt = new Token[tok.length];
 
 		for(int k = 0; k<tok.length;k++){
@@ -794,11 +834,10 @@ class Plotter{
 				newt[k] = tok[k];
 			}
 		}
-
 		CalcUPN cU = new CalcUPN(newt);
-		
 		return cU.sol;
 	}
+	// PlotterLines
 }
 
 class UPNParser{
